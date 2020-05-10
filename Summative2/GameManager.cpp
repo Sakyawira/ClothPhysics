@@ -161,7 +161,7 @@ void GameManager::initialize()
 	camera.set_pos_y(0.0f);
 	camera.set_pos_z(0.0f);
 
-	m_mesh_cloth->Initialize(5, 5, 11, 11, camera.get_position() + camera.get_look_dir() * 30.0f);
+	m_mesh_cloth->Initialize(5, 5, 32, 32, camera.get_position() + camera.get_look_dir() * 30.0f);
 	
 	m_b_initialized_ = true;
 }
@@ -181,7 +181,10 @@ void GameManager::process_game(Audio& audio)
 		}
 
 		cube_follow_terrain();
-		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t);
+		// Gravity
+		m_mesh_cloth->ApplyForce(glm::vec3(0, -1.000048f, 0) * delta_t);
+		// Wind
+		m_mesh_cloth->ApplyForce(glm::vec3(0, 0, -0.000048f) * delta_t);
 		m_mesh_cloth->Process(delta_t);
 		
 		

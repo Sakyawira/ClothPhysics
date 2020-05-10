@@ -3,6 +3,7 @@
 Particle::Particle(glm::vec3 _position)
 {
 	m_v3Position = _position;
+	m_v3OldPosition = _position;
 }
 
 void Particle::Process(float _groundY, float _deltaTime)

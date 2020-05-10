@@ -21,30 +21,19 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 	int verticesID = 0;
 	
 	// Creates particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int y = 0; y < _numParticlesX; y++)
+	for (int y = 0; y < _numParticlesY; y++)
 	{
-		for (int x = 0; x < _numParticlesY; x++)
+		const int tempIndexCalc = y * _numParticlesX;
+		for (int x = 0; x < _numParticlesX; x++)
 		{
-			float xOffset = 0.0f;
-
-			// Give x particles an offsetted x position .
-			// so it doesnt start off as a flat cloth
-			if (x % 2 == 0)
-			{
-				xOffset = -0.2f;
-			}
-			else
-			{
-				xOffset = 0.2f;
-			}
-
 			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesX) + _pos.x,
-				-_height * (y / (float)_numParticlesY) + _pos.y,
-				_pos.z + xOffset);
-			m_vParticles[y * _numParticlesX + x] = Particle(pos); // insert particle in column x at y'th row
+									 -_height * (y / (float)_numParticlesY) + _pos.y,
+									 _pos.z);
+
+			m_vParticles[tempIndexCalc + x] = Particle(pos); // insert particle in column x at y'th row
 
 			// Set vertices id and vertices for each particle
-			m_vParticles[y * _numParticlesX + x].SetVertexId(verticesID);
+			m_vParticles[tempIndexCalc + x].SetVertexId(verticesID);
 			++verticesID;
 
 			//Position values
@@ -87,7 +76,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 	float offsetX = -1;
 	for (int i = 0; i < _numParticlesX; i++)
 	{
-		GetParticle(0 + i, 0)->SetPin(true);
+		//GetParticle(0 + i, 0)->SetPin(true);
 	}
 	GenerateBuffers();
 }
@@ -194,15 +183,15 @@ void Cloth::Process(float _deltaTime)
 
 	int i = 0;
 	std::vector<Particle>::iterator particle;
-	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
+	for (auto& particle :  m_vParticles)
 	{
 		//Process the particle
-		particle->Process(-50.0f, _deltaTime);
+		particle.Process(-10.0f, _deltaTime);
 
 		//Update the positions of the particles
-		m_fVerticesPoints[i] = (particle->GetPos().x);
-		m_fVerticesPoints[i + 1] = (particle->GetPos().y);
-		m_fVerticesPoints[i + 2] = (particle->GetPos().z);
+		m_fVerticesPoints[i] = (particle.GetPos().x);
+		m_fVerticesPoints[i + 1] = (particle.GetPos().y);
+		m_fVerticesPoints[i + 2] = (particle.GetPos().z);
 		i += 6;
 
 		//Handle particle picking if left mouse clicked and dragged
