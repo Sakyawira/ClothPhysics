@@ -77,6 +77,8 @@ public:
 
 	// Control polygon mode
 	bool m_b_wireframe = false;
+
+	Cloth* m_mesh_cloth;
 	
 private:
 
@@ -156,7 +158,7 @@ private:
 	Mesh* m_mesh_cube_map;
 	Sphere* m_mesh_sphere;
 	Terrain* m_mesh_terrain;
-	Cloth* m_mesh_cloth;
+	
 
 	GameObject* m_cloth;
 

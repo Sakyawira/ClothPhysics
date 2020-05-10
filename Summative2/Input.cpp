@@ -80,14 +80,15 @@ void Input::process_input(GameManager* Game, Audio& audio)
 
 	if (key_state_[32] == INPUT_DOWN_FIRST)
 	{
-		if (Game->m_b_wireframe == false)
+	/*	if (Game->m_b_wireframe == false)
 		{
 			Game->m_b_wireframe = true;
 		}
 		else
 		{
 			Game->m_b_wireframe = false;
-		}
+		}*/
+		Game->m_mesh_cloth->Unpin();
 		key_state_[32] = INPUT_DOWN;
 	}
 

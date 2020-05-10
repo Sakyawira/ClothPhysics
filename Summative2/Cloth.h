@@ -14,6 +14,7 @@ class Cloth : public Mesh
 		void Render(Camera& _camera);
 		void Process(float _deltaTick);
 		void ApplyForce(const glm::vec3 _force);
+		void Unpin();
 
 	private:
 

@@ -47,6 +47,11 @@ bool Constraint::Process()
 		glm::vec3 correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
 		glm::vec3 halfCorrectionOffset = correctionOffset * 0.5f;
 
+
+		glm::vec3 temp = glm::vec3(1.0f, 1.0f, 0.0f);
+		glm::vec3 testCorrectionOffset = temp * (1.0f - (1.0f / 0.1f));
+
+
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);
 		return true;
