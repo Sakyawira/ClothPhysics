@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TextLabel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="clock.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMap.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryModel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TessModel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Initialization.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLabel.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="clock.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMap.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryModel.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TessModel.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Shaders\TextFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\TextVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\AnimationVertex.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\AnimationFragment.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\PhongVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\CubeMapVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\CubeMapFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\PhongDiffuse.fs">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\PhongSpecular.fs">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\PhongRim.fs">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogReflectionFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogReflectionVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogPhongDiffuseFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogPhongVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogCubeMapFS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\FogCubeMapVS.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="Resources\Shaders\Geometry.VS">
+      <Filter>Shaders</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{69527420-ed2c-4cf8-9dc4-afce9832f3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{548811d9-e8f2-41e4-8c84-6afd711e5bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{8c7b2130-3019-4bd6-a02d-fd64dbb5d5bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Model.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Model.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Geometry.GS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Geometry.FS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessQuadModel.tcs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessQuadModel.tes">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tess.FS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tess.VS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessTriModel.tcs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessTriModel.tes">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Chromatical.FS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Chromatical.VS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Star.GS">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessLODQuadModel.tcs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Quad.GS">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
