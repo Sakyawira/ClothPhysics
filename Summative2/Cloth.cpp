@@ -74,10 +74,12 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 
 	// Set pins at top of the cloth
 	float offsetX = -1;
-	for (int i = 0; i < _numParticlesX; i++)
-	{
-		GetParticle(0 + i, 0)->SetPin(true);
-	}
+	//for (int i = 0; i < _numParticlesX; i++)
+	//{
+	//	GetParticle(0 + i, 0)->SetPin(true);
+	//}
+	GetParticle(0, 0)->SetPin(true);
+	GetParticle(_numParticlesX - 1, 0)->SetPin(true);
 	GenerateBuffers();
 }
 
