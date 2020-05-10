@@ -39,11 +39,11 @@ Terrain::Terrain(InitInfo _info, std::vector<Mesh*>& meshVector)
 	build_vb();
 	build_ib();
 
-	//Position attribute
+	// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TerrainVertex), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	//Color attribute
+	// Color attribute
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TerrainVertex), (GLvoid*)(3 * 12));
 	glEnableVertexAttribArray(1);
 

@@ -66,7 +66,7 @@ void GameObject::Draw(Camera& _camera, const GLchar* s_currentTime, GLfloat f_cu
 
 		// Hexagon 1
 		m_mesh->Bind();
-		glDrawElements(GL_TRIANGLES, m_mesh->GetSize(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_LINES, m_mesh->GetSize(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 }
@@ -93,7 +93,7 @@ void GameObject::Draw(Camera & _camera, const GLchar * s_currentTime, GLfloat f_
 
 		// Hexagon 1
 		m_mesh->Bind();
-		glDrawElements(GL_TRIANGLES, m_mesh->GetSize(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_LINES, m_mesh->GetSize(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		glDisable(GL_CULL_FACE);
 	}

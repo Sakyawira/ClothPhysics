@@ -1,8 +1,8 @@
 #include "Cloth.h"
 
-Cloth::Cloth()
+Cloth::Cloth(GLuint program)
 {
-
+	m_program = program;
 }
 
 void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _numParticlesY, glm::vec3 _pos)
@@ -133,40 +133,40 @@ void Cloth::CreateConstraint(Particle* _p1, Particle* _p2)
 	m_vConstraints.push_back(Constraint(_p1, _p2));
 }
 
-void Cloth::Render() 
+void Cloth::Render(Camera& _camera) 
 {
-	//glUseProgram(m_program);
-	//glDisable(GL_CULL_FACE);
+	glUseProgram(m_program);
+	glDisable(GL_CULL_FACE);
 
-	////ModelMatrix
-	//glm::mat4 translation = glm::translate(glm::mat4(), m_vPos);
-	//glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
-	//glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	//rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	//rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	//glm::mat4 scale = glm::scale(glm::mat4(), m_vScale);
+	//ModelMatrix
+	glm::mat4 translation = glm::translate(glm::mat4(), m_objPosition);
+	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 scale = glm::scale(glm::mat4(), m_objScale);
 
-	//glm::mat4 Model = translation * rotation * scale;
+	glm::mat4 Model = translation * rotation * scale;
 
-	//glm::mat4 VP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView();
+	glm::mat4 VP = _camera.get_projection() * _camera.get_view();
 
-	////Constantly update vertices and indices when rendering
-	//glBindVertexArray(m_vao);
+	//Constantly update vertices and indices when rendering
+	glBindVertexArray(m_VAO);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
-	//m_iIndicesCount = m_iIndicesPoints.size();
+	glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
+	m_indicesSize = m_iIndicesPoints.size();
 
-	//glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 
-	////Draw the cloth
-	//glDrawElements(GL_LINES, m_iIndicesCount, GL_UNSIGNED_INT, 0);
+	//Draw the cloth
+	glDrawElements(GL_LINES, m_indicesSize, GL_UNSIGNED_INT, 0);
 
-	//glBindVertexArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Cloth::Process(float _deltaTime)
@@ -198,7 +198,7 @@ void Cloth::Process(float _deltaTime)
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
 		//Process the particle
-		particle->Process(4.0f, _deltaTime);
+		particle->Process(-50.0f, _deltaTime);
 
 		//Update the positions of the particles
 		m_fVerticesPoints[i] = (particle->GetPos().x);
@@ -224,6 +224,9 @@ void Cloth::Process(float _deltaTime)
 		//	m_isHoldingParticle = false;
 		//}
 	}
+	glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
+	m_indicesSize = m_iIndicesPoints.size();
 }
 
 void Cloth::ApplyForce(const glm::vec3 _force)

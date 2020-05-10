@@ -24,7 +24,7 @@ GameManager::GameManager()
 	// Create Shader
 	m_sh_fogBox = new Shader("Resources/Shaders/FogCubeMapVS.txt", "Resources/Shaders/FogCubeMapFS.txt", m_v_sh);
 	m_sh_fog_ = new Shader("Resources/Shaders/FogPhongVS.txt", "Resources/Shaders/FogPhongDiffuseFS.txt", m_v_sh);
-	m_sh_phong_diffuse_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongDiffuse.fs", m_v_sh);
+	m_sh_phong_diffuse_ = new Shader("Resources/Shaders/PlainVertexShader.vs", "Resources/Shaders/PlainFragmentShader.fs", m_v_sh);
 	m_sh_phong_specular_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongSpecular.fs", m_v_sh);
 	m_sh_phong_rim_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongRim.fs", m_v_sh);
 	m_sh_cube_map_ = new Shader("Resources/Shaders/CubeMapVS.txt", "Resources/Shaders/CubeMapFS.txt", m_v_sh);
@@ -45,14 +45,14 @@ GameManager::GameManager()
 	m_mesh_cube = new Mesh(cube_indices, cube_vertices, m_v_mesh);
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
-	m_mesh_cloth = new Cloth();
-	m_mesh_cloth->Initialize(5, 5, 11, 11, glm::vec3(0.0f, 3.0f, 55.0f));
+	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram());
+	
 
 	
 
 	// Model
-	m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
-	m_mdl_cat = new Model("Resources/Models/pug/Dog 1.obj", &camera);
+	//m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
+	//m_mdl_cat = new Model("Resources/Models/pug/Dog 1.obj", &camera);
 	geomModel = new GeometryModel(m_sh_geometry_->GetProgram(), &camera);
 	starModel = new GeometryModel(m_sh_star_geo_->GetProgram(), &camera);
 	tessModel = new TessModel(m_sh_tess_->GetProgram(), &camera);
@@ -87,7 +87,7 @@ GameManager::GameManager()
 	std::vector<Texture*> v_blue = { m_tr_down };
 	std::vector<Texture*> v_yellow = { m_tr_plain, m_tr_plain };
 
-	m_cloth = new GameObject(m_sh_phong_diffuse_, m_mesh_cloth, v_blue, 0.0f, 100.0f, 0.0f, m_v_geometry);
+	m_cloth = new GameObject(m_sh_phong_diffuse_, m_mesh_cloth, v_blue, 0.0f, 20.0f, 0.0f, m_v_geometry);
 
 	// Stencil Cube
 	stencilCube2 = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, v_blue, 0.0f, 0.0f, 0.0f, m_v_cubes);
@@ -132,7 +132,7 @@ GameManager::GameManager()
 	tii.NumCols 		= 513;
 	tii.CellSpacing 	= 1.0f;
 	m_mesh_terrain = new Terrain(tii, m_v_mesh);
-	terrain = new GameObject(m_sh_phong_diffuse_, m_mesh_terrain, v_yellow, 0.0f, 0.0f, 0.0f, m_v_geometry);
+	terrain = new GameObject(m_sh_phong_diffuse_, m_mesh_terrain, v_blue, 0.0f, 0.0f, 0.0f, m_v_geometry);
 	terrain->SetPos(glm::vec3(0.0f, -20.0f, 0.0f));
 
 
@@ -160,6 +160,8 @@ void GameManager::initialize()
 	camera.set_pos_x(0.0f);
 	camera.set_pos_y(0.0f);
 	camera.set_pos_z(0.0f);
+
+	m_mesh_cloth->Initialize(5, 5, 11, 11, camera.get_position() + camera.get_look_dir() * 30.0f);
 	
 	m_b_initialized_ = true;
 }
@@ -179,7 +181,7 @@ void GameManager::process_game(Audio& audio)
 		}
 
 		cube_follow_terrain();
-		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t);
+		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t * 0.01f);
 		m_mesh_cloth->Process(delta_t);
 		
 		
@@ -224,7 +226,7 @@ void GameManager::render()
 		frame_counts_ += 1.0f * m_clock_->GetDeltaTick() * 120.0f;
 		m_frameBuffer->PrepareRender();
 		
-		
+		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
 		//glEnable(GL_BLEND);
 		if (m_b_wireframe)
 		{
@@ -234,9 +236,9 @@ void GameManager::render()
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
-		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
-		m_cloth->Draw(camera, frame_counts_);
-
+		
+		m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//m_mesh_cloth->Render(camera);
 		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
 		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
 		//lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));
@@ -464,13 +466,13 @@ void GameManager::create_spheres(int _number_coins, int _border)
 
 
 GameManager::~GameManager()
-{
+{/*
 	delete m_mdl_cat;
 	m_mdl_cat = nullptr;
 	delete m_mdl_tank;
 	m_mdl_tank = nullptr;
 	delete geomModel;
-	geomModel = nullptr;
+	geomModel = nullptr;*/
 	delete starModel;
 	starModel = nullptr;
 	delete tessModel;
