@@ -1,0 +1,63 @@
+/***********************
+  Bachelor of Software Engineering
+  Media Design School
+  Auckland
+  New Zealand
+
+  (c) 2018 Media Design School
+
+  File Name   :   Particle.h
+  Description :   contains declaration of GameObject class which control the updates and drawing pipeline of an object
+  Author      :   Sakyawira Nanda Ruslim and Anton Le-Prevost Smith
+  Mail        :   Sakyawira.Rus8080@mediadesign.school.nz and Anton.Le8064@mediadesign.school.nz
+********************/
+#pragma once
+
+// Library Includes
+#include <vector>
+
+// Dependency Includes
+#include <glew.h>
+#include <gtc/type_ptr.hpp>
+#include <glm.hpp>
+#include <mat4x2.hpp>
+class Particle
+{   
+    public:
+        Particle(glm::vec3 _position);
+        ~Particle(){};
+
+        void Process(float _groundY, float _deltaTime);
+        void ApplyForce(glm::vec3 _force);
+
+        void DecrementConnectionCount() { m_iConnectionCount--; }
+
+        void AdjustPosition(const glm::vec3 _v3) { if (!m_bIsPinned) m_v3Position += _v3; }
+
+        // Getters-Setters
+        glm::vec3 GetPos() { return m_v3Position; };
+        void SetPin()
+
+    private:
+
+        // Keeps track of whether it can be moved
+        bool m_bIsPinned = false;
+  
+        // Position of the particle
+        glm::vec3 m_v3Position{};
+
+        // Old Position of the particle
+        glm::vec3 m_v3OldPosition{};
+
+        // Acceleration
+        glm::vec3 m_v3Acceleration{};
+
+        // Connection Count
+        int m_iConnectionCount{};
+
+         // Mass of particle 
+        float m_fMass{};
+
+        // Dampening value
+        float m_fDampening = 0.01f;
+};
