@@ -26,7 +26,9 @@ void Constraint::SetIsAlive(bool _isAlive)
 
 bool Constraint::Process()
 {
-	if(m_Particle1 && m_Particle2)
+	// Calculates and applies the constraints to the connect particles,
+	// if the particles are valid
+	if(m_bIsAlive && m_Particle1 && m_Particle2)
 	{
 		// Get the distance between the particles
 		glm::vec3 particleDif = m_Particle1->GetPos() - m_Particle2->GetPos();
@@ -42,6 +44,15 @@ bool Constraint::Process()
 		//If one or more of our particles dies, then we die too
 
 		//If this constraint is still alive calculate the constraints
-		glm::vec3 correctionOffset = 
+		glm::vec3 correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
+		glm::vec3 halfCorrectionOffset = correctionOffset * 0.5f;
+
+		m_Particle1->AdjustPosition(-halfCorrectionOffset);
+		m_Particle2->AdjustPosition(halfCorrectionOffset);
+		return true;
 	}
+
+	SetIsAlive(false);
+
+	return false;
 }

@@ -7,17 +7,15 @@ class Cloth : public Mesh
 {
 	public:
 		Cloth();
-		void Initialize();
+		void Initialize(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos);
+		void GenerateBuffers();
 
 	private:
 		std::vector<float> m_fVerticesPoints;
 		std::vector<int> m_iIndicesPoints;
 
-		float m_fWidth;
-		float m_fHeight;
-
-		int m_fParticlesWidth; // number of particles in "width" direction
-		int m_fParticlesHeight; // number of particles in "height" direction
+		int m_fParticlesInX; // number of particles in "width" direction
+		int m_fParticlesInY; // number of particles in "height" direction
 
 		bool m_isHoldingParticle = false;
 		Particle* pickedParticle;
@@ -25,7 +23,7 @@ class Cloth : public Mesh
 		std::vector<Particle> m_vParticles; // all particles that are part of this cloth
 		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
 
-		Particle* GetParticle(int x, int y);
-		void MakeConstraint(Particle* p1, Particle* p2);
+		Particle* GetParticle(int _x, int _y);
+		void CreateConstraint(Particle* _p1, Particle* _p2);
 
 };

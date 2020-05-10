@@ -35,9 +35,9 @@ class Particle
         void AdjustPosition(const glm::vec3 _v3) { if (!m_bIsPinned) m_v3Position += _v3; }
 
         // Getters-Setters
-        glm::vec3 GetPos() { return m_v3Position; };
-        void SetPin()
-
+        glm::vec3 GetPos() { return m_v3Position; }
+        void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }
+        
     private:
 
         // Keeps track of whether it can be moved
