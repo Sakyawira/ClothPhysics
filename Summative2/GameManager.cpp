@@ -181,7 +181,7 @@ void GameManager::process_game(Audio& audio)
 		}
 
 		cube_follow_terrain();
-		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t * 0.01f);
+		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t);
 		m_mesh_cloth->Process(delta_t);
 		
 		
@@ -237,8 +237,8 @@ void GameManager::render()
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		
-		m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		//m_mesh_cloth->Render(camera);
+		//m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		m_mesh_cloth->Render(camera);
 		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
 		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
 		//lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));

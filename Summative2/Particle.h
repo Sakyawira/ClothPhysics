@@ -63,7 +63,7 @@ class Particle
         int m_iConnectionCount{};
 
          // Mass of particle 
-        float m_fMass{};
+        float m_fMass = 1.0f;
 
         // Dampening value
         float m_fDampening = 0.01f;

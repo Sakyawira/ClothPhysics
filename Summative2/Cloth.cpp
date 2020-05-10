@@ -16,6 +16,8 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 
 	m_vParticles.resize(_numParticlesX * _numParticlesY);
 
+	m_objPosition = _pos;
+
 	int verticesID = 0;
 	
 	// Creates particles in a grid of particles from (0,0,0) to (width,-height,0)
@@ -186,10 +188,7 @@ void Cloth::Process(float _deltaTime)
 	{
 		for (constraint = m_vConstraints.begin(); constraint != m_vConstraints.end(); constraint++)
 		{
-			if (constraint->GetIsAlive())
-			{
-				constraint->Process(/*_deltaTime*/); // satisfy constraint.
-			}
+			constraint->Process(/*_deltaTime*/); // satisfy constraint.
 		}
 	}
 
@@ -224,9 +223,12 @@ void Cloth::Process(float _deltaTime)
 		//	m_isHoldingParticle = false;
 		//}
 	}
-	glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
-	m_indicesSize = m_iIndicesPoints.size();
+	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
+	//m_indicesSize = m_iIndicesPoints.size();
 }
 
 void Cloth::ApplyForce(const glm::vec3 _force)
