@@ -37,6 +37,12 @@ class Particle
         // Getters-Setters
         glm::vec3 GetPos() { return m_v3Position; }
         void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }
+
+        int GetVertexId() { return m_iVertexId; }
+        void SetVertexId(int _id) { m_iVertexId = _id; }
+
+        int GetIndexId() { return m_iIndexId; }
+        void SetIndexId(int _id) { m_iIndexId = _id; }
         
     private:
 
@@ -60,4 +66,8 @@ class Particle
 
         // Dampening value
         float m_fDampening = 0.01f;
+
+        // Vertex and Index
+        int m_iVertexId{};
+        int m_iIndexId{};
 };

@@ -12,9 +12,6 @@ class Constraint
 		bool Process();
 
 		// Getters-Setters
-		void SetToBeDestroyed(bool _destroy) { m_bToBeDestroyed = _destroy;	};
-		bool GetToBeDestroyed() { return m_bToBeDestroyed; };
-
 		void SetIsAlive(bool _IsAlive);
 		bool GetIsAlive() { return m_bIsAlive; };
 
