@@ -24,6 +24,7 @@
 class Particle
 {   
     public:
+        Particle() {};
         Particle(glm::vec3 _position);
         ~Particle(){};
 

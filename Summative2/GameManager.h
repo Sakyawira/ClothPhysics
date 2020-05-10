@@ -38,6 +38,7 @@
 #include "GeometryModel.h"
 #include "TessModel.h"
 #include "FrameBuffer.h"
+#include "Cloth.h"
 
 const int WINDOW_WIDHT = 800;
 const int WINDOW_HEIGHT = 800;
@@ -155,6 +156,9 @@ private:
 	Mesh* m_mesh_cube_map;
 	Sphere* m_mesh_sphere;
 	Terrain* m_mesh_terrain;
+	Cloth* m_mesh_cloth;
+
+	GameObject* m_cloth;
 
 	Model* m_mdl_tank;
 	Model* m_mdl_cat;

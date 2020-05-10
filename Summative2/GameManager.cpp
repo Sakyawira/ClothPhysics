@@ -45,6 +45,10 @@ GameManager::GameManager()
 	m_mesh_cube = new Mesh(cube_indices, cube_vertices, m_v_mesh);
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
+	m_mesh_cloth = new Cloth();
+	m_mesh_cloth->Initialize(5, 5, 11, 11, glm::vec3(0.0f, 3.0f, 55.0f));
+
+	
 
 	// Model
 	m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
@@ -82,6 +86,8 @@ GameManager::GameManager()
 	std::vector<Texture*> v_red = {m_tr_up};
 	std::vector<Texture*> v_blue = { m_tr_down };
 	std::vector<Texture*> v_yellow = { m_tr_plain, m_tr_plain };
+
+	m_cloth = new GameObject(m_sh_phong_diffuse_, m_mesh_cloth, v_blue, 0.0f, 100.0f, 0.0f, m_v_geometry);
 
 	// Stencil Cube
 	stencilCube2 = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, v_blue, 0.0f, 0.0f, 0.0f, m_v_cubes);
@@ -173,7 +179,9 @@ void GameManager::process_game(Audio& audio)
 		}
 
 		cube_follow_terrain();
-	
+		m_mesh_cloth->ApplyForce(glm::vec3(0, -0.000048f, 0) * delta_t);
+		m_mesh_cloth->Process(delta_t);
+		
 		
 		current_time_ = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)); // Get current time.
 		current_time_ = current_time_ * 0.001f;
@@ -216,7 +224,8 @@ void GameManager::render()
 		frame_counts_ += 1.0f * m_clock_->GetDeltaTick() * 120.0f;
 		m_frameBuffer->PrepareRender();
 		
-		glEnable(GL_BLEND);
+		
+		//glEnable(GL_BLEND);
 		if (m_b_wireframe)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -226,58 +235,59 @@ void GameManager::render()
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
+		m_cloth->Draw(camera, frame_counts_);
 
-		starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
-		tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
-		lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));
+		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
+		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
+		//lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));
 
-		button_up->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		button_down->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		terrain->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		
+		//button_up->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//button_down->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//terrain->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//
 
-		int i = 0;
-		for (auto point : *(m_mesh_terrain->get_vertices()))
-		{
-			i++;
-			if (point.pos.y < 30 && point.pos.y > 10)
-			{
-				if (i % 30 == 0)
-				{
-					geomModel->render(glm::vec3(point.pos.x, point.pos.y - 18, point.pos.z), m_tr_grass);
-				}
-			}
-			
-		}
+		//int i = 0;
+		//for (auto point : *(m_mesh_terrain->get_vertices()))
+		//{
+		//	i++;
+		//	if (point.pos.y < 30 && point.pos.y > 10)
+		//	{
+		//		if (i % 30 == 0)
+		//		{
+		//			geomModel->render(glm::vec3(point.pos.x, point.pos.y - 18, point.pos.z), m_tr_grass);
+		//		}
+		//	}
+		//	
+		//}
 
-		//enable stencil and set stencil operation 
-		glEnable(GL_STENCIL_TEST);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); //stPass, dpFail, bothPass 
-		//** 1st pass ** //set current stencil value 
-		glStencilFunc(GL_ALWAYS, // test function 
-						1,// current value to set 
-						0xFF);//mask value, 
-		glStencilMask(0xFF);//enable writing to stencil buffer
-		//--> render regular sized button_up // fills stencil buffer 
-		stencilCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		// ** 2nd pass ** 
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF); 
-		glStencilMask(0x00); //disable writing to stencil buffer
-		//--> render scaled up button_up 
-		stencilCube2->SetPos(stencilCube->GetLocation());
-		stencilCube2->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		// write to areas where value is not equal to 1
-		// disable writing to stencil mask 
-		glStencilMask(0x00); 
-		glDisable(GL_STENCIL_TEST);
-		glStencilMask(0xFF);//enable writing to stencil buffer
+		////enable stencil and set stencil operation 
+		//glEnable(GL_STENCIL_TEST);
+		//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); //stPass, dpFail, bothPass 
+		////** 1st pass ** //set current stencil value 
+		//glStencilFunc(GL_ALWAYS, // test function 
+		//				1,// current value to set 
+		//				0xFF);//mask value, 
+		//glStencilMask(0xFF);//enable writing to stencil buffer
+		////--> render regular sized button_up // fills stencil buffer 
+		//stencilCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//// ** 2nd pass ** 
+		//glStencilFunc(GL_NOTEQUAL, 1, 0xFF); 
+		//glStencilMask(0x00); //disable writing to stencil buffer
+		////--> render scaled up button_up 
+		//stencilCube2->SetPos(stencilCube->GetLocation());
+		//stencilCube2->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//// write to areas where value is not equal to 1
+		//// disable writing to stencil mask 
+		//glStencilMask(0x00); 
+		//glDisable(GL_STENCIL_TEST);
+		//glStencilMask(0xFF);//enable writing to stencil buffer
 	
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 	
-		glDisable(GL_BLEND);
+		//glDisable(GL_BLEND);
 	
-		//glDisable(GL_SCISSOR_TEST);
+		////glDisable(GL_SCISSOR_TEST);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		m_frameBuffer->Render("currentTime", current_time_);
 		m_text_collision_->Render();

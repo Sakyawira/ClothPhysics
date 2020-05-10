@@ -229,8 +229,8 @@ void Cloth::Process(float _deltaTime)
 void Cloth::ApplyForce(const glm::vec3 _force)
 {
 	std::vector<Particle>::iterator particle;
-	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
+	for (auto& particle : m_vParticles)
 	{
-		particle->ApplyForce(_force); // add the forces to each particle
+		particle.ApplyForce(_force); // add the forces to each particle
 	}
 }
