@@ -44,6 +44,5 @@ void Particle::ApplyForce(glm::vec3 _force)
 void Particle::ApplyGravityForce(glm::vec3 _force)
 {
 	// Accelerate particle based on force passed in
-	// Make sure it's not zero so we don't divide by zero and waste 2 hours of time because I forgot to initialise the mass in the first place god damnit
 	m_v3Acceleration += _force;
 }
