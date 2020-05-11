@@ -1,5 +1,8 @@
 #include "Cloth.h"
 
+#include <algorithm>
+#include <random>
+
 Cloth::Cloth(GLuint program)
 {
 	m_program = program;
@@ -72,8 +75,13 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 		}
 	}
 
+	//Shuffle the constraints so they are processed in a random order
+	auto rng = std::default_random_engine{};
+	std::shuffle(m_vConstraints.begin(), m_vConstraints.end(), rng);
+	
+
 	// Set pins at top of the cloth
-	float offsetX = -1;
+
 	//for (int i = 0; i < _numParticlesX; i++)
 	//{
 	//	GetParticle(0 + i, 0)->SetPin(true);
@@ -85,8 +93,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 
 void Cloth::Unpin()
 {
-	// Set pins at top of the cloth
-	float offsetX = -1;
+	// Unpin pins at top of the cloth
 	for (int i = 0; i < m_fParticlesInX; i++)
 	{
 		GetParticle(0 + i, 0)->SetPin(false);
@@ -184,17 +191,17 @@ void Cloth::Process(float _deltaTime)
 		}
 	}
 
-	std::vector<Constraint>::iterator constraint;
-	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) // iterate over all constraints several times
+	// iterate over all constraints several times
+	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
 	{
-		for (constraint = m_vConstraints.begin(); constraint != m_vConstraints.end(); constraint++)
+		for (auto& constraint: m_vConstraints)
 		{
-			constraint->Process(/*_deltaTime*/); // satisfy constraint.
+			// satisfy constraint.
+			constraint.Process();
 		}
 	}
 
 	int i = 0;
-	std::vector<Particle>::iterator particle;
 	for (auto& particle :  m_vParticles)
 	{
 		//Process the particle
@@ -234,9 +241,16 @@ void Cloth::Process(float _deltaTime)
 
 void Cloth::ApplyForce(const glm::vec3 _force)
 {
-	std::vector<Particle>::iterator particle;
 	for (auto& particle : m_vParticles)
 	{
 		particle.ApplyForce(_force); // add the forces to each particle
+	}
+}
+
+void Cloth::ApplyGravityForce(const glm::vec3 _force)
+{
+	for (auto& particle : m_vParticles)
+	{
+		particle.ApplyGravityForce(_force); // add the forces to each particle
 	}
 }

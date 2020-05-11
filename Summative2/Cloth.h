@@ -3,7 +3,8 @@
 #include "Particle.h"
 #include "Constraint.h"
 #include "Camera.h"
-#define CONSTRAINT_ITERATIONS 5
+
+const static int CONSTRAINT_ITERATIONS = 5;
 
 class Cloth : public Mesh
 {
@@ -14,6 +15,7 @@ class Cloth : public Mesh
 		void Render(Camera& _camera);
 		void Process(float _deltaTick);
 		void ApplyForce(const glm::vec3 _force);
+		void ApplyGravityForce(const glm::vec3 _force);
 		void Unpin();
 
 	private:

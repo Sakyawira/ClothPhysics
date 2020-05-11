@@ -117,7 +117,7 @@ GameManager::GameManager()
 	sphere->Scale(5.0f);
 
 	// Tank
-	tank = new GameObject(m_mdl_tank, 0.0f, 0.0f, 0.0f);
+	//tank = new GameObject(m_mdl_tank, 0.0f, 0.0f, 0.0f);
 
 	srand(static_cast<unsigned>(std::random_device()()));
 	int border = 75;
@@ -161,7 +161,7 @@ void GameManager::initialize()
 	camera.set_pos_y(0.0f);
 	camera.set_pos_z(0.0f);
 
-	m_mesh_cloth->Initialize(5, 5, 32, 32, camera.get_position() + camera.get_look_dir() * 30.0f);
+	m_mesh_cloth->Initialize(5, 5, 32, 32, camera.get_position() + camera.get_look_dir() * 10.0f);
 	
 	m_b_initialized_ = true;
 }
@@ -171,7 +171,7 @@ void GameManager::process_game(Audio& audio)
 	if (m_b_initialized_ == 1)
 	{
 		const float delta_t = m_clock_->GetDeltaTick();
-		camera.update(m_b_start_, m_clock_->GetDeltaTick() * 1.0f, tank->GetLocation());
+		camera.update(m_b_start_, m_clock_->GetDeltaTick() * 1.0f, /*tank->GetLocation()*/ glm::vec3(0.0f, 0.0f, 0.0f));
 
 		// all_mouse_pick(delta_t);
 
@@ -180,11 +180,14 @@ void GameManager::process_game(Audio& audio)
 			stencilCube->SetPos(camera.get_position() + camera.get_look_dir() * 30.0f);
 		}
 
-		cube_follow_terrain();
+		//cube_follow_terrain();
+		
 		// Gravity
-		m_mesh_cloth->ApplyForce(glm::vec3(0, -1.000048f, 0) * delta_t);
+		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f) * delta_t);
 		// Wind
-		m_mesh_cloth->ApplyForce(glm::vec3(0, 0, -0.000048f) * delta_t);
+		m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f) * delta_t);
+
+		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
 		
 		
@@ -295,7 +298,7 @@ void GameManager::render()
 		////glDisable(GL_SCISSOR_TEST);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		m_frameBuffer->Render("currentTime", current_time_);
-		m_text_collision_->Render();
+		//m_text_collision_->Render();
 		m_text_instruction_->Render();
 
 	}

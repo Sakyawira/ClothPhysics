@@ -12,7 +12,7 @@ void Particle::Process(float _groundY, float _deltaTime)
 	{
 		// Verlet Integration
 		glm::vec3 v3Temp = m_v3Position;
-		m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + m_v3Acceleration * _deltaTime;
+		m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + (m_v3Acceleration * _deltaTime);
 		m_v3OldPosition = v3Temp;
 
 		// Particle drops to the ground
@@ -29,5 +29,21 @@ void Particle::Process(float _groundY, float _deltaTime)
 void Particle::ApplyForce(glm::vec3 _force)
 {
 	// Accelerate particle based on force passed in
-	m_v3Acceleration += _force / m_fMass;
+	// Make sure it's not zero so we don't divide by zero and waste 2 hours of time because I forgot to initialise the mass in the first place god damnit
+	if(m_fMass != 0)
+	{
+		m_v3Acceleration += _force / m_fMass;
+	}
+	else
+	{
+		//oops you did it again
+		assert(0);
+	}
+}
+
+void Particle::ApplyGravityForce(glm::vec3 _force)
+{
+	// Accelerate particle based on force passed in
+	// Make sure it's not zero so we don't divide by zero and waste 2 hours of time because I forgot to initialise the mass in the first place god damnit
+	m_v3Acceleration += _force;
 }

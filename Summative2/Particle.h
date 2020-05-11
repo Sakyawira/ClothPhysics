@@ -29,7 +29,12 @@ class Particle
         ~Particle(){};
 
         void Process(float _groundY, float _deltaTime);
+
+		// Applies force - affected by the mass
         void ApplyForce(glm::vec3 _force);
+	
+		// Applies gravity force - not affected by mass
+        void ApplyGravityForce(glm::vec3 _force);
 
         void DecrementConnectionCount() { m_iConnectionCount--; }
 
@@ -66,7 +71,7 @@ class Particle
         float m_fMass = 1.0f;
 
         // Dampening value
-        float m_fDampening = 0.01f;
+        float m_fDampening = 0.25f;
 
         // Vertex and Index
         int m_iVertexId{};
