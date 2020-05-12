@@ -34,7 +34,6 @@
 #include "Sphere.h"
 #include "CubeMap.h" 
 #include "Model.h"
-#include "Terrain.h"
 #include "GeometryModel.h"
 #include "TessModel.h"
 #include "FrameBuffer.h"
@@ -157,8 +156,6 @@ private:
 	Mesh* m_mesh_cube;
 	Mesh* m_mesh_cube_map;
 	Sphere* m_mesh_sphere;
-	Terrain* m_mesh_terrain;
-	
 
 	GameObject* m_cloth;
 

@@ -156,7 +156,6 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TessModel.cpp" />
     <ClCompile Include="TextLabel.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TessModel.h" />
     <ClInclude Include="TextLabel.h" />
     <ClInclude Include="Texture.h" />

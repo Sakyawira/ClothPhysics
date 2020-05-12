@@ -24,7 +24,7 @@ GameManager::GameManager()
 	// Create Shader
 	m_sh_fogBox = new Shader("Resources/Shaders/FogCubeMapVS.txt", "Resources/Shaders/FogCubeMapFS.txt", m_v_sh);
 	m_sh_fog_ = new Shader("Resources/Shaders/FogPhongVS.txt", "Resources/Shaders/FogPhongDiffuseFS.txt", m_v_sh);
-	m_sh_phong_diffuse_ = new Shader("Resources/Shaders/PlainVertexShader.vs", "Resources/Shaders/PlainFragmentShader.fs", m_v_sh);
+	m_sh_phong_diffuse_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongDiffuse.fs", m_v_sh);
 	m_sh_phong_specular_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongSpecular.fs", m_v_sh);
 	m_sh_phong_rim_ = new Shader("Resources/Shaders/PhongVS.txt", "Resources/Shaders/PhongRim.fs", m_v_sh);
 	m_sh_cube_map_ = new Shader("Resources/Shaders/CubeMapVS.txt", "Resources/Shaders/CubeMapFS.txt", m_v_sh);
@@ -123,18 +123,6 @@ GameManager::GameManager()
 	int border = 75;
 
 	create_spheres(10, border);
-
-	Terrain::InitInfo tii;
-	tii.HeightmapFilename = "Resources/Terrain/coastMountain513.raw";
-	tii.HeightScale 	= 0.35f;
-	tii.HeightOffset	= -20.0f;
-	tii.NumRows 		= 513;
-	tii.NumCols 		= 513;
-	tii.CellSpacing 	= 1.0f;
-	m_mesh_terrain = new Terrain(tii, m_v_mesh);
-	terrain = new GameObject(m_sh_phong_diffuse_, m_mesh_terrain, v_blue, 0.0f, 0.0f, 0.0f, m_v_geometry);
-	terrain->SetPos(glm::vec3(0.0f, -20.0f, 0.0f));
-
 
 	m_frameBuffer = new FrameBuffer(m_sh_chromatical, m_mesh_static);
 	
@@ -395,21 +383,6 @@ void GameManager::set_click(bool newState)
 
 void GameManager::cube_follow_terrain()
 {
-	//Handle player y position when on terrain
-	float x = stencilCube->GetLocation().x;
-	float y = m_mesh_terrain->get_height(stencilCube->GetLocation()) + stencilCube->GetExtents().y;
-	float z = stencilCube->GetLocation().z;
-
-	//Checks if player is off of the terrain
-	if (!isnan(y) && y != -99998)
-	{
-		m_cube_previous_y = y;
-		stencilCube->SetPos(glm::vec3(x, y -20.0f, z));
-	}
-	else
-	{
-		stencilCube->SetPos(glm::vec3(x, m_cube_previous_y, z));
-	}
 }
 
 void GameManager::all_mouse_pick(float delta_t)

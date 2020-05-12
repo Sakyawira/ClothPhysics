@@ -49,12 +49,12 @@
     <ClCompile Include="GeometryModel.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="TessModel.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Cloth.cpp" />
+    <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -105,9 +105,6 @@
     <ClInclude Include="ModelMesh.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="GeometryModel.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
     <ClInclude Include="FrameBuffer.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Cloth.h" />
+    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Shaders\TextFS.txt">
