@@ -255,6 +255,36 @@ void Cloth::ApplyGravityForce(const glm::vec3 _force)
 	}
 }
 
+glm::vec3 Cloth::FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3)
+{
+	glm::vec3 vector1 = _point2 - _point1;
+	glm::vec3 vector2 = _point3 - _point1;
+
+	return glm::cross(vector1, vector2);
+}
+
+void Cloth::ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force)
+{
+	glm::vec3 normal = FindTriangleNormal(_p1->GetPos(), _p2->GetPos(), _p3->GetPos());
+	glm::vec3 d = glm::normalize(normal);
+	glm::vec3 force = normal * (glm::dot(d, _force));
+	_p1->ApplyForce(force);
+	_p2->ApplyForce(force);
+	_p3->ApplyForce(force);
+}
+
+void Cloth::ApplyWindForce(const glm::vec3 _force)
+{
+	for (int x = 0; x < m_fParticlesInX - 1; ++x)
+	{
+		for (int y = 0; y < m_fParticlesInY - 1; ++y)
+		{
+			ApplyWindForceAtTriangle(GetParticle(x + 1, y), GetParticle(x, y), GetParticle(x, y + 1), _force);
+			ApplyWindForceAtTriangle(GetParticle(x + 1, y + 1), GetParticle(x + 1, y), GetParticle(x, y + 1), _force);
+		}
+	}
+}
+
 void Cloth::Squish(int dir)
 {
 	// Get All Top Horizontal Particles

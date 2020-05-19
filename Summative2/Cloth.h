@@ -16,10 +16,17 @@ class Cloth : public Mesh
 		void Process(float _deltaTick);
 		void ApplyForce(const glm::vec3 _force);
 		void ApplyGravityForce(const glm::vec3 _force);
+		void ApplyWindForce(const glm::vec3 _force);
 		void Unpin();
 		void Squish(int dir);
 
 	private:
+
+		glm::vec3 FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3);
+		void ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force);
+
+		Particle* GetParticle(int _x, int _y);
+		void CreateConstraint(Particle* _p1, Particle* _p2);
 
 		GLuint m_program;
 
@@ -34,9 +41,6 @@ class Cloth : public Mesh
 
 		std::vector<Particle> m_vParticles; // all particles that are part of this cloth
 		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
-
-		Particle* GetParticle(int _x, int _y);
-		void CreateConstraint(Particle* _p1, Particle* _p2);
 
 		// Scale
 		glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
