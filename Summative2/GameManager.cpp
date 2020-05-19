@@ -171,9 +171,9 @@ void GameManager::process_game(Audio& audio)
 		//cube_follow_terrain();
 		
 		// Gravity
-		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f) * delta_t);
+		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
 		// Wind
-		m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f) * delta_t);
+		m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);

@@ -71,7 +71,7 @@ class Particle
         float m_fMass = 1.0f;
 
         // Dampening value
-        float m_fDampening = 0.25f;
+        float m_fDampening = 0.01f;
 
         // Vertex and Index
         int m_iVertexId{};
