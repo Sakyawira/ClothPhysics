@@ -115,7 +115,7 @@ private:
 
 	// Menu Text
 	std::string m_string_menu_ = "Collect All Crystal Balls to Win: The Game";
-	TextLabel* m_text_menu_;
+	TextLabel* m_text_instruction_bottom2_;
 
 	// Instruction Text
 	std::string m_string_instruction_ = "Press 'R' to start the game...";

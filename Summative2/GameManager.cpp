@@ -60,12 +60,13 @@ GameManager::GameManager()
 	std::string m_string_instruction = "Press 'R' to start the game...";
 	
 	m_text_instruction_top_left_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 350.0f), m_v_text);
-	m_text_lives_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 300.0f), m_v_text);
-	m_text_level_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2( 290.0f, 350.0f), m_v_text);
-	m_text_menu_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-108, 250.0f), m_v_text);
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
-	m_string_bg_ = "L" + std::to_string(m_c_bg_);
-	m_text_bg_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_bg_, "Resources/Fonts/waltographUI.ttf", glm::vec2(-1300.0f, -260.0f), m_v_text);
+	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
+	
+	//m_text_lives_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 300.0f), m_v_text);
+	//m_text_level_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2( 290.0f, 350.0f), m_v_text);
+	//m_string_bg_ = "L" + std::to_string(m_c_bg_);
+	//m_text_bg_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_bg_, "Resources/Fonts/waltographUI.ttf", glm::vec2(-1300.0f, -260.0f), m_v_text);
 
 	// Texture
 	m_tr_down = new Texture("Resources/Textures/down.png");
@@ -132,8 +133,9 @@ void GameManager::initialize()
 	m_clock_->Initialise();
 	m_clock_->Process();
 	
-	m_text_menu_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_text_menu_->SetScale(0.5f);
+	m_text_instruction_bottom2_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_bottom2_->SetScale(0.5f);
+	m_text_instruction_bottom2_->SetText("Hit 'Q' to strecth cloth, 'E' to fold cloth. ");
 	
 	m_text_instruction_bottom_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_bottom_->SetScale(0.39f);
@@ -285,6 +287,7 @@ void GameManager::render()
 		
 		m_text_instruction_top_left_->Render();
 		m_text_instruction_bottom_->Render();
+		m_text_instruction_bottom2_->Render();
 
 	}
 	else
