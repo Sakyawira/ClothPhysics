@@ -114,6 +114,9 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 		}
 	}
 
+	auto rng = std::default_random_engine{};
+	std::shuffle(m_vConstraints.begin(), m_vConstraints.end(), rng);
+
 	// Pin the Top Left and Top Right Particle
 	GetParticle(0, 0)->SetPin(true);
 	GetParticle(m_fParticlesInX - 1, 0)->SetPin(true);
