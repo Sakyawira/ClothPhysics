@@ -59,11 +59,11 @@ GameManager::GameManager()
 	std::string m_string_menu = "Sakyawira's Burnt Out";
 	std::string m_string_instruction = "Press 'R' to start the game...";
 	
-	m_text_instruction_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 350.0f), m_v_text);
+	m_text_instruction_top_left_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 350.0f), m_v_text);
 	m_text_lives_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 300.0f), m_v_text);
 	m_text_level_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2( 290.0f, 350.0f), m_v_text);
 	m_text_menu_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-108, 250.0f), m_v_text);
-	m_text_collision_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
+	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_string_bg_ = "L" + std::to_string(m_c_bg_);
 	m_text_bg_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_bg_, "Resources/Fonts/waltographUI.ttf", glm::vec2(-1300.0f, -260.0f), m_v_text);
 
@@ -132,19 +132,20 @@ void GameManager::initialize()
 	m_clock_->Initialise();
 	m_clock_->Process();
 	
-	m_text_menu_->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	m_text_menu_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_menu_->SetScale(0.5f);
 	
-	m_text_collision_->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	m_text_collision_->SetScale(0.39f);
+	m_text_instruction_bottom_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_bottom_->SetScale(0.39f);
 
-	m_text_instruction_->SetScale(0.5f);
-	m_text_instruction_->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	m_text_instruction_top_left_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_top_left_->SetScale(0.5f);
 
 	// Reset Camera's Position
 	camera.set_pos_x(0.0f);
 	camera.set_pos_y(0.0f);
 	camera.set_pos_z(0.0f);
+	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	m_mesh_cloth->Initialize(5, 5, 32, 32, glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
 	
@@ -171,7 +172,7 @@ void GameManager::process_game(Audio& audio)
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
 
 		// Wind
-		m_mesh_cloth->ApplyWindForce(glm::vec3(50.0f, 0.0f, -50.0f));
+		m_mesh_cloth->ApplyWindForce(glm::vec3(650.0f, 0.0f, -650.0f) * delta_t);
 		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
@@ -184,20 +185,15 @@ void GameManager::process_game(Audio& audio)
 		if (m_b_start_)
 		{
 			// Update Texts
-			m_string_score_ = "Press 'R' to reset";
-			m_text_instruction_->SetText(m_string_score_);
+			m_text_instruction_top_left_->SetText("Press 'R' to reset");
 		}
 		else
 		{
-			m_string_score_ = "Press 'R' to use free moving camera!";
-			m_text_instruction_->SetText(m_string_score_);
+			m_text_instruction_top_left_->SetText("Press 'R' to use free moving camera!");
 		}
-		/*if (m_b_wireframe)
-		{*/
+
+		m_text_instruction_bottom_->SetText("Hit 'Space' to Unpin Cloth.");
 	
-			m_text_collision_->SetText("Hit 'Space' to change polygon mode.");
-		
-		//}
 	}
 	
 	else
@@ -286,8 +282,9 @@ void GameManager::render()
 		////glDisable(GL_SCISSOR_TEST);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		//m_frameBuffer->Render("currentTime", current_time_);
-		//m_text_collision_->Render();
-		m_text_instruction_->Render();
+		
+		m_text_instruction_top_left_->Render();
+		m_text_instruction_bottom_->Render();
 
 	}
 	else
@@ -388,12 +385,12 @@ void GameManager::cube_follow_terrain()
 void GameManager::all_mouse_pick(float delta_t)
 {
 	float mouse_pick_distance = INT_MAX;
-	m_text_collision_->SetText("Not Collided!");
+	m_text_instruction_bottom_->SetText("Not Collided!");
 
 	GameObject* picked_object = update_mouse_picking();
 	if (picked_object == button_up)
 	{
-		m_text_collision_->SetText("Collided with Red!");
+		m_text_instruction_bottom_->SetText("Collided with Red!");
 		if (m_is_clicked_)
 		{
 			stencilCube->Move(MOVE_FRONT, 10.0f * delta_t);
@@ -402,7 +399,7 @@ void GameManager::all_mouse_pick(float delta_t)
 	}
 	else if (picked_object == button_down)
 	{
-		m_text_collision_->SetText("Collided with Blue!");
+		m_text_instruction_bottom_->SetText("Collided with Blue!");
 		if (m_is_clicked_)
 		{
 			stencilCube->Move(MOVE_BACK, 10.0f * delta_t);
@@ -412,11 +409,11 @@ void GameManager::all_mouse_pick(float delta_t)
 
 	else if (picked_object == stencilCube2)
 	{
-		m_text_collision_->SetText("Collided with a stenciled cube!");
+		m_text_instruction_bottom_->SetText("Collided with a stenciled cube!");
 	}
 	else if (picked_object == stencilCube)
 	{
-		m_text_collision_->SetText("Collided with a stenciled cube!");
+		m_text_instruction_bottom_->SetText("Collided with a stenciled cube!");
 	}
 }
 

@@ -39,7 +39,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 			m_vParticles[tempIndexCalc + x].SetVertexId(verticesID);
 			++verticesID;
 
-			//Position values
+			// Position values
 			m_fVerticesPoints.push_back(pos.x);
 			m_fVerticesPoints.push_back(pos.y);
 			m_fVerticesPoints.push_back(pos.z);
@@ -56,7 +56,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 	{
 		for (int y = 0; y < _numParticlesY; y++)
 		{
-			//Cloth base constraints
+			// Cloth base constraints
 			if (x < _numParticlesX - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y));
@@ -74,7 +74,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 				CreateConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
 			}
 
-			//Cloth folding constraints (2 apart)
+			// Cloth folding constraints (2 apart)
 			if (x < _numParticlesX - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y), true);
@@ -92,7 +92,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2), true);
 			}
 
-			//Cloth folding constraints (3 apart)
+			// Cloth folding constraints (3 apart)
 			if (x < _numParticlesX - 3)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y), true);
@@ -112,17 +112,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 		}
 	}
 
-	//Shuffle the constraints so they are processed in a random order
-	auto rng = std::default_random_engine{};
-	std::shuffle(m_vConstraints.begin(), m_vConstraints.end(), rng);
-	
-
-	// Set pins at top of the cloth
-
-	//for (int i = 0; i < _numParticlesX; i++)
-	//{
-	//	GetParticle(0 + i, 0)->SetPin(true);
-	//}
+	// Pin the Top Left and Top Right Particle
 	GetParticle(0, 0)->SetPin(true);
 	GetParticle(_numParticlesX - 1, 0)->SetPin(true);
 	GenerateBuffers();
