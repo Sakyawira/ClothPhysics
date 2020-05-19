@@ -180,10 +180,19 @@ void Cloth::CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstrai
 	m_vConstraints.push_back(Constraint(_p1, _p2, _foldingConstraint));
 }
 
-void Cloth::Render(Camera& _camera) 
+void Cloth::Render(Camera& _camera, Texture* _texture)
 {
 	glUseProgram(m_program);
 	glDisable(GL_CULL_FACE);
+
+	// Use Texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _texture->GetID());
+	const GLchar* name = "tex";
+	glUniform1i(glGetUniformLocation(m_program, name), 0);
+
+	GLuint camLoc = glGetUniformLocation(m_program, "camPos");
+	glUniform3fv(camLoc, 1, glm::value_ptr(_camera.get_position() + _camera.get_look_dir() * 15.0f));
 
 	//ModelMatrix
 	glm::mat4 translation = glm::translate(glm::mat4(), m_objPosition);
@@ -197,6 +206,11 @@ void Cloth::Render(Camera& _camera)
 
 	glm::mat4 VP = _camera.get_projection() * _camera.get_view();
 
+	GLuint modelLoc = glGetUniformLocation(m_program, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Model));
+
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
+
 	//Constantly update vertices and indices when rendering
 	glBindVertexArray(m_VAO);
 
@@ -206,8 +220,6 @@ void Cloth::Render(Camera& _camera)
 	glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
 	m_indicesSize = m_iIndicesPoints.size();
-
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 
 	//Draw the cloth
 	glDrawElements(GL_LINES, m_indicesSize, GL_UNSIGNED_INT, 0);
@@ -292,10 +304,39 @@ void Cloth::ApplyGravityForce(const glm::vec3 _force)
 	}
 }
 
+glm::vec3 Cloth::FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3)
+{
+	glm::vec3 vector1 = _point2 - _point1;
+	glm::vec3 vector2 = _point3 - _point1;
+
+	return glm::cross(vector1, vector2);
+}
+
+void Cloth::ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force)
+{
+	glm::vec3 normal = FindTriangleNormal(_p1->GetPos(), _p2->GetPos(), _p3->GetPos());
+	glm::vec3 d = glm::normalize(normal);
+	glm::vec3 force = normal * (glm::dot(d, _force));
+	_p1->ApplyForce(force);
+	_p2->ApplyForce(force);
+	_p3->ApplyForce(force);
+}
+
+void Cloth::ApplyWindForce(const glm::vec3 _force)
+{
+	for (int x = 0; x < m_fParticlesInX - 1; ++x)
+	{
+		for (int y = 0; y < m_fParticlesInY - 1; ++y)
+		{
+			ApplyWindForceAtTriangle(GetParticle(x + 1, y), GetParticle(x, y), GetParticle(x, y + 1), _force);
+			ApplyWindForceAtTriangle(GetParticle(x + 1, y + 1), GetParticle(x + 1, y), GetParticle(x, y + 1), _force);
+		}
+	}
+}
+
 void Cloth::Squish(int dir)
 {
 	// Get All Top Horizontal Particles
-
 	for (int i = 1; i <= m_fParticlesInX; i++)
 	{
 		// Get the middle particle's number

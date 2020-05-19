@@ -46,9 +46,6 @@ GameManager::GameManager()
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
 	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram());
-	
-
-	
 
 	// Model
 	//m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
@@ -87,7 +84,7 @@ GameManager::GameManager()
 	std::vector<Texture*> v_blue = { m_tr_down };
 	std::vector<Texture*> v_yellow = { m_tr_plain, m_tr_plain };
 
-	m_cloth = new GameObject(m_sh_phong_diffuse_, m_mesh_cloth, v_blue, 0.0f, 20.0f, 0.0f, m_v_geometry);
+	//m_cloth = new GameObject(m_sh_phong_diffuse_, m_mesh_cloth, v_blue, 0.0f, 20.0f, 0.0f, m_v_geometry);
 
 	// Stencil Cube
 	stencilCube2 = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, v_blue, 0.0f, 0.0f, 0.0f, m_v_cubes);
@@ -172,8 +169,10 @@ void GameManager::process_game(Audio& audio)
 		
 		// Gravity
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
+
 		// Wind
-		m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
+		m_mesh_cloth->ApplyWindForce(glm::vec3(50.0f, 0.0f, -50.0f));
+		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
@@ -233,7 +232,7 @@ void GameManager::render()
 		
 		//m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 		transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
-		m_mesh_cloth->Render(camera);
+		m_mesh_cloth->Render(camera, m_tr_plain);
 		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
 		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
 		//lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));

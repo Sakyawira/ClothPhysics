@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include "Constraint.h"
 #include "Camera.h"
+#include "Texture.h"
 
 const static int CONSTRAINT_ITERATIONS = 5;
 
@@ -12,14 +13,21 @@ class Cloth : public Mesh
 		Cloth(GLuint program);
 		void Initialize(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos);
 		void GenerateBuffers();
-		void Render(Camera& _camera);
+		void Render(Camera& _camera, Texture* _texture);
 		void Process(float _deltaTick);
 		void ApplyForce(const glm::vec3 _force);
 		void ApplyGravityForce(const glm::vec3 _force);
+		void ApplyWindForce(const glm::vec3 _force);
 		void Unpin();
 		void Squish(int dir);
 
 	private:
+
+		glm::vec3 FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3);
+		void ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force);
+
+		Particle* GetParticle(int _x, int _y);
+		void CreateConstraint(Particle* _p1, Particle* _p2);
 
 		GLuint m_program;
 
