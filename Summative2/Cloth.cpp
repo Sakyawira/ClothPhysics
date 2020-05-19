@@ -254,3 +254,31 @@ void Cloth::ApplyGravityForce(const glm::vec3 _force)
 		particle.ApplyGravityForce(_force); // add the forces to each particle
 	}
 }
+
+void Cloth::Squish(int dir)
+{
+	// Get All Top Horizontal Particles
+
+	for (int i = 0; i < m_fParticlesInX; i++)
+	{
+		// Get the middle particle's number
+		int middle = m_fParticlesInX / 2;
+
+		// The amount of horizontal distance the left particles need to move
+		float left_offset = dir * (middle / i * 0.01f);
+
+		// The amount of horizontal distance the right particles need to move
+		float right_offset = dir * -(middle / (m_fParticlesInX + 1 - i) * 0.01f);
+
+		// For Particles to the left of the middle particle
+		if (i < middle)
+		{
+			m_vParticles[i - 1].AdjustPinnedPosition(glm::vec3(left_offset, 0.0f, 0.0f));
+		}
+		// For Particles to the right of the middle particle
+		else if (i > middle)
+		{
+			m_vParticles[i - 1].AdjustPinnedPosition(glm::vec3(right_offset, 0.0f, 0.0f));
+		}
+	}
+}

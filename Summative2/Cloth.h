@@ -17,6 +17,7 @@ class Cloth : public Mesh
 		void ApplyForce(const glm::vec3 _force);
 		void ApplyGravityForce(const glm::vec3 _force);
 		void Unpin();
+		void Squish(int dir);
 
 	private:
 
