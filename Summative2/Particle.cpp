@@ -6,13 +6,13 @@ Particle::Particle(glm::vec3 _position)
 	m_v3OldPosition = _position;
 }
 
-void Particle::Process(float _groundY, float _deltaTime)
+void Particle::Process(float _groundY)
 {
 	if(!m_bIsPinned)
 	{
 		// Verlet Integration
 		glm::vec3 v3Temp = m_v3Position;
-		m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + (m_v3Acceleration * _deltaTime * _deltaTime);
+		m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + (m_v3Acceleration * (1.0f/60.f) * (1.0f/60.0f));
 		m_v3OldPosition = v3Temp;
 
 		// Particle drops to the ground

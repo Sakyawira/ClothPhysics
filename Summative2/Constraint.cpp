@@ -1,4 +1,6 @@
 #include "Constraint.h"
+#include <iostream>
+
 
 Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
@@ -53,18 +55,17 @@ bool Constraint::Process()
 		glm::vec3 correctionOffset;
 		glm::vec3 halfCorrectionOffset;
 
-		//if(m_bFoldingConstraint)
-		//{
-		//	//Change the fomula here to change how the cloth resists folding
-		//	correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
-		//	halfCorrectionOffset = correctionOffset * 0.5f;
-
-		//}
-		//else
-		//{
-			correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
+		if(m_bFoldingConstraint)
+		{
+			//Make the folding constraints have 1/10th of the applied offset
+			correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) / 10.0f);
 			halfCorrectionOffset = correctionOffset * 0.5f;
-		//}
+		}
+		else
+		{
+			correctionOffset = particleDif * (m_stiffness - ((m_fRestitutionDistance / particleDistance) * m_stiffness));
+			halfCorrectionOffset = correctionOffset * 0.5f;
+		}
 
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);

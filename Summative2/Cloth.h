@@ -27,7 +27,7 @@ class Cloth : public Mesh
 		void ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force);
 
 		Particle* GetParticle(int _x, int _y);
-		void CreateConstraint(Particle* _p1, Particle* _p2);
+		void CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		GLuint m_program;
 
@@ -42,9 +42,6 @@ class Cloth : public Mesh
 
 		std::vector<Particle> m_vParticles; // all particles that are part of this cloth
 		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
-
-		Particle* GetParticle(int _x, int _y);
-		void CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		// Scale
 		glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
