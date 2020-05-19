@@ -34,14 +34,18 @@ class Cloth : public Mesh
 		std::vector<float> m_fVerticesPoints;
 		std::vector<int> m_iIndicesPoints;
 
-		int m_fParticlesInX; // number of particles in "x" direction
-		int m_fParticlesInY; // number of particles in "y" direction
+		// number of particles in "x" direction
+		int m_fParticlesInX; 
+		// number of particles in "y" direction
+		int m_fParticlesInY; 
 
 		bool m_isHoldingParticle = false;
 		Particle* pickedParticle;
 
-		std::vector<Particle> m_vParticles; // all particles that are part of this cloth
-		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
+		// Particles which construct this cloth
+		std::vector<Particle> m_vParticles;
+		// Constraints between Particles which construct this cloth
+		std::vector<Constraint> m_vConstraints; 
 
 
 		// Scale

@@ -12,30 +12,32 @@ Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
 
 void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 {
+	m_objPosition = _pos;
+
 	// Reset particles and constraints
 	m_vParticles.clear();
 	m_vConstraints.clear();
 
 	m_vParticles.resize(m_fParticlesInX * m_fParticlesInY);
 
-	m_objPosition = _pos;
-
 	int verticesID = 0;
 	
 	// Creates particles in a grid of particles from (0,0,0) to (width,-height,0)
 	for (int y = 0; y < m_fParticlesInY; y++)
 	{
-		const int tempIndexCalc = y * m_fParticlesInX;
+		const int iIndexOffset = y * m_fParticlesInX;
 		for (int x = 0; x < m_fParticlesInX; x++)
 		{
+			// Create a new position for a new particle
 			glm::vec3 pos = glm::vec3(_width * (x / (float)m_fParticlesInX) + _pos.x,
 									 -_height * (y / (float)m_fParticlesInY) + _pos.y,
 									 _pos.z);
 
-			m_vParticles[tempIndexCalc + x] = Particle(pos); // insert particle in column x at y'th row
+			// Insert particle in column x at y'th row
+			m_vParticles[iIndexOffset + x] = Particle(pos); 
 
 			// Set vertices id and vertices for each particle
-			m_vParticles[tempIndexCalc + x].SetVertexId(verticesID);
+			m_vParticles[iIndexOffset + x].SetVertexId(verticesID);
 			++verticesID;
 
 			// Position values
@@ -43,7 +45,7 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 			m_fVerticesPoints.push_back(pos.y);
 			m_fVerticesPoints.push_back(pos.z);
 
-			//Normal values
+			// Normal values
 			m_fVerticesPoints.push_back(0.0f);
 			m_fVerticesPoints.push_back(1.0f);
 			m_fVerticesPoints.push_back(1.0f);
