@@ -130,8 +130,7 @@ GameManager::GameManager()
 
 void GameManager::initialize()
 {
-	m_clock_->Initialise();
-	m_clock_->Process();
+	
 	
 	m_text_instruction_bottom2_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_bottom2_->SetScale(0.5f);
@@ -152,13 +151,15 @@ void GameManager::initialize()
 	m_mesh_cloth->Initialize(5, 5,glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
 	
 	m_b_initialized_ = true;
+	m_clock_->Initialise();
 }
 
 void GameManager::process_game(Audio& audio)
 {
+	m_clock_->Process();
 	if (m_b_initialized_ == 1)
 	{
-		const float delta_t = m_clock_->GetDeltaTick();
+		
 		camera.update(m_b_start_, m_clock_->GetDeltaTick() * 1.0f, /*tank->GetLocation()*/ glm::vec3(0.0f, 0.0f, 0.0f));
 
 		// all_mouse_pick(delta_t);
@@ -178,6 +179,7 @@ void GameManager::process_game(Audio& audio)
 		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
+		const float delta_t = m_clock_->GetDeltaTick();
 		m_mesh_cloth->Process(delta_t);
 		
 		
@@ -202,8 +204,6 @@ void GameManager::process_game(Audio& audio)
 	{
 		this->initialize();
 	}
-	
-	m_clock_->Process();
 }
 
 void GameManager::render()

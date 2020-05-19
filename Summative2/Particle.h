@@ -28,7 +28,7 @@ class Particle
         Particle(glm::vec3 _position);
         ~Particle(){};
 
-        void Process(float _groundY);
+        void Process(float _groundY, float _deltaTime);
 
 		// Applies force - affected by the mass
         void ApplyForce(glm::vec3 _force);

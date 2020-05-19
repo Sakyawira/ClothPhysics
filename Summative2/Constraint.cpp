@@ -58,7 +58,7 @@ bool Constraint::Process()
 		if(m_bFoldingConstraint)
 		{
 			//Make the folding constraints have 1/10th of the applied offset
-			correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) / 10.0f);
+			correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) / 15.0f);
 			halfCorrectionOffset = correctionOffset * 0.5f;
 		}
 		else
