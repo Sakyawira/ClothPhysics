@@ -2,6 +2,7 @@
 
 void Input::process_input(GameManager* Game, Audio& audio)
 {
+
 	if (key_state_['w'] == INPUT_DOWN_FIRST)
 	{
 		key_state_['w'] = INPUT_DOWN;
@@ -20,6 +21,15 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	if (key_state_['d'] == INPUT_DOWN_FIRST)
 	{
 		key_state_['d'] = INPUT_DOWN;
+	}
+	if (key_state_['q'] == INPUT_DOWN_FIRST)
+	{
+		key_state_['q'] = INPUT_DOWN;
+	}
+
+	if (key_state_['e'] == INPUT_DOWN_FIRST)
+	{
+		key_state_['e'] = INPUT_DOWN;
 	}
 
 	if (key_state_['w'] == INPUT_DOWN)
@@ -63,6 +73,17 @@ void Input::process_input(GameManager* Game, Audio& audio)
 			Game->camera.move_pos_x(15.0f, Game->get_clock()->GetDeltaTick());
 		}
 	}
+
+	if (key_state_['q'] == INPUT_DOWN)
+	{
+		Game->m_mesh_cloth->Squish(-1);
+	}
+
+	if (key_state_['e'] == INPUT_DOWN)
+	{
+		Game->m_mesh_cloth->Squish(1);
+	}
+
 	if (key_state_['r'] == INPUT_DOWN_FIRST)
 	{
 		if (!Game->is_started() /*&& !Game->IsEnded()*/)
@@ -111,6 +132,15 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	//{
 	//	Game->camera.MovePosX(0.1f * Game->GetClock()->GetDeltaTick() * 120.0f);
 	//}
+
+	//for (auto& key : key_state_)
+	//{
+	//	if (key == INPUT_DOWN_FIRST)
+	//	{
+	//		key = INPUT_DOWN;
+	//	}
+	//}
+
 	if (mouse_state_[0] == INPUT_DOWN)
 	{
 		Game->set_click(true);
@@ -119,7 +149,6 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		Game->set_click(false);
 	}
-	
 }
 
 void Input::mouse_click(int button, int state, int x, int y)

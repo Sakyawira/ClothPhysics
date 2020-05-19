@@ -259,7 +259,7 @@ void Cloth::Squish(int dir)
 {
 	// Get All Top Horizontal Particles
 
-	for (int i = 0; i < m_fParticlesInX; i++)
+	for (int i = 1; i <= m_fParticlesInX; i++)
 	{
 		// Get the middle particle's number
 		int middle = m_fParticlesInX / 2;
