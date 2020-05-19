@@ -10,8 +10,8 @@ const static int CONSTRAINT_ITERATIONS = 5;
 class Cloth : public Mesh
 {
 	public:
-		Cloth(GLuint program);
-		void Initialize(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos);
+		Cloth(GLuint program, int _numParticlesX, int _numParticlesY);
+		void Initialize(float _width, float _height, glm::vec3 _pos);
 		void GenerateBuffers();
 		void Render(Camera& _camera, Texture* _texture);
 		void Process(float _deltaTick);

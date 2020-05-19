@@ -45,7 +45,7 @@ GameManager::GameManager()
 	m_mesh_cube = new Mesh(cube_indices, cube_vertices, m_v_mesh);
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
-	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram());
+	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram(), 32, 32);
 
 	// Model
 	//m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
@@ -149,7 +149,7 @@ void GameManager::initialize()
 	camera.set_pos_z(0.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_mesh_cloth->Initialize(5, 5, 32, 32, glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
+	m_mesh_cloth->Initialize(5, 5,glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
 	
 	m_b_initialized_ = true;
 }

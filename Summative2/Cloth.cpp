@@ -3,34 +3,33 @@
 #include <algorithm>
 #include <random>
 
-Cloth::Cloth(GLuint program)
+Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
 {
 	m_program = program;
-}
-
-void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _numParticlesY, glm::vec3 _pos)
-{
-	// Reset particles and constraints
 	m_fParticlesInX = _numParticlesX;
 	m_fParticlesInY = _numParticlesY;
+}
 
+void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
+{
+	// Reset particles and constraints
 	m_vParticles.clear();
 	m_vConstraints.clear();
 
-	m_vParticles.resize(_numParticlesX * _numParticlesY);
+	m_vParticles.resize(m_fParticlesInX * m_fParticlesInY);
 
 	m_objPosition = _pos;
 
 	int verticesID = 0;
 	
 	// Creates particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int y = 0; y < _numParticlesY; y++)
+	for (int y = 0; y < m_fParticlesInY; y++)
 	{
-		const int tempIndexCalc = y * _numParticlesX;
-		for (int x = 0; x < _numParticlesX; x++)
+		const int tempIndexCalc = y * m_fParticlesInX;
+		for (int x = 0; x < m_fParticlesInX; x++)
 		{
-			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesX) + _pos.x,
-									 -_height * (y / (float)_numParticlesY) + _pos.y,
+			glm::vec3 pos = glm::vec3(_width * (x / (float)m_fParticlesInX) + _pos.x,
+									 -_height * (y / (float)m_fParticlesInY) + _pos.y,
 									 _pos.z);
 
 			m_vParticles[tempIndexCalc + x] = Particle(pos); // insert particle in column x at y'th row
@@ -52,60 +51,60 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 	}
 
 	// Create constraints for each square
-	for (int x = 0; x < _numParticlesX; x++)
+	for (int x = 0; x < m_fParticlesInX; x++)
 	{
-		for (int y = 0; y < _numParticlesY; y++)
+		for (int y = 0; y < m_fParticlesInY; y++)
 		{
 			// Cloth base constraints
-			if (x < _numParticlesX - 1)
+			if (x < m_fParticlesInX - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y));
 			}
-			if (y < _numParticlesY - 1)
+			if (y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 1));
 			}
-			if (x < _numParticlesX - 1 && y < _numParticlesY - 1)
+			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
 			}
-			if (x < _numParticlesX - 1 && y < _numParticlesY - 1)
+			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
 			}
 
 			// Cloth folding constraints (2 apart)
-			if (x < _numParticlesX - 2)
+			if (x < m_fParticlesInX - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y), true);
 			}
-			if (y < _numParticlesY - 2)
+			if (y < m_fParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 2), true);
 			}
-			if (x < _numParticlesX - 2 && y < _numParticlesY - 2)
+			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2), true);
 			}
-			if (x < _numParticlesX - 2 && y < _numParticlesY - 2)
+			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2), true);
 			}
 
 			// Cloth folding constraints (3 apart)
-			if (x < _numParticlesX - 3)
+			if (x < m_fParticlesInX - 3)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y), true);
 			}
-			if (y < _numParticlesY - 3)
+			if (y < m_fParticlesInY - 3)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 3), true);
 			}
-			if (x < _numParticlesX - 3 && y < _numParticlesY - 3)
+			if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y + 3), true);
 			}
-			if (x < _numParticlesX - 3 && y < _numParticlesY - 3)
+			if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
 			{
 				CreateConstraint(GetParticle(x + 3, y), GetParticle(x, y + 3), true);
 			}
@@ -114,7 +113,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 
 	// Pin the Top Left and Top Right Particle
 	GetParticle(0, 0)->SetPin(true);
-	GetParticle(_numParticlesX - 1, 0)->SetPin(true);
+	GetParticle(m_fParticlesInX - 1, 0)->SetPin(true);
 	GenerateBuffers();
 }
 
