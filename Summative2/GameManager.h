@@ -102,7 +102,7 @@ private:
 	
 	// Declaring Strings
 	std::string m_string_score_;
-	TextLabel* m_text_instruction_;
+	TextLabel* m_text_instruction_top_left_;
 	std::string m_string_lives_;
 	TextLabel* m_text_lives_;
 	std::string m_string_level_;
@@ -115,11 +115,11 @@ private:
 
 	// Menu Text
 	std::string m_string_menu_ = "Collect All Crystal Balls to Win: The Game";
-	TextLabel* m_text_menu_;
+	TextLabel* m_text_instruction_bottom2_;
 
 	// Instruction Text
 	std::string m_string_instruction_ = "Press 'R' to start the game...";
-	TextLabel* m_text_collision_;
+	TextLabel* m_text_instruction_bottom_;
 
 	// Uniforms
 	GLfloat current_time_;

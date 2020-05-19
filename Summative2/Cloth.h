@@ -10,8 +10,8 @@ const static int CONSTRAINT_ITERATIONS = 5;
 class Cloth : public Mesh
 {
 	public:
-		Cloth(GLuint program);
-		void Initialize(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos);
+		Cloth(GLuint program, int _numParticlesX, int _numParticlesY);
+		void Initialize(float _width, float _height, glm::vec3 _pos);
 		void GenerateBuffers();
 		void Render(Camera& _camera, Texture* _texture);
 		void Process(float _deltaTick);
@@ -31,17 +31,18 @@ class Cloth : public Mesh
 
 		GLuint m_program;
 
-		std::vector<float> m_fVerticesPoints;
-		std::vector<int> m_iIndicesPoints;
-
-		int m_fParticlesInX; // number of particles in "x" direction
-		int m_fParticlesInY; // number of particles in "y" direction
+		// number of particles in "x" direction
+		int m_fParticlesInX; 
+		// number of particles in "y" direction
+		int m_fParticlesInY; 
 
 		bool m_isHoldingParticle = false;
 		Particle* pickedParticle;
 
-		std::vector<Particle> m_vParticles; // all particles that are part of this cloth
-		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
+		// Particles which construct this cloth
+		std::vector<Particle> m_vParticles;
+		// Constraints between Particles which construct this cloth
+		std::vector<Constraint> m_vConstraints; 
 
 		// Scale
 		glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
