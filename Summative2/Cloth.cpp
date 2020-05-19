@@ -273,12 +273,12 @@ void Cloth::Squish(int dir)
 		// For Particles to the left of the middle particle
 		if (i < middle)
 		{
-			m_vParticles[i - 1].AdjustPinnedPosition(glm::vec3(left_offset, 0.0f, 0.0f));
+			GetParticle(i - 1, 0)->AdjustPinnedPosition(glm::vec3(left_offset, 0.0f, 0.0f));
 		}
 		// For Particles to the right of the middle particle
 		else if (i > middle)
 		{
-			m_vParticles[i - 1].AdjustPinnedPosition(glm::vec3(right_offset, 0.0f, 0.0f));
+			GetParticle(i - 1, 0)->AdjustPinnedPosition(glm::vec3(right_offset, 0.0f, 0.0f));
 		}
 	}
 }

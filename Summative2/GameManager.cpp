@@ -124,7 +124,7 @@ GameManager::GameManager()
 
 	create_spheres(10, border);
 
-	m_frameBuffer = new FrameBuffer(m_sh_chromatical, m_mesh_static);
+	//m_frameBuffer = new FrameBuffer(m_sh_chromatical, m_mesh_static);
 	
 	this->initialize();
 }
@@ -218,7 +218,7 @@ void GameManager::render()
 		//glScissor(0, 200, 800, 400);
 
 		frame_counts_ += 1.0f * m_clock_->GetDeltaTick() * 120.0f;
-		m_frameBuffer->PrepareRender();
+		//m_frameBuffer->PrepareRender();
 		
 		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
 		//glEnable(GL_BLEND);
@@ -284,8 +284,8 @@ void GameManager::render()
 		//glDisable(GL_BLEND);
 	
 		////glDisable(GL_SCISSOR_TEST);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		m_frameBuffer->Render("currentTime", current_time_);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//m_frameBuffer->Render("currentTime", current_time_);
 		//m_text_collision_->Render();
 		m_text_instruction_->Render();
 
