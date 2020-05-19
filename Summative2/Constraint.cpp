@@ -1,9 +1,10 @@
 #include "Constraint.h"
 
-Constraint::Constraint(Particle* _p1, Particle* _p2)
+Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
 	m_Particle1 = _p1;
 	m_Particle2 = _p2;
+	m_bFoldingConstraint = _foldingConstraint;
 
 	m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
 }
@@ -49,8 +50,21 @@ bool Constraint::Process()
 		//If one or more of our particles dies, then we die too
 
 		//If this constraint is still alive calculate the constraints
-		glm::vec3 correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
-		glm::vec3 halfCorrectionOffset = correctionOffset * 0.5f;
+		glm::vec3 correctionOffset;
+		glm::vec3 halfCorrectionOffset;
+
+		//if(m_bFoldingConstraint)
+		//{
+		//	//Change the fomula here to change how the cloth resists folding
+		//	correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
+		//	halfCorrectionOffset = correctionOffset * 0.5f;
+
+		//}
+		//else
+		//{
+			correctionOffset = particleDif * (1.0f - (m_fRestitutionDistance / particleDistance));
+			halfCorrectionOffset = correctionOffset * 0.5f;
+		//}
 
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);

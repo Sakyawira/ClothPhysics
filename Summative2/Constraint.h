@@ -6,7 +6,7 @@ class Constraint
 	public:
 
 		//Constructor (takes both particles with which it is connected)
-		Constraint(Particle* _p1, Particle* _p2);
+		Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		// Calculate Constraints
 		bool Process();
@@ -25,8 +25,10 @@ class Constraint
 		Particle* m_Particle1;
 		Particle* m_Particle2;
 
+		float m_fRestitutionDistance = 0.1f;
 		float m_bBurnTimer = 0.5f;
 		bool m_bToBeDestroyed = false;
+		bool m_bFoldingConstraint = false;
 		bool m_bIsAlive = true;
-		float m_fRestitutionDistance = 0.1f;
+		
 };

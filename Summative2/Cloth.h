@@ -36,7 +36,7 @@ class Cloth : public Mesh
 		std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
 
 		Particle* GetParticle(int _x, int _y);
-		void CreateConstraint(Particle* _p1, Particle* _p2);
+		void CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		// Scale
 		glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);

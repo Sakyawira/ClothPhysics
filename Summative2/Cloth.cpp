@@ -56,6 +56,7 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 	{
 		for (int y = 0; y < _numParticlesY; y++)
 		{
+			//Cloth base constraints
 			if (x < _numParticlesX - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y));
@@ -71,6 +72,42 @@ void Cloth::Initialize(float _width, float _height, int _numParticlesX, int _num
 			if (x < _numParticlesX - 1 && y < _numParticlesY - 1)
 			{
 				CreateConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
+			}
+
+			//Cloth folding constraints (2 apart)
+			if (x < _numParticlesX - 2)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y), true);
+			}
+			if (y < _numParticlesY - 2)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 2), true);
+			}
+			if (x < _numParticlesX - 2 && y < _numParticlesY - 2)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2), true);
+			}
+			if (x < _numParticlesX - 2 && y < _numParticlesY - 2)
+			{
+				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2), true);
+			}
+
+			//Cloth folding constraints (3 apart)
+			if (x < _numParticlesX - 3)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y), true);
+			}
+			if (y < _numParticlesY - 3)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 3), true);
+			}
+			if (x < _numParticlesX - 3 && y < _numParticlesY - 3)
+			{
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y + 3), true);
+			}
+			if (x < _numParticlesX - 3 && y < _numParticlesY - 3)
+			{
+				CreateConstraint(GetParticle(x + 3, y), GetParticle(x, y + 3), true);
 			}
 		}
 	}
@@ -138,9 +175,9 @@ Particle* Cloth::GetParticle(int _x, int _y)
 	return &m_vParticles[_y * m_fParticlesInX + _x];
 }
 
-void Cloth::CreateConstraint(Particle* _p1, Particle* _p2)
+void Cloth::CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
-	m_vConstraints.push_back(Constraint(_p1, _p2));
+	m_vConstraints.push_back(Constraint(_p1, _p2, _foldingConstraint));
 }
 
 void Cloth::Render(Camera& _camera) 
