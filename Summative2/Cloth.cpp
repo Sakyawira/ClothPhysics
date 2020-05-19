@@ -253,6 +253,7 @@ void Cloth::Process(float _deltaTime)
 	// iterate over all constraints several times
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
 	{
+#pragma omp parallel for
 		for (auto& constraint: m_vConstraints)
 		{
 			// satisfy constraint.
@@ -353,10 +354,10 @@ void Cloth::Squish(int dir)
 		int middle = m_fParticlesInX / 2;
 
 		// The amount of horizontal distance the left particles need to move
-		float left_offset = dir * (middle / i * 0.01f);
+		float left_offset = 0.2f * dir * (middle / i * 0.01f);
 
 		// The amount of horizontal distance the right particles need to move
-		float right_offset = dir * -(middle / (m_fParticlesInX + 1 - i) * 0.01f);
+		float right_offset = 0.2f * dir * -(middle / (m_fParticlesInX + 1 - i) * 0.01f);
 
 		// For Particles to the left of the middle particle
 		if (i < middle)

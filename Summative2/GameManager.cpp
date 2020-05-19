@@ -45,7 +45,7 @@ GameManager::GameManager()
 	m_mesh_cube = new Mesh(cube_indices, cube_vertices, m_v_mesh);
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
-	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram(), 32, 32);
+	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram(), 64, 64);
 
 	// Model
 	//m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
@@ -123,6 +123,9 @@ GameManager::GameManager()
 	create_spheres(10, border);
 
 	//m_frameBuffer = new FrameBuffer(m_sh_chromatical, m_mesh_static);
+
+	//Turn off cursor
+	glutSetCursor(GLUT_CURSOR_NONE);
 	
 	this->initialize();
 }
@@ -130,8 +133,6 @@ GameManager::GameManager()
 
 void GameManager::initialize()
 {
-	
-	
 	m_text_instruction_bottom2_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_bottom2_->SetScale(0.5f);
 	m_text_instruction_bottom2_->SetText("Hit 'Q' to strecth cloth, 'E' to fold cloth. ");
@@ -148,7 +149,7 @@ void GameManager::initialize()
 	camera.set_pos_z(0.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_mesh_cloth->Initialize(5, 5,glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
+	m_mesh_cloth->Initialize(5, 5,glm::vec3(-1.0f, 2.0f, 5.0f));
 	
 	m_b_initialized_ = true;
 	m_clock_->Initialise();

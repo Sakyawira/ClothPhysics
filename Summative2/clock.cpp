@@ -16,6 +16,8 @@
 #include <windows.h>
 
 // Local Includes
+#include <iostream>
+
 #include "Clock.h"
 
 // Static Variables
@@ -76,6 +78,7 @@ CClock::Process()
 	}
 
 	m_fTimeElapsed += m_fDeltaTime;
+	std::cout << m_fDeltaTime << std::endl;
 }
 
 //void
