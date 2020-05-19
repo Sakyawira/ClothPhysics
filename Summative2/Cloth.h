@@ -31,9 +31,6 @@ class Cloth : public Mesh
 
 		GLuint m_program;
 
-		std::vector<float> m_fVerticesPoints;
-		std::vector<int> m_iIndicesPoints;
-
 		// number of particles in "x" direction
 		int m_fParticlesInX; 
 		// number of particles in "y" direction
@@ -46,7 +43,6 @@ class Cloth : public Mesh
 		std::vector<Particle> m_vParticles;
 		// Constraints between Particles which construct this cloth
 		std::vector<Constraint> m_vConstraints; 
-
 
 		// Scale
 		glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);

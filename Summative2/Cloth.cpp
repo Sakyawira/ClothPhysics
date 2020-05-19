@@ -22,7 +22,8 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 
 	int verticesID = 0;
 	
-	// Creates particles in a grid of particles from (0,0,0) to (width,-height,0)
+	// Creates Cloth with a size of _width times _height
+	// Populate that Cloth with m_fParticlesInX times m_fParticlesInY number of Particles
 	for (int y = 0; y < m_fParticlesInY; y++)
 	{
 		const int iIndexOffset = y * m_fParticlesInX;
@@ -33,22 +34,22 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 									 -_height * (y / (float)m_fParticlesInY) + _pos.y,
 									 _pos.z);
 
-			// Insert particle in column x at y'th row
+			// Create and insert a new particle in column x, row y
 			m_vParticles[iIndexOffset + x] = Particle(pos); 
 
 			// Set vertices id and vertices for each particle
 			m_vParticles[iIndexOffset + x].SetVertexId(verticesID);
 			++verticesID;
 
-			// Position values
-			m_fVerticesPoints.push_back(pos.x);
-			m_fVerticesPoints.push_back(pos.y);
-			m_fVerticesPoints.push_back(pos.z);
+			// Add a 'Position' attribute for the cloth's mesh
+			m_vertices.push_back(pos.x);
+			m_vertices.push_back(pos.y);
+			m_vertices.push_back(pos.z);
 
-			// Normal values
-			m_fVerticesPoints.push_back(0.0f);
-			m_fVerticesPoints.push_back(1.0f);
-			m_fVerticesPoints.push_back(1.0f);
+			// Add a 'Normal' attribute for the cloth's mesh
+			m_vertices.push_back(0.0f);
+			m_vertices.push_back(1.0f);
+			m_vertices.push_back(1.0f);
 		}
 	}
 
@@ -130,34 +131,52 @@ void Cloth::Unpin()
 
 void Cloth::GenerateBuffers()
 {
-	m_iIndicesPoints.clear();
+	m_indices.clear();
 	for (auto& constraint : m_vConstraints)
 	{
 		if (!constraint.GetIsAlive() || constraint.GetParticle2() - constraint.GetParticle1() < 5.0f)
 		{
-			m_iIndicesPoints.push_back(constraint.GetParticle1()->GetVertexId());
-			m_iIndicesPoints.push_back(constraint.GetParticle2()->GetVertexId());
+			m_indices.push_back(constraint.GetParticle1()->GetVertexId());
+			m_indices.push_back(constraint.GetParticle2()->GetVertexId());
 		}
 	}
 
-	//Generating Buffers and Arrays
-	glGenVertexArrays(1, &m_VAO);					//Vert Array
+	// Generating Vertex Array
+	glGenVertexArrays(1, &m_VAO);					
 	glBindVertexArray(m_VAO);
 
-	glGenBuffers(1, &m_VBO);                        //Vert Buffer
+	// Generating Vertex Buffer
+	glGenBuffers(1, &m_VBO);                        
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 
-	glGenBuffers(1, &m_EBO);						//Index Buffer
+	// Generating Index Buffer
+	glGenBuffers(1, &m_EBO);						
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints.front(), GL_DYNAMIC_DRAW);			//VBO Buffer
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints.front(), GL_DYNAMIC_DRAW);    //EBO Buffer
-	m_indicesSize = m_iIndicesPoints.size();
+	// Assign VBO Buffer Data
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(GLfloat), &m_vertices.front(), GL_DYNAMIC_DRAW);
+	// Assign EBO Buffer Data
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), &m_indices.front(), GL_DYNAMIC_DRAW);
+	m_indicesSize = m_indices.size();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	// Position Attribute
+	glVertexAttribPointer(
+		0, 
+		3, 
+		GL_FLOAT, 
+		GL_FALSE, 
+		6 * sizeof(GLfloat), 
+		(void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	// Normal Attribute
+	glVertexAttribPointer(
+		1, 
+		3, 
+		GL_FLOAT, 
+		GL_FALSE, 
+		6 * sizeof(GLfloat), 
+		(void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 }
 
@@ -176,7 +195,7 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 	glUseProgram(m_program);
 	glDisable(GL_CULL_FACE);
 
-	// Use Texture
+	// Pass Texture to Shader
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture->GetID());
 	const GLchar* name = "tex";
@@ -185,7 +204,7 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 	GLuint camLoc = glGetUniformLocation(m_program, "camPos");
 	glUniform3fv(camLoc, 1, glm::value_ptr(_camera.get_position() + _camera.get_look_dir() * 15.0f));
 
-	//ModelMatrix
+	// Setup and Pass Model Matrix to Shader
 	glm::mat4 translation = glm::translate(glm::mat4(), m_objPosition);
 	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -202,17 +221,17 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 
-	//Constantly update vertices and indices when rendering
+	// Update Buffer Datas, because we might lose some particles
 	glBindVertexArray(m_VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
-	m_indicesSize = m_iIndicesPoints.size();
+	glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(GLfloat), m_vertices.data());
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), &m_indices.front(), GL_DYNAMIC_DRAW);
+	m_indicesSize = m_indices.size();
 
-	//Draw the cloth
+	// Draw
 	glDrawElements(GL_LINES, m_indicesSize, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
@@ -221,13 +240,13 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 
 void Cloth::Process(float _deltaTime)
 {
-	m_iIndicesPoints.clear();
+	m_indices.clear();
 	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
 	{
 		if (m_vConstraints[i].GetIsAlive())
 		{
-			m_iIndicesPoints.push_back(m_vConstraints[i].GetParticle1()->GetVertexId());
-			m_iIndicesPoints.push_back(m_vConstraints[i].GetParticle2()->GetVertexId());
+			m_indices.push_back(m_vConstraints[i].GetParticle1()->GetVertexId());
+			m_indices.push_back(m_vConstraints[i].GetParticle2()->GetVertexId());
 		}
 	}
 
@@ -248,9 +267,9 @@ void Cloth::Process(float _deltaTime)
 		particle.Process(-10.0f, _deltaTime);
 
 		//Update the positions of the particles
-		m_fVerticesPoints[i] = (particle.GetPos().x);
-		m_fVerticesPoints[i + 1] = (particle.GetPos().y);
-		m_fVerticesPoints[i + 2] = (particle.GetPos().z);
+		m_vertices[i] = (particle.GetPos().x);
+		m_vertices[i + 1] = (particle.GetPos().y);
+		m_vertices[i + 2] = (particle.GetPos().z);
 		i += 6;
 
 		//Handle particle picking if left mouse clicked and dragged

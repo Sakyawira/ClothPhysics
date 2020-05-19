@@ -37,6 +37,7 @@ protected:
 
 	// These are copies, they can not be used to control the actual one
 	std::vector<GLfloat> m_vertices;
+	std::vector<GLint> m_indices;
 
 	int m_indicesSize;
 
