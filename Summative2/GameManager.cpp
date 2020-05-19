@@ -97,8 +97,8 @@ GameManager::GameManager()
 	stencilCube->Scale(5.0f);
 	stencilCube->Rotate(0.0f);
 
-	transparentCube = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, v_water_texture, 0.0f, -6.0f, 0.0f, m_v_geometry);
-	transparentCube->Scale(800.0f, 8.0f, 800.0f);
+	transparentCube = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, red_texture, 0.0f, -10.5f, 0.0f, m_v_geometry);
+	transparentCube->Scale(200.0f, 1.0f, 200.0f);
 
 	// Sky-box / Cube-Map
 	sky_box = new GameObject(m_sh_cube_map_, m_mesh_cube_map, v_cubeMap, 0.0f, 0.0f, 0.0f, m_v_geometry);
@@ -149,7 +149,7 @@ void GameManager::initialize()
 	camera.set_pos_y(0.0f);
 	camera.set_pos_z(0.0f);
 
-	m_mesh_cloth->Initialize(5, 5, 32, 32, camera.get_position() + camera.get_look_dir() * 10.0f);
+	m_mesh_cloth->Initialize(5, 5, 32, 32, glm::vec3((camera.get_position() + camera.get_look_dir() * 5.0f).x, 5.0f, (camera.get_position() + camera.get_look_dir() * 5.0f).z));
 	
 	m_b_initialized_ = true;
 }
@@ -222,16 +222,17 @@ void GameManager::render()
 		
 		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
 		//glEnable(GL_BLEND);
-		if (m_b_wireframe)
+	/*	if (m_b_wireframe)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
+		}*/
 		
 		//m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+		transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 		m_mesh_cloth->Render(camera);
 		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
 		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
@@ -279,7 +280,7 @@ void GameManager::render()
 		//glStencilMask(0xFF);//enable writing to stencil buffer
 	
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
+	
 	
 		//glDisable(GL_BLEND);
 	
