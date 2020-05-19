@@ -256,7 +256,6 @@ void Cloth::Process(float _deltaTime)
 	// iterate over all constraints several times
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
 	{
-#pragma omp parallel for
 		for (auto& constraint: m_vConstraints)
 		{
 			// satisfy constraint.
