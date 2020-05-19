@@ -172,8 +172,10 @@ void GameManager::process_game(Audio& audio)
 		
 		// Gravity
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
+
 		// Wind
-		m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
+		m_mesh_cloth->ApplyWindForce(glm::vec3(50.0f, 0.0f, -50.0f));
+		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
