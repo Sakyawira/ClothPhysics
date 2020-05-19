@@ -55,17 +55,17 @@ bool Constraint::Process()
 		glm::vec3 correctionOffset;
 		glm::vec3 halfCorrectionOffset;
 
-		//if(m_bFoldingConstraint)
-		//{
-		//	//Make the folding constraints have 1/10th of the applied offset
-		//	correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) / 2.0f);
-		//	halfCorrectionOffset = correctionOffset * 0.5f;
-		//}
-		//else
-		//{
+		if(m_bFoldingConstraint)
+		{
+			//Make the folding constraints have 1/10th of the applied offset
+			correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) / 5.0f);
+			halfCorrectionOffset = correctionOffset * 0.5f;
+		}
+		else
+		{
 			correctionOffset = particleDif * (m_stiffness - ((m_fRestitutionDistance / particleDistance) * m_stiffness));
 			halfCorrectionOffset = correctionOffset * 0.5f;
-		//}
+		}
 
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);

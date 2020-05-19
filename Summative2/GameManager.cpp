@@ -45,7 +45,7 @@ GameManager::GameManager()
 	m_mesh_cube = new Mesh(cube_indices, cube_vertices, m_v_mesh);
 	m_mesh_sphere = new Sphere();
 	m_mesh_cube_map = new Mesh(cube_map_indices, cube_map_vertices, m_v_mesh);
-	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram(), 64, 64);
+	m_mesh_cloth = new Cloth(m_sh_phong_diffuse_->GetProgram(), 32, 32);
 
 	// Model
 	//m_mdl_tank = new Model("Resources/Models/Tank/Tank.obj", &camera);
@@ -157,9 +157,10 @@ void GameManager::initialize()
 
 void GameManager::process_game(Audio& audio)
 {
+	m_clock_->Process();
 	if (m_b_initialized_ == 1)
 	{
-		m_clock_->Process();
+		
 		camera.update(m_b_start_, m_clock_->GetDeltaTick() * 1.0f, /*tank->GetLocation()*/ glm::vec3(0.0f, 0.0f, 0.0f));
 
 		// all_mouse_pick(delta_t);
@@ -175,7 +176,7 @@ void GameManager::process_game(Audio& audio)
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
 
 		// Wind
-		m_mesh_cloth->ApplyWindForce(glm::vec3(25.0f, 0.0f, -25.0f));
+		m_mesh_cloth->ApplyWindForce(glm::vec3(50.0f, 0.0f, -50.0f));
 		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 
 		// Update cloth physics
