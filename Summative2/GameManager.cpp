@@ -452,12 +452,18 @@ GameManager::~GameManager()
 	m_mdl_tank = nullptr;
 	delete geomModel;
 	geomModel = nullptr;*/
+
+	delete m_mesh_cloth;
+	m_mesh_cloth = nullptr;
+
 	delete starModel;
 	starModel = nullptr;
 	delete tessModel;
 	tessModel = nullptr;
 	delete lod_tessModel;
 	lod_tessModel = nullptr;
+	delete geomModel;
+	geomModel = nullptr;
 
 	delete tank;
 	tank = nullptr;
