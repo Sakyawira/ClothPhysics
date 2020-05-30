@@ -78,6 +78,8 @@ public:
 	bool m_b_wireframe = false;
 
 	Cloth* m_mesh_cloth;
+
+	GameObject* sphere;
 	
 private:
 
@@ -172,7 +174,7 @@ private:
 
 	GameObject* button_down;
 	GameObject* button_up;
-	GameObject* sphere;
+
 	GameObject* sky_box;
 
 	GameObject* stencilCube2;

@@ -111,8 +111,8 @@ GameManager::GameManager()
 	button_up->Scale(3.0f);
 
 	// Sphere
-	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_yellow, 32.0f, 0.0f, 0.0f, m_v_sphere);
-	sphere->Scale(5.0f);
+	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_yellow, 0.0f, 0.0f, 0.0f, m_v_sphere);
+	sphere->Scale(1.0f);
 
 	// Tank
 	//tank = new GameObject(m_mdl_tank, 0.0f, 0.0f, 0.0f);
@@ -218,6 +218,8 @@ void GameManager::render()
 
 		frame_counts_ += 1.0f * m_clock_->GetDeltaTick() * 120.0f;
 		//m_frameBuffer->PrepareRender();
+
+		
 		
 		m_tr_cube_map->Render(m_sh_cube_map_, m_mesh_cube_map, camera);
 		//glEnable(GL_BLEND);
@@ -233,6 +235,7 @@ void GameManager::render()
 		//m_cloth->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 		transparentCube->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 		m_mesh_cloth->Render(camera, m_tr_plain);
+		sphere->Draw(camera, "currentTime", current_time_, "frameCounts", static_cast<int>(frame_counts_), m_clock_->GetDeltaTick());
 		//starModel->render(glm::vec3(-10.0f, 5.0f, 0.0f), m_tr_water);
 		//tessModel->render(glm::vec3(10.0f, 5.0f, 0.0f));
 		//lod_tessModel->render(glm::vec3(0.0f, 10.0f, 0.0f));
