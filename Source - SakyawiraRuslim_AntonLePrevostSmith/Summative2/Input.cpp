@@ -136,25 +136,26 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		key_state_[32] = INPUT_DOWN;
 	}
 
-	//if (SpecialKeyState[GLUT_KEY_UP] == INPUT_DOWN || KeyState['w'] == INPUT_DOWN)
-	//{
-	//	Game->camera.MovePosZ(-0.1f * Game->GetClock()->GetDeltaTick() * 120.0f);
-	//}
-
-	//if (SpecialKeyState[GLUT_KEY_DOWN] == INPUT_DOWN || KeyState['s'] == INPUT_DOWN)
-	//{
-	//	Game->camera.MovePosZ(0.1f * Game->GetClock()->GetDeltaTick() * 120.0f);
-	//}
-
-	//if (SpecialKeyState[GLUT_KEY_LEFT] == INPUT_DOWN || KeyState['a'] == INPUT_DOWN)
-	//{
-	//	Game->camera.MovePosX(-0.1f * Game->GetClock()->GetDeltaTick() * 120.0f);
-	//}
-
-	//if (SpecialKeyState[GLUT_KEY_RIGHT] == INPUT_DOWN || KeyState['d'] == INPUT_DOWN)
-	//{
-	//	Game->camera.MovePosX(0.1f * Game->GetClock()->GetDeltaTick() * 120.0f);
-	//}
+	if (special_key_state_[GLUT_KEY_UP] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.z += 0.5f;
+		special_key_state_[GLUT_KEY_UP] = INPUT_DOWN;
+	}
+	if (special_key_state_[GLUT_KEY_DOWN] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.z -= 0.5f;
+		special_key_state_[GLUT_KEY_DOWN] = INPUT_DOWN;
+	}
+	if (special_key_state_[GLUT_KEY_LEFT] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.x -= 0.5f;
+		special_key_state_[GLUT_KEY_LEFT] = INPUT_DOWN;
+	}
+	if (special_key_state_[GLUT_KEY_RIGHT] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.x += 0.5f;
+		special_key_state_[GLUT_KEY_RIGHT] = INPUT_DOWN;
+	}
 
 	//for (auto& key : key_state_)
 	//{

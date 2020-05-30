@@ -80,6 +80,8 @@ public:
 	Cloth* m_mesh_cloth;
 
 	GameObject* sphere;
+
+	glm::vec3 wind_force = glm::vec3(1.0f, 0.0f, -1.0f);
 	
 private:
 
