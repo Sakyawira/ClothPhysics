@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include "Constraint.h"
 #include "Camera.h"
+#include "GameObject.h"
 #include "Texture.h"
 
 const static int CONSTRAINT_ITERATIONS = 5;
@@ -20,6 +21,7 @@ class Cloth : public Mesh
 		void ApplyWindForce(const glm::vec3 _force);
 		void Unpin();
 		void Squish(int dir);
+		void SphereCollision(GameObject* _sphere);
 
 	private:
 

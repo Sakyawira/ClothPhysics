@@ -114,9 +114,11 @@
     <ClInclude Include="FrameBuffer.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Cloth.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Cloth.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Shaders\TextFS.txt">

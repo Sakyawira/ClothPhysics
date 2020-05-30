@@ -373,3 +373,24 @@ void Cloth::Squish(int dir)
 		}
 	}
 }
+
+void Cloth::SphereCollision(GameObject* _sphere)
+{
+	float offset = 2.0f;
+	float radius = _sphere->GetScale().x;
+	glm::vec3 center = _sphere->GetLocation();
+
+	//Check collision with ball for each particle
+	for (auto& particle : m_vParticles)
+	{
+		glm::vec3 v = particle.GetPos() - center;
+		float pDist = glm::distance(particle.GetPos(), center);
+
+		//If the particle is inside the ball
+		if (pDist < radius + offset)
+		{
+			//Adjust the position of the particle so that it is outside of the ball
+			particle.AdjustPosition(glm::normalize(v) * ((radius + offset) - pDist));
+		}
+	}
+}
