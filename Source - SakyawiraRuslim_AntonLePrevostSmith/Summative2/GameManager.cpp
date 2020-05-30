@@ -111,7 +111,7 @@ GameManager::GameManager()
 	button_up->Scale(3.0f);
 
 	// Sphere
-	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_yellow, 0.0f, 0.0f, 0.0f, m_v_sphere);
+	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_yellow, -2.0f, 0.0f, 0.0f, m_v_sphere);
 	sphere->Scale(1.0f);
 
 	// Tank
