@@ -8,21 +8,33 @@ Particle::Particle(glm::vec3 _position)
 
 void Particle::Process(float _groundY, float _deltaTime)
 {
-	if(!m_bIsPinned)
+	if (m_iConnectionCount > 0)
 	{
-		// Verlet Integration
-		glm::vec3 v3Temp = m_v3Position;
-		m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + (m_v3Acceleration * _deltaTime * _deltaTime);
-		m_v3OldPosition = v3Temp;
 
-		// Particle drops to the ground
-		if (m_v3Position.y < _groundY)
+		if (!m_bIsPinned)
 		{
-			m_v3Position.y = _groundY;
-		}
+			if (m_bOnFire)
+			{
+				//Increase burn timer, apply upward force and reduce health
+				m_fBurnTimer += _deltaTime;
+				ApplyForce(glm::vec3(0, 0.015f, 0));
+				AddHealth(-0.0006f);
+			}
+			
+			// Verlet Integration
+			glm::vec3 v3Temp = m_v3Position;
+			m_v3Position = m_v3Position + (m_v3Position - m_v3OldPosition) * (1.0f - m_fDampening) + (m_v3Acceleration * _deltaTime * _deltaTime);
+			m_v3OldPosition = v3Temp;
 
-		// Reset Acceleration so it doesn't keep on building up everytime a force is added (AddForce is called / in this case every frame)
-		m_v3Acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+			// Particle drops to the ground
+			if (m_v3Position.y < _groundY)
+			{
+				m_v3Position.y = _groundY;
+			}
+
+			// Reset Acceleration so it doesn't keep on building up everytime a force is added (AddForce is called / in this case every frame)
+			m_v3Acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+		}
 	}
 }
 
@@ -45,4 +57,32 @@ void Particle::ApplyGravityForce(glm::vec3 _force)
 {
 	// Accelerate particle based on force passed in
 	m_v3Acceleration += _force;
+}
+
+void Particle::AddHealth(float _addedHealth)
+{
+	m_fHealth += _addedHealth;
+
+	if(m_fHealth > 100.0f)
+	{
+		m_fHealth = 100.0f;
+	}
+	else if(m_fHealth < 0.0f)
+	{
+		m_fHealth = 0.0f;
+	}
+}
+
+void Particle::DecrementConnectionCount()
+{
+	if (m_iConnectionCount > 0)
+	{
+		m_iConnectionCount--;
+	}
+	
+	if (m_iConnectionCount <= 0)
+	{
+		m_fHealth = 0.0f;
+		SetPin(false);
+	}
 }

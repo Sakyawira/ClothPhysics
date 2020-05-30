@@ -259,7 +259,7 @@ void Cloth::Process(float _deltaTime)
 		for (auto& constraint: m_vConstraints)
 		{
 			// satisfy constraint.
-			constraint.Process();
+			constraint.Process(_deltaTime);
 		}
 	}
 

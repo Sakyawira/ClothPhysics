@@ -9,7 +9,7 @@ class Constraint
 		Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		// Calculate Constraints
-		bool Process();
+		bool Process(float _deltaTime);
 
 		// Getters-Setters
 		void SetIsAlive(bool _IsAlive);

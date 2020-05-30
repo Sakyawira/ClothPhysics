@@ -27,7 +27,7 @@ void Constraint::SetIsAlive(bool _isAlive)
 	}
 }
 
-bool Constraint::Process()
+bool Constraint::Process(float _deltaTime)
 {
 	// Calculates and applies the constraints to the connect particles,
 	// if the particles are valid
@@ -39,18 +39,49 @@ bool Constraint::Process()
 
 		if(particleDistance == 0.0f)
 		{
-			particleDistance = 0.00000000001f;
+			particleDistance = 0.000001f;
 		}
 
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
+		//Spread the flame if it has been burning long enough
+		if (m_Particle1->IsOnFire() && m_Particle2->Pin && m_Particle1->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		{
+			m_Particle2->SetOnFire(true);
+		}
+		if (m_Particle2->IsOnFire() && m_Particle2->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		{
+			m_Particle1->SetOnFire(true);
+		}
 
 		/*---------Add damage here---------*/
 		//F2: The cloth can be torn under some amount of force
 		//If the particles are too far away, add damage
 		//If it's not too far away add health
 		//If one or more of our particles dies, then we die too
+		if (particleDistance > 1.05f * m_fRestitutionDistance)
+		{
+			//Reduces health by around 50+ health per second
+			m_Particle1->AddHealth(50.0f * particleDistance * _deltaTime);
+			m_Particle2->AddHealth(50.0f * particleDistance * _deltaTime);
+		}
 
+		//It's healing, as long as it's not burning.
+		if (!m_Particle1->IsOnFire())
+		{
+			//Adds health at a rate of 100 per second
+			m_Particle1->AddHealth(100.0f * _deltaTime);
+		}
+		if (!m_Particle2->IsOnFire())
+		{
+			m_Particle2->AddHealth(100.0f * _deltaTime);
+		}
+
+		//One or more of our particles is dead. We should die too.
+		if (m_Particle1->GetHealth() < 0.001f || m_Particle2->GetHealth() < 0.001f)
+			return false;
+
+		/*------Apply correction offset here------*/
 		//If this constraint is still alive calculate the constraints
 		glm::vec3 correctionOffset;
 		glm::vec3 halfCorrectionOffset;
@@ -72,6 +103,7 @@ bool Constraint::Process()
 		return true;
 	}
 
+	//If it fails to process then either atleast one of the particles are dead so set this constraint to be ded
 	SetIsAlive(false);
 
 	return false;
