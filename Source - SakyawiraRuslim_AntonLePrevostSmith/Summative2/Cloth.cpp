@@ -376,8 +376,8 @@ void Cloth::Squish(int dir)
 
 void Cloth::SphereCollision(GameObject* _sphere)
 {
-	float offset = 1.3f;
-	float radius = _sphere->GetScale().x/2;
+	float offset = 0.0f;
+	float radius = _sphere->GetScale().x;
 	glm::vec3 center = _sphere->GetLocation();
 
 	// For each particle

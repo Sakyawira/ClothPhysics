@@ -149,7 +149,7 @@ void GameManager::initialize()
 	camera.set_pos_z(0.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_mesh_cloth->Initialize(5, 5,glm::vec3(-1.0f, 2.0f, 5.0f));
+	m_mesh_cloth->Initialize(5, 5,glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	m_b_initialized_ = true;
 	m_clock_->Initialise();
@@ -177,7 +177,7 @@ void GameManager::process_game(Audio& audio)
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
 
 		// Wind
-		m_mesh_cloth->ApplyWindForce(glm::vec3(1.0f, 0.0f, -1.0f)/delta_t);
+		//m_mesh_cloth->ApplyWindForce(glm::vec3(1.0f, 0.0f, -1.0f)/delta_t);
 		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 	
 		// Update cloth physics
