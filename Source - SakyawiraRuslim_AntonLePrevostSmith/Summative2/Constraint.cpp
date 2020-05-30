@@ -45,11 +45,11 @@ bool Constraint::Process(float _deltaTime)
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
 		//Spread the flame if it has been burning long enough
-		if (m_Particle1->IsOnFire() && m_Particle2->Pin && m_Particle1->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
 		{
 			m_Particle2->SetOnFire(true);
 		}
-		if (m_Particle2->IsOnFire() && m_Particle2->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
 		{
 			m_Particle1->SetOnFire(true);
 		}
