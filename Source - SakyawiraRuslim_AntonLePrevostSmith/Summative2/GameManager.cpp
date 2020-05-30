@@ -144,9 +144,9 @@ void GameManager::initialize()
 	m_text_instruction_top_left_->SetScale(0.5f);
 
 	// Reset Camera's Position
-	camera.set_pos_x(0.0f);
-	camera.set_pos_y(0.0f);
-	camera.set_pos_z(0.0f);
+	camera.set_pos_x(2.5f);
+	camera.set_pos_y(-2.5f);
+	camera.set_pos_z(10.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	m_mesh_cloth->Initialize(5, 5,glm::vec3(0.0f, 0.0f, 0.0f));
@@ -308,9 +308,9 @@ bool GameManager::is_started() const
 
 void GameManager::start_game(bool _isStart)
 {
-	camera.set_pos_x(0.0f);
-	camera.set_pos_y(1.5f);
-	camera.set_pos_z(26.0f);
+	camera.set_pos_x(2.5f);
+	camera.set_pos_y(-2.5f);
+	camera.set_pos_z(10.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 	stencilCube->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
 	stencilCube2->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));

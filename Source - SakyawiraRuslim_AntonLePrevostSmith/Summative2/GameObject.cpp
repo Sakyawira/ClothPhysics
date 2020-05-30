@@ -75,7 +75,7 @@ void GameObject::Draw(Camera & _camera, const GLchar * s_currentTime, GLfloat f_
 {
 	if (m_bool_enable)
 	{
-		glEnable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 		m_shader->Activate();
 
 		m_shader->PassUniform(s_currentTime, f_currentTime);

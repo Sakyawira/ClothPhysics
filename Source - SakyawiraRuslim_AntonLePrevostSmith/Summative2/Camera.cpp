@@ -48,11 +48,11 @@ void Camera::update(bool isGameStarted, float deltaTime, glm::vec3 _center)
 	}
 	else
 	{
-		camPos.x = 0.0f;
-		camPos.y = 1.5f;
-		camPos.z = 26.0f;
+		this->set_pos_x(2.5f);
+		this->set_pos_y(-2.5f);
+		this->set_pos_z(10.0f);
 		// View
-		view = glm::lookAt(camPos, glm::vec3(0.0f, 0.0f, 0.0f), camUpDir);
+		view = glm::lookAt(camPos, camPos + camLookDir, camUpDir);
 	}
 	// Rotate around a center point
 	//else
