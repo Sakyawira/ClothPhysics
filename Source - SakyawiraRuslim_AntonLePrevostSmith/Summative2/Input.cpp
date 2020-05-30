@@ -31,6 +31,15 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		key_state_['e'] = INPUT_DOWN;
 	}
+	if (key_state_['z'] == INPUT_DOWN_FIRST)
+	{
+		key_state_['z'] = INPUT_DOWN;
+	}
+
+	if (key_state_['c'] == INPUT_DOWN_FIRST)
+	{
+		key_state_['c'] = INPUT_DOWN;
+	}
 
 	if (key_state_['w'] == INPUT_DOWN)
 	{
@@ -71,6 +80,20 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		else
 		{
 			Game->camera.move_pos_x(15.0f, Game->get_clock()->GetDeltaTick());
+		}
+	}
+	if (key_state_['z'] == INPUT_DOWN)
+	{
+		if (!Game->is_started())
+		{
+			Game->sphere->Move(MOVE_DOWN, 12.0f * Game->get_clock()->GetDeltaTick());
+		}
+	}
+	if (key_state_['c'] == INPUT_DOWN)
+	{
+		if (!Game->is_started())
+		{
+			Game->sphere->Move(MOVE_UP, 12.0f * Game->get_clock()->GetDeltaTick());
 		}
 	}
 
