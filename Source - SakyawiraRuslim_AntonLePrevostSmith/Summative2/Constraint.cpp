@@ -8,7 +8,10 @@ Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 	m_Particle2 = _p2;
 	m_bFoldingConstraint = _foldingConstraint;
 
-	m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
+	if (m_Particle1 && m_Particle2)
+	{
+		m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
+	}
 }
 
 void Constraint::SetIsAlive(bool _isAlive)
@@ -31,7 +34,7 @@ bool Constraint::Process(float _deltaTime)
 {
 	// Calculates and applies the constraints to the connect particles,
 	// if the particles are valid
-	if(m_bIsAlive && m_Particle1 && m_Particle2)
+	if(m_Particle1 && m_Particle2)
 	{
 		// Get the distance between the particles
 		glm::vec3 particleDif = m_Particle1->GetPos() - m_Particle2->GetPos();
@@ -62,24 +65,28 @@ bool Constraint::Process(float _deltaTime)
 		if (particleDistance > 1.05f * m_fRestitutionDistance)
 		{
 			//Reduces health by around 50+ health per second
-			m_Particle1->AddHealth(50.0f * particleDistance * _deltaTime);
-			m_Particle2->AddHealth(50.0f * particleDistance * _deltaTime);
+			m_Particle1->AddHealth(-250.0f * particleDistance * _deltaTime);
+			m_Particle2->AddHealth(-250.0f * particleDistance * _deltaTime);
 		}
-
-		//It's healing, as long as it's not burning.
-		if (!m_Particle1->IsOnFire())
+		else
 		{
-			//Adds health at a rate of 100 per second
-			m_Particle1->AddHealth(100.0f * _deltaTime);
-		}
-		if (!m_Particle2->IsOnFire())
-		{
-			m_Particle2->AddHealth(100.0f * _deltaTime);
+			//It's healing, as long as it's not burning.
+			if (!m_Particle1->IsOnFire())
+			{
+				//Adds health at a rate of 100 per second
+				m_Particle1->AddHealth(1000.0f * _deltaTime);
+			}
+			if (!m_Particle2->IsOnFire())
+			{
+				m_Particle2->AddHealth(1000.0f * _deltaTime);
+			}
 		}
 
 		//One or more of our particles is dead. We should die too.
-		if (m_Particle1->GetHealth() < 0.001f || m_Particle2->GetHealth() < 0.001f)
+		if (m_Particle1->GetHealth() <= 0.0f || m_Particle2->GetHealth() <= 0.0f)
+		{
 			return false;
+		}
 
 		/*------Apply correction offset here------*/
 		//If this constraint is still alive calculate the constraints
@@ -100,11 +107,10 @@ bool Constraint::Process(float _deltaTime)
 
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);
+		
 		return true;
 	}
 
-	//If it fails to process then either atleast one of the particles are dead so set this constraint to be ded
-	SetIsAlive(false);
-
+	//Constraint is ded
 	return false;
 }

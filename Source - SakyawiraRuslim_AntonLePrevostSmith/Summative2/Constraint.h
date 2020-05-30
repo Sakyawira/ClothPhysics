@@ -28,7 +28,6 @@ class Constraint
 		//Should be in the range of 0.5f - 1.5f
 		float m_stiffness = 0.8f;
 		float m_fRestitutionDistance = 0.1f;
-		float m_bBurnTimer = 0.5f;
 		bool m_bToBeDestroyed = false;
 		bool m_bFoldingConstraint = false;
 		bool m_bIsAlive = true;

@@ -1,5 +1,7 @@
 #include "Particle.h"
 
+#include <iostream>
+
 Particle::Particle(glm::vec3 _position)
 {
 	m_v3Position = _position;
@@ -35,6 +37,10 @@ void Particle::Process(float _groundY, float _deltaTime)
 			// Reset Acceleration so it doesn't keep on building up everytime a force is added (AddForce is called / in this case every frame)
 			m_v3Acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
+	}
+	else
+	{
+		std::cout << "Zero connections!" << std::endl;
 	}
 }
 
@@ -83,6 +89,6 @@ void Particle::DecrementConnectionCount()
 	if (m_iConnectionCount <= 0)
 	{
 		m_fHealth = 0.0f;
-		SetPin(false);
+		SetPin(true);
 	}
 }

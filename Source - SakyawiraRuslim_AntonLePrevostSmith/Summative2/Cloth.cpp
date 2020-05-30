@@ -259,7 +259,11 @@ void Cloth::Process(float _deltaTime)
 		for (auto& constraint: m_vConstraints)
 		{
 			// satisfy constraint.
-			constraint.Process(_deltaTime);
+
+			if(constraint.GetIsAlive() && !constraint.Process(_deltaTime))
+			{
+				constraint.SetIsAlive(false);
+			}
 		}
 	}
 
