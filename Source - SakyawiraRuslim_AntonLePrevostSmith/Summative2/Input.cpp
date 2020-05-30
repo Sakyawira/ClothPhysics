@@ -157,13 +157,17 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		special_key_state_[GLUT_KEY_RIGHT] = INPUT_DOWN;
 	}
 
-	//for (auto& key : key_state_)
-	//{
-	//	if (key == INPUT_DOWN_FIRST)
-	//	{
-	//		key = INPUT_DOWN;
-	//	}
-	//}
+	if (key_state_['o'] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.y -= 0.5f;
+		key_state_['o'] = INPUT_DOWN;
+	}
+
+	if (key_state_['p'] == INPUT_DOWN_FIRST)
+	{
+		Game->wind_force.y += 0.5f;
+		key_state_['p'] = INPUT_DOWN;
+	}
 
 	if (mouse_state_[0] == INPUT_DOWN)
 	{
