@@ -52,9 +52,11 @@
     <ClCompile Include="TessModel.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Cloth.cpp" />
     <ClCompile Include="Constraint.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Cloth.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
