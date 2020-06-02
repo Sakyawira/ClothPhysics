@@ -36,20 +36,37 @@ class Particle
 		// Applies gravity force - not affected by mass
         void ApplyGravityForce(glm::vec3 _force);
 
-        void DecrementConnectionCount() { m_iConnectionCount--; }
+        void AddHealth(float _addedHealth);
+
+        void IncrementConnectionCount() { m_iConnectionCount++; }
+
+        void DecrementConnectionCount();;
 
         void AdjustPosition(const glm::vec3 _v3) { if (!m_bIsPinned) m_v3Position += _v3; }
         void AdjustPinnedPosition(const glm::vec3 _v3) {m_v3Position += _v3; }
 
         // Getters-Setters
         glm::vec3 GetPos() { return m_v3Position; }
+        int GetConnectionCount() const { return m_iConnectionCount; }
+
+        bool IsPinned() const { return m_bIsPinned; }
         void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }
 
-        int GetVertexId() { return m_iVertexId; }
+        int GetVertexId() const { return m_iVertexId; }
         void SetVertexId(int _id) { m_iVertexId = _id; }
 
-        int GetIndexId() { return m_iIndexId; }
+        int GetIndexId() const { return m_iIndexId; }
         void SetIndexId(int _id) { m_iIndexId = _id; }
+
+        float GetHealth() const { return m_fHealth; }
+        void SetHealth(float _health) { m_fHealth = _health; }
+
+        bool IsOnFire() const { return m_bOnFire; }
+        void SetOnFire(bool _onFire) {  m_bOnFire = _onFire; }
+
+        float GetBurnTimer() const { return m_fBurnTimer; }
+        void SetBurnTimer(float _burnTime) {  m_fBurnTimer = _burnTime; }
+        
         
     private:
 
@@ -74,6 +91,13 @@ class Particle
         // Dampening value
         float m_fDampening = 0.01f;
 
+		// Health
+        float m_fHealth = 100.0f;
+
+		// Fire stuff
+        bool m_bOnFire = false;
+        float m_fBurnTimer = 0.0f;
+	
         // Vertex and Index
         int m_iVertexId{};
         int m_iIndexId{};
