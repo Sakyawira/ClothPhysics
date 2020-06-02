@@ -22,6 +22,7 @@ class Cloth : public Mesh
 		void Unpin();
 		void Squish(int dir);
 		void SphereCollision(GameObject* _sphere);
+		void BoxCollision(GameObject* _box);
 
 	private:
 

@@ -374,6 +374,22 @@ void Cloth::Squish(int dir)
 	}
 }
 
+void Cloth::BoxCollision(GameObject* _box)
+{
+	// For each particle
+	for (auto& particle : m_vParticles)
+	{
+		glm::vec3 point = particle.GetPos();
+		if ((point.x >= _box->GetMin().x && point.x <= _box->GetMax().x) &&
+			(point.y >= _box->GetMin().y && point.y <= _box->GetMax().y) &&
+			(point.z >= _box->GetMin().z && point.z <= _box->GetMax().z))
+		{
+
+		}
+	}
+	return 
+}
+
 void Cloth::SphereCollision(GameObject* _sphere)
 {
 	float offset = 0.0f;
