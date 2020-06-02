@@ -47,6 +47,7 @@ class Particle
 
         // Getters-Setters
         glm::vec3 GetPos() { return m_v3Position; }
+        int GetConnectionCount() const { return m_iConnectionCount; }
 
         bool IsPinned() const { return m_bIsPinned; }
         void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }

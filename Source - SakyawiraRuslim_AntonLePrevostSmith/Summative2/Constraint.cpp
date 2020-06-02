@@ -34,7 +34,7 @@ bool Constraint::Process(float _deltaTime)
 {
 	// Calculates and applies the constraints to the connect particles,
 	// if the particles are valid
-	if(m_Particle1 && m_Particle2)
+	if(m_bIsAlive && m_Particle1 && m_Particle2)
 	{
 		// Get the distance between the particles
 		glm::vec3 particleDif = m_Particle1->GetPos() - m_Particle2->GetPos();
@@ -62,11 +62,18 @@ bool Constraint::Process(float _deltaTime)
 		//If the particles are too far away, add damage
 		//If it's not too far away add health
 		//If one or more of our particles dies, then we die too
-		if (particleDistance > 1.05f * m_fRestitutionDistance)
+		float constraintTearResistance = 1.01f;
+		if(m_Particle1->IsPinned() || m_Particle2->IsPinned())
+		{
+			constraintTearResistance = 10.0f;
+		}
+
+		
+		if (particleDistance > constraintTearResistance * m_fRestitutionDistance)
 		{
 			//Reduces health by around 50+ health per second
-			m_Particle1->AddHealth(-250.0f * particleDistance * _deltaTime);
-			m_Particle2->AddHealth(-250.0f * particleDistance * _deltaTime);
+			m_Particle1->AddHealth(-25.0f * particleDistance * _deltaTime);
+			m_Particle2->AddHealth(-25.0f * particleDistance * _deltaTime);
 		}
 		else
 		{

@@ -12,7 +12,6 @@ void Particle::Process(float _groundY, float _deltaTime)
 {
 	if (m_iConnectionCount > 0)
 	{
-
 		if (!m_bIsPinned)
 		{
 			if (m_bOnFire)
@@ -89,6 +88,6 @@ void Particle::DecrementConnectionCount()
 	if (m_iConnectionCount <= 0)
 	{
 		m_fHealth = 0.0f;
-		SetPin(true);
+		SetPin(false);
 	}
 }
