@@ -111,8 +111,8 @@ GameManager::GameManager()
 	button_up->Scale(3.0f);
 
 	// Sphere
-	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_yellow, -2.0f, 0.0f, 0.0f, m_v_sphere);
-	sphere->Scale(1.0f);
+	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_cube, v_blue, -2.0f, 0.0f, 0.0f, m_v_sphere);
+	sphere->Scale(5.0f);
 
 	// Tank
 	//tank = new GameObject(m_mdl_tank, 0.0f, 0.0f, 0.0f);
@@ -177,12 +177,13 @@ void GameManager::process_game(Audio& audio)
 		m_mesh_cloth->ApplyGravityForce(glm::vec3(0.0f, -9.8f, 0.0f));
 
 		// Wind
-		m_mesh_cloth->ApplyWindForce(glm::vec3(wind_force)/delta_t);
+		//m_mesh_cloth->ApplyWindForce(glm::vec3(wind_force)/delta_t);
 		// m_mesh_cloth->ApplyForce(glm::vec3(0.0f, 0.0f, -0.1f));
 	
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
-		m_mesh_cloth->SphereCollision(sphere);
+		//m_mesh_cloth->SphereCollision(sphere);
+		m_mesh_cloth->BoxCollision(sphere);
 		
 		
 		current_time_ = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)); // Get current time.

@@ -393,7 +393,20 @@ void Cloth::BoxCollision(GameObject* _box)
 			// if it has collided at the previous frame
 			else
 			{
-				particle.SetPos(particle.first_point_col);
+				glm::vec3 center = _box->GetLocation();
+
+				// Direction Vector from Particle to the Sphere
+				glm::vec3 direction = glm::normalize(particle.GetPos() - center);
+
+				// Distance between Particle and Sphere Center
+				float distance = glm::distance(particle.GetPos(), center);
+
+				// Calculate the difference between the radius of the sphere and its distance with the particle 
+				// Add it back to the particle position, so it is moved back out
+				float difference = glm::distance(particle.GetPos(), particle.first_point_col);
+				particle.AdjustPosition(direction * difference);
+
+				//particle.SetPos(particle.first_point_col);
 			}
 		}
 		// if it is not colliding anymore
