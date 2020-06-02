@@ -384,10 +384,24 @@ void Cloth::BoxCollision(GameObject* _box)
 			(point.y >= _box->GetMin().y && point.y <= _box->GetMax().y) &&
 			(point.z >= _box->GetMin().z && point.z <= _box->GetMax().z))
 		{
-
+			// If it is not colliding before
+			if (particle.isCollided == false)
+			{
+				particle.isCollided = true;
+				particle.first_point_col = particle.GetPos();
+			}
+			// if it has collided at the previous frame
+			else
+			{
+				particle.SetPos(particle.first_point_col);
+			}
+		}
+		// if it is not colliding anymore
+		else
+		{
+			particle.isCollided = false;
 		}
 	}
-	return 
 }
 
 void Cloth::SphereCollision(GameObject* _sphere)

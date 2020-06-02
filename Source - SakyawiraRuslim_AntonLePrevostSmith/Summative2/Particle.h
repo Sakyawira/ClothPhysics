@@ -43,6 +43,7 @@ class Particle
 
         // Getters-Setters
         glm::vec3 GetPos() { return m_v3Position; }
+        void SetPos(const glm::vec3 _v3) { m_v3Position = _v3; }
         void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }
 
         int GetVertexId() { return m_iVertexId; }
@@ -50,8 +51,16 @@ class Particle
 
         int GetIndexId() { return m_iIndexId; }
         void SetIndexId(int _id) { m_iIndexId = _id; }
+
+        // Is Collided
+        bool isCollided = false;
+
+        // First point collision
+        glm::vec3 first_point_col = glm::vec3(0.0f, 0.0f, 0.0f);
         
     private:
+
+
 
         // Keeps track of whether it can be moved
         bool m_bIsPinned = false;
