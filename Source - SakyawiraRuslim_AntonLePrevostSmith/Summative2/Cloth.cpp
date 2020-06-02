@@ -62,55 +62,79 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 			if (x < m_fParticlesInX - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x + 1, y)->IncrementConnectionCount();
 			}
 			if (y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 1));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x, y + 1)->IncrementConnectionCount();
 			}
 			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x + 1, y + 1)->IncrementConnectionCount();
 			}
 			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
+				GetParticle(x + 1, y)->IncrementConnectionCount();
+				GetParticle(x, y + 1)->IncrementConnectionCount();
 			}
 
-			// Cloth folding constraints (2 apart)
+			//// Cloth folding/interweaved constraints (2 apart)
 			if (x < m_fParticlesInX - 2)
 			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y), true);
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x + 2, y)->IncrementConnectionCount();
 			}
 			if (y < m_fParticlesInY - 2)
 			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 2), true);
+				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 2));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x, y + 2)->IncrementConnectionCount();
 			}
 			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
 			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2), true);
+				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2));
+				GetParticle(x, y)->IncrementConnectionCount();
+				GetParticle(x + 2, y + 2)->IncrementConnectionCount();
 			}
 			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
 			{
-				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2), true);
+				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2));
+				GetParticle(x + 2, y)->IncrementConnectionCount();
+				GetParticle(x, y + 2)->IncrementConnectionCount();
 			}
 
-			// Cloth folding constraints (3 apart)
-			if (x < m_fParticlesInX - 3)
-			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y), true);
-			}
-			if (y < m_fParticlesInY - 3)
-			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 3), true);
-			}
-			if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
-			{
-				CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y + 3), true);
-			}
-			if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
-			{
-				CreateConstraint(GetParticle(x + 3, y), GetParticle(x, y + 3), true);
-			}
+			////// Cloth folding/interweaved constraints (3 apart)
+			//if (x < m_fParticlesInX - 3)
+			//{
+			//	CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y));
+			//	GetParticle(x, y)->IncrementConnectionCount();
+			//	GetParticle(x + 3, y)->IncrementConnectionCount();
+			//}
+			//if (y < m_fParticlesInY - 3)
+			//{
+			//	CreateConstraint(GetParticle(x, y), GetParticle(x, y + 3));
+			//	GetParticle(x, y)->IncrementConnectionCount();
+			//	GetParticle(x, y + 3)->IncrementConnectionCount();
+			//}
+			//if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
+			//{
+			//	CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y + 3));
+			//	GetParticle(x, y)->IncrementConnectionCount();
+			//	GetParticle(x + 3, y + 3)->IncrementConnectionCount();
+			//}
+			//if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
+			//{
+			//	CreateConstraint(GetParticle(x + 3, y), GetParticle(x, y + 3));
+			//	GetParticle(x + 3, y)->IncrementConnectionCount();
+			//	GetParticle(x, y + 3)->IncrementConnectionCount();
+			//}
 		}
 	}
 
@@ -259,7 +283,11 @@ void Cloth::Process(float _deltaTime)
 		for (auto& constraint: m_vConstraints)
 		{
 			// satisfy constraint.
-			constraint.Process();
+
+			if(constraint.GetIsAlive() && !constraint.Process(_deltaTime))
+			{
+				constraint.SetIsAlive(false);
+			}
 		}
 	}
 

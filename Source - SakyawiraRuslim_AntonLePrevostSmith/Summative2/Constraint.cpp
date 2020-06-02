@@ -8,7 +8,10 @@ Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 	m_Particle2 = _p2;
 	m_bFoldingConstraint = _foldingConstraint;
 
-	m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
+	if (m_Particle1 && m_Particle2)
+	{
+		m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
+	}
 }
 
 void Constraint::SetIsAlive(bool _isAlive)
@@ -27,7 +30,7 @@ void Constraint::SetIsAlive(bool _isAlive)
 	}
 }
 
-bool Constraint::Process()
+bool Constraint::Process(float _deltaTime)
 {
 	// Calculates and applies the constraints to the connect particles,
 	// if the particles are valid
@@ -39,18 +42,60 @@ bool Constraint::Process()
 
 		if(particleDistance == 0.0f)
 		{
-			particleDistance = 0.00000000001f;
+			particleDistance = 0.000001f;
 		}
 
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
+		//Spread the flame if it has been burning long enough
+		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		{
+			m_Particle2->SetOnFire(true);
+		}
+		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		{
+			m_Particle1->SetOnFire(true);
+		}
 
 		/*---------Add damage here---------*/
 		//F2: The cloth can be torn under some amount of force
 		//If the particles are too far away, add damage
 		//If it's not too far away add health
 		//If one or more of our particles dies, then we die too
+		float constraintTearResistance = 1.01f;
+		if(m_Particle1->IsPinned() || m_Particle2->IsPinned())
+		{
+			constraintTearResistance = 10.0f;
+		}
 
+		
+		if (particleDistance > constraintTearResistance * m_fRestitutionDistance)
+		{
+			//Reduces health by around 50+ health per second
+			m_Particle1->AddHealth(-25.0f * particleDistance * _deltaTime);
+			m_Particle2->AddHealth(-25.0f * particleDistance * _deltaTime);
+		}
+		else
+		{
+			//It's healing, as long as it's not burning.
+			if (!m_Particle1->IsOnFire())
+			{
+				//Adds health at a rate of 100 per second
+				m_Particle1->AddHealth(1000.0f * _deltaTime);
+			}
+			if (!m_Particle2->IsOnFire())
+			{
+				m_Particle2->AddHealth(1000.0f * _deltaTime);
+			}
+		}
+
+		//One or more of our particles is dead. We should die too.
+		if (m_Particle1->GetHealth() <= 0.0f || m_Particle2->GetHealth() <= 0.0f)
+		{
+			return false;
+		}
+
+		/*------Apply correction offset here------*/
 		//If this constraint is still alive calculate the constraints
 		glm::vec3 correctionOffset;
 		glm::vec3 halfCorrectionOffset;
@@ -69,10 +114,10 @@ bool Constraint::Process()
 
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);
+		
 		return true;
 	}
 
-	SetIsAlive(false);
-
+	//Constraint is ded
 	return false;
 }
