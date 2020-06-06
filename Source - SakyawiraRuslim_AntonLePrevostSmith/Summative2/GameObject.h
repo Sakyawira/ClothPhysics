@@ -109,6 +109,9 @@ class GameObject
 		glm::vec3 GetMin();
 
 		glm::vec3 GetMax();
+
+		void SetMesh(Mesh* _mesh) { m_mesh = _mesh; }
+		Mesh* GetMesh() { return m_mesh; }
 	
 	protected:
 

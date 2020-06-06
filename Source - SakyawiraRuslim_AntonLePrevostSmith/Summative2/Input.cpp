@@ -121,6 +121,29 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		}
 		key_state_['r'] = INPUT_DOWN;
 	}
+	if (key_state_['f'] == INPUT_DOWN_FIRST)
+	{
+		//if (!Game->is_started() /*&& !Game->IsEnded()*/)
+		//{
+		//	Game->start_game(true);
+		//}
+		//else
+		//{
+		//	// Start working on initializing the game on restart instead of making a new one
+		//	Game->start_game(false);
+		//	Game->initialize();
+		//}
+		if (Game->sphere->GetMesh() == Game->m_mesh_sphere)
+		{
+			Game->sphere->SetMesh(Game->m_mesh_cube);
+		}
+		else
+		{
+			Game->sphere->SetMesh(Game->m_mesh_sphere);
+		}
+		
+		key_state_['f'] = INPUT_DOWN;
+	}
 
 	if (key_state_[32] == INPUT_DOWN_FIRST)
 	{

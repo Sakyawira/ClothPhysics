@@ -82,6 +82,9 @@ public:
 	GameObject* sphere;
 
 	glm::vec3 wind_force = glm::vec3(1.1f, 0.1f, -1.1f);
+
+	Mesh* m_mesh_cube;
+	Sphere* m_mesh_sphere;
 	
 private:
 
@@ -157,9 +160,8 @@ private:
 	Mesh* m_mesh_player;
 	Mesh* m_mesh_static;
 	Mesh* m_mesh_pyramid;
-	Mesh* m_mesh_cube;
 	Mesh* m_mesh_cube_map;
-	Sphere* m_mesh_sphere;
+
 
 	GameObject* m_cloth;
 

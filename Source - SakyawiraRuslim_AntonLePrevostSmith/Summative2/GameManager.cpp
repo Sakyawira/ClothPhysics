@@ -188,10 +188,16 @@ void GameManager::process_game(Audio& audio)
 	
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
-		m_mesh_cloth->SphereCollision(sphere);
-		//m_mesh_cloth->BoxCollision(sphere);
-		
-		
+
+		if (sphere->GetMesh() == m_mesh_sphere)
+		{
+			m_mesh_cloth->SphereCollision(sphere);
+		}
+		else
+		{
+			m_mesh_cloth->BoxCollision(sphere);
+		}
+
 		current_time_ = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)); // Get current time.
 		current_time_ = current_time_ * 0.001f;
 
