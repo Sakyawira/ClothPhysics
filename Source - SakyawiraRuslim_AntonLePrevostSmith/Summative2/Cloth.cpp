@@ -364,9 +364,16 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle)
 {
+	// Get the normal of a quad (facing direction)
 	glm::vec3 normal = cross(_point2 - _point1, _point3 - _point1);
+
+	// Check if the quad and a line between two points in the quad are facing each other
 	float dotV4 = glm::dot(normal, _point4 - _point1);
+
+	// Check whetehr or not the quad and a line between the particle and a point in the quad are facing each other
 	float dotP = glm::dot(normal, _particle - _point1);
+
+	// if both are facing each other or both are not facing each other
 	return glm::sign(dotV4) == glm::sign(dotP);
 }
 
