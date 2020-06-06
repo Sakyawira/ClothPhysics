@@ -23,9 +23,12 @@ class Cloth : public Mesh
 		void Squish(int dir);
 		void SphereCollision(GameObject* _sphere);
 		void BoxCollision(GameObject* _box);
+		void PyramidCollision(GameObject* _pyramid);
 
 	private:
 
+		bool SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _middlePyramid, glm::vec3 _particle);
+		bool SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle);
 		glm::vec3 FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3);
 		void ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3, const glm::vec3 _force);
 
