@@ -353,13 +353,13 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 	// Check whether or not the triangle and a line between
 	// the middle of the pyramid and the particle
 	// are facing each other
-	// if return is 1, they are facing each other
+	// if return is -1, they are facing each other (opposite direction)
 	float dotV4 = glm::dot(normal, _middlePyramid - _particle);
 
 	//// Check whether or not the triangle and a line between a point in the triangle and the particle are facing each other
 	//float dotP = glm::dot(normal, _point3 - p);
 
-	return glm::sign(dotV4) == 1;
+	return glm::sign(dotV4) == -1;
 }
 
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle)
@@ -368,13 +368,15 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 	glm::vec3 normal = cross(_point2 - _point1, _point3 - _point1);
 
 	// Check if the quad and a line between two points in the quad are facing each other
-	float dotV4 = glm::dot(normal, _point4 - _point1);
+	//float dotV4 = glm::dot(normal, _point4 - _point1);
 
 	// Check whetehr or not the quad and a line between the particle and a point in the quad are facing each other
-	float dotP = glm::dot(normal, _particle - _point1);
+	//float dotP = glm::dot(normal, _particle - _point1);
 
 	// if both are facing each other or both are not facing each other
-	return glm::sign(dotV4) == glm::sign(dotP);
+	// if return is -1, they are facing each other (opposite direction)
+	float dotV4 = glm::dot(normal, _middlePyramid - _particle);
+	return glm::sign(dotV4) == -1;
 }
 
 glm::vec3 Cloth::FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3)
@@ -491,35 +493,36 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 			!SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
 			!SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc))
 		{
-			// If it is not colliding before
-			if (particle.isCollided == false)
-			{
-				particle.isCollided = true;
-				particle.first_point_col = particle.GetPos();
-			}
-			// if it has collided at the previous frame
-			else
-			{
-				glm::vec3 center = _pyramid->GetLocation();
+			//// If it is not colliding before
+			//if (particle.isCollided == false)
+			//{
+			//	particle.isCollided = true;
+			//	particle.first_point_col = particle.GetPos();
+			//}
+			//// if it has collided at the previous frame
+			//else
+			//{
+			//	glm::vec3 center = _pyramid->GetLocation();
 
-				// Direction Vector from Particle to the Sphere
-				glm::vec3 direction = glm::normalize(particle.GetPos() - center);
+			//	// Direction Vector from Particle to the Sphere
+			//	glm::vec3 direction = glm::normalize(particle.GetPos() - center);
 
-				// Distance between Particle and Sphere Center
-				float distance = glm::distance(particle.GetPos(), center);
+			//	// Distance between Particle and Sphere Center
+			//	float distance = glm::distance(particle.GetPos(), center);
 
-				// Calculate the difference between the radius of the sphere and its distance with the particle 
-				// Add it back to the particle position, so it is moved back out
-				float difference = glm::distance(particle.GetPos(), particle.first_point_col);
-				particle.AdjustPosition(direction * difference);
+			//	// Calculate the difference between the radius of the sphere and its distance with the particle 
+			//	// Add it back to the particle position, so it is moved back out
+			//	float difference = glm::distance(particle.GetPos(), particle.first_point_col);
+			//	particle.AdjustPosition(direction * difference);
 
-				//particle.SetPos(particle.first_point_col);
-			}
+			//	//particle.SetPos(particle.first_point_col);
+			//}
+			std::cout << "Collided!" << std::endl;
 		}
 		// if it is not colliding anymore
 		else
 		{
-			particle.isCollided = false;
+			//particle.isCollided = false;
 		}
 	}
 }

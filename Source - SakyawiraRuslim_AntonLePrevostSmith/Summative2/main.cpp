@@ -56,7 +56,10 @@ int main(int argc, char **argv)
 {
 	// audio.Load();
 	// audio.Play(SOUND_BGM1); 
-		
+
+	glm::vec3 a = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 b = glm::vec3(0.0f, 0.0f, -1.0f);
+	std::cout << glm::dot(a, b);
 	// Setup and create at glut controlled window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
