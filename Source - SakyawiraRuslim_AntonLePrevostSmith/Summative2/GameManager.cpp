@@ -142,9 +142,9 @@ void GameManager::initialize()
 	m_text_instruction_top_left_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_top_left_->SetScale(0.5f);
 
-	m_text_windX_->SetScale(0.5f);
-	m_text_windY_->SetScale(0.5f);
-	m_text_windZ_->SetScale(0.5f);
+	m_text_windX_->SetScale(0.35f);
+	m_text_windY_->SetScale(0.35f);
+	m_text_windZ_->SetScale(0.35f);
 
 	m_text_windX_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_windY_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -206,9 +206,9 @@ void GameManager::process_game(Audio& audio)
 		}
 
 		m_text_instruction_bottom_->SetText("Hit 'Space' to Unpin Cloth.");
-		m_text_windX_->SetText("Wind X = " + to_string(wind_force.x));
-		m_text_windY_->SetText("Wind Y = " + to_string(wind_force.y));
-		m_text_windZ_->SetText("Wind Z = " + to_string(wind_force.z));
+		m_text_windX_->SetText("Wind X = " + to_string(wind_force.x) + " (Left-Right Arrows)");
+		m_text_windY_->SetText("Wind Y = " + to_string(wind_force.y) + " ('O' - 'P' Keys)");
+		m_text_windZ_->SetText("Wind Z = " + to_string(wind_force.z) + " (Up-Down Arrows)");
 	}
 	
 	else
