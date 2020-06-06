@@ -62,14 +62,14 @@ bool Constraint::Process(float _deltaTime)
 		//If the particles are too far away, add damage
 		//If it's not too far away add health
 		//If one or more of our particles dies, then we die too
-		float constraintTearResistance = 1.01f;
+		float tearDistance = particleDistance - m_fRestitutionDistance;
+		float constraintTearResistance = 0.5f;
 		if(m_Particle1->IsPinned() || m_Particle2->IsPinned())
 		{
 			constraintTearResistance = 10.0f;
 		}
 
-		
-		if (particleDistance > constraintTearResistance * m_fRestitutionDistance)
+		if (tearDistance > constraintTearResistance)
 		{
 			//Reduces health by around 50+ health per second
 			m_Particle1->AddHealth(-25.0f * particleDistance * _deltaTime);
@@ -81,11 +81,11 @@ bool Constraint::Process(float _deltaTime)
 			if (!m_Particle1->IsOnFire())
 			{
 				//Adds health at a rate of 100 per second
-				m_Particle1->AddHealth(1000.0f * _deltaTime);
+				m_Particle1->AddHealth(25.0f * _deltaTime);
 			}
 			if (!m_Particle2->IsOnFire())
 			{
-				m_Particle2->AddHealth(1000.0f * _deltaTime);
+				m_Particle2->AddHealth(25.0f * _deltaTime);
 			}
 		}
 
@@ -103,7 +103,7 @@ bool Constraint::Process(float _deltaTime)
 		if(m_bFoldingConstraint)
 		{
 			//Make the folding constraints have 1/10th of the applied offset
-			correctionOffset = particleDif * ((1.0f - (m_fRestitutionDistance / particleDistance)) /*/ 5.0f*/);
+			correctionOffset = particleDif * (m_stiffness - ((m_fRestitutionDistance / particleDistance) * m_stiffness));
 			halfCorrectionOffset = correctionOffset * 0.5f;
 		}
 		else

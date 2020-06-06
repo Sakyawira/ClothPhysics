@@ -283,8 +283,7 @@ void Cloth::Process(float _deltaTime)
 	{
 		for (auto& constraint: m_vConstraints)
 		{
-			// satisfy constraint.
-
+			// Process constraint.
 			if(constraint.GetIsAlive() && !constraint.Process(_deltaTime))
 			{
 				constraint.SetIsAlive(false);
@@ -299,7 +298,7 @@ void Cloth::Process(float _deltaTime)
 		particle.Process(-10.0f, _deltaTime);
 
 		//Update the positions of the particles
-		m_vertices[i] = (particle.GetPos().x);
+		m_vertices[i]     = (particle.GetPos().x);
 		m_vertices[i + 1] = (particle.GetPos().y);
 		m_vertices[i + 2] = (particle.GetPos().z);
 		i += 6;
