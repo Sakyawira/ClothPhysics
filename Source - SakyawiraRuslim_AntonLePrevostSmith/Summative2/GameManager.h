@@ -85,6 +85,7 @@ public:
 
 	Mesh* m_mesh_cube;
 	Sphere* m_mesh_sphere;
+	Mesh* m_mesh_pyramid;
 	
 private:
 
@@ -159,7 +160,6 @@ private:
 	Mesh* m_mesh_scroll;
 	Mesh* m_mesh_player;
 	Mesh* m_mesh_static;
-	Mesh* m_mesh_pyramid;
 	Mesh* m_mesh_cube_map;
 
 

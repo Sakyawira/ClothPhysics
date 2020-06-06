@@ -137,6 +137,10 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		{
 			Game->sphere->SetMesh(Game->m_mesh_cube);
 		}
+		else if (Game->sphere->GetMesh() == Game->m_mesh_cube)
+		{
+			Game->sphere->SetMesh(Game->m_mesh_pyramid);
+		}
 		else
 		{
 			Game->sphere->SetMesh(Game->m_mesh_sphere);
