@@ -108,14 +108,14 @@ private:
 	std::string m_string_score_;
 	TextLabel* m_text_instruction_top_left_;
 	std::string m_string_lives_;
-	TextLabel* m_text_lives_;
+	TextLabel* m_text_windX_;
 	std::string m_string_level_;
-	TextLabel* m_text_level_;
+	TextLabel* m_text_windY_;
 
 	// Menu text
 	char m_c_bg_ = 65;
 	std::string m_string_bg_;
-	TextLabel* m_text_bg_;
+	TextLabel* m_text_windZ_;
 
 	// Menu Text
 	std::string m_string_menu_ = "Collect All Crystal Balls to Win: The Game";
