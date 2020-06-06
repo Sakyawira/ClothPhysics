@@ -26,7 +26,7 @@ GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char*
 	{
 		if (combinedShader == pair.second)
 		{
-			std::cout << "We found the same combined pair!" << std::endl;
+			//std::cout << "We found the same combined pair!" << std::endl;
 			return pair.first;
 		}
 	}
@@ -68,7 +68,7 @@ GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char*
 	{
 		if (combinedShader == pair.second)
 		{
-			std::cout << "We found the same combined pair!" << std::endl;
+			//std::cout << "We found the same combined pair!" << std::endl;
 			return pair.first;
 		}
 	}
@@ -113,7 +113,7 @@ GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char*
 	{
 		if (combinedShader == pair.second)
 		{
-			std::cout << "We found the same combined pair!" << std::endl;
+			//std::cout << "We found the same combined pair!" << std::endl;
 			return pair.first;
 		}
 	}
@@ -155,7 +155,7 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 	{
 		if (shaderSource == pair.second)
 		{
-			std::cout << "We found the same pair!" << std::endl;
+			//std::cout << "We found the same pair!" << std::endl;
 			return pair.first;
 		}
 	}
@@ -194,7 +194,7 @@ std::string ShaderLoader::ReadShaderFile(const char *filename)
 
 	// Ensure the file is open and readable
 	if (!file.good()) {
-		std::cout << "Cannot read file:  " << filename << std::endl;
+		//std::cout << "Cannot read file:  " << filename << std::endl;
 		return "";
 	}
 
@@ -219,6 +219,6 @@ void ShaderLoader::PrintErrorDetails(bool isShader, GLuint id, const char* name)
 
 	// Retrieve the log info and populate log variable
 	(isShader) ? glGetShaderInfoLog(id, infoLogLength, NULL, &log[0]) : glGetProgramInfoLog(id, infoLogLength, NULL, &log[0]);		
-	std::cout << "Error compiling " << ((isShader) ? "shader" : "program") << ": " << name << std::endl;
-	std::cout << &log[0] << std::endl;
+	//std::cout << "Error compiling " << ((isShader) ? "shader" : "program") << ": " << name << std::endl;
+	//std::cout << &log[0] << std::endl;
 }

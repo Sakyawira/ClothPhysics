@@ -487,7 +487,7 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 			!SameFaceDir(v2, v3, top_pyramid, middle_pyramid, _particleLoc) &&
 			!SameFaceDir(v3, v4, top_pyramid, middle_pyramid, _particleLoc) && 
 			!SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
-			SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc))
+			!SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc))
 		{
 			std::cout << "Colliding!" << std::endl;
 		}

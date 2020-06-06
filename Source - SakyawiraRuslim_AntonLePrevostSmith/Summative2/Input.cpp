@@ -210,7 +210,7 @@ void Input::mouse_click(int button, int state, int x, int y)
 	}
 
 	mouse_state_[button] = (state == GLUT_DOWN) ? INPUT_DOWN : INPUT_UP;
-	//std::cout << "Clicked Once x: " << x << " | y: " << y << std::endl;
+	////std::cout << "Clicked Once x: " << x << " | y: " << y << std::endl;
 }
 
 void Input::mouse_passive_move(int x, int y, GameManager * Game)
@@ -253,7 +253,7 @@ void Input::mouse_move(int x, int y, GameManager * Game)
 	{
 		Game->camera.update_look_dir(x, y);
 	}
-	//std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
+	////std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
 }
 
 void Input::keyboard_down(unsigned char key, int x, int y)

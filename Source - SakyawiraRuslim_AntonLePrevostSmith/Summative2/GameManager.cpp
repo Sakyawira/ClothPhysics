@@ -110,7 +110,7 @@ GameManager::GameManager()
 	button_up->Scale(3.0f);
 
 	// Sphere
-	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_sphere, v_blue, 3.0f, 0.0f, -10.0f, m_v_sphere);
+	sphere = new GameObject(m_sh_phong_diffuse_, m_mesh_pyramid, v_blue, 3.0f, 0.0f, -10.0f, m_v_sphere);
 	sphere->Scale(5.0f);
 
 	// Tank
@@ -189,14 +189,16 @@ void GameManager::process_game(Audio& audio)
 		// Update cloth physics
 		m_mesh_cloth->Process(delta_t);
 
-		if (sphere->GetMesh() == m_mesh_sphere)
+	/*	if (sphere->GetMesh() == m_mesh_sphere)
 		{
 			m_mesh_cloth->SphereCollision(sphere);
 		}
 		else
 		{
 			m_mesh_cloth->BoxCollision(sphere);
-		}
+		}*/
+
+		m_mesh_cloth->PyramidCollision(sphere);
 
 		current_time_ = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)); // Get current time.
 		current_time_ = current_time_ * 0.001f;

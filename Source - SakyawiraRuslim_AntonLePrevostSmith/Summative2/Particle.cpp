@@ -39,7 +39,7 @@ void Particle::Process(float _groundY, float _deltaTime)
 	}
 	else
 	{
-		std::cout << "Zero connections!" << std::endl;
+		//std::cout << "Zero connections!" << std::endl;
 	}
 }
 

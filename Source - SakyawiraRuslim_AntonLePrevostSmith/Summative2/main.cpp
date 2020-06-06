@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 	if (glewInit() != GLEW_OK)
 	{
 		// If glew setup failed then application will not run graphics correctly
-		std::cout << "Glew Initialization Failed. Aborting Application." << std::endl;
+		//std::cout << "Glew Initialization Failed. Aborting Application." << std::endl;
 		system("pause");
 	}
 
