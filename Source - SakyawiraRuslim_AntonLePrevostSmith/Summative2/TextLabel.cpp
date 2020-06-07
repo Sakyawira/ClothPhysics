@@ -39,12 +39,12 @@ TextLabel::TextLabel(int _WINDOW_WIDTH, int _WINDOW_HEIGHT, std::string text, st
 	// Initiate the font lib
 	if (FT_Init_FreeType(&ft) != 0)
 	{
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+		//std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 	}
 	// Load font as face
 	if (FT_New_Face(ft, font.c_str(), 0, &face) != 0)
 	{
-		std::cout << "ERROR::FREETYPE: Failed to Load Font" << std::endl;
+		//std::cout << "ERROR::FREETYPE: Failed to Load Font" << std::endl;
 	}
 	FT_Set_Pixel_Sizes(face, 0, 48);		// Set size to load glyph as
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Disable byte-alignment restriction
@@ -55,7 +55,7 @@ TextLabel::TextLabel(int _WINDOW_WIDTH, int _WINDOW_HEIGHT, std::string text, st
 		// Load the character glyph into face
 		if (FT_Load_Char(face, character, FT_LOAD_RENDER))
 		{
-			std::cout << "ERROR::FREETYPE: Failed to load Glyph"<< std::endl;
+			//std::cout << "ERROR::FREETYPE: Failed to load Glyph"<< std::endl;
 			continue;
 		}
 		GLuint texture = GenerateTexture(face); // Generate a texture

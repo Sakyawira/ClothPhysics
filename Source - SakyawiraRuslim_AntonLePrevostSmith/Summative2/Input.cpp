@@ -127,6 +127,33 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		}
 		key_state_['r'] = INPUT_DOWN;
 	}
+	if (key_state_['f'] == INPUT_DOWN_FIRST)
+	{
+		//if (!Game->is_started() /*&& !Game->IsEnded()*/)
+		//{
+		//	Game->start_game(true);
+		//}
+		//else
+		//{
+		//	// Start working on initializing the game on restart instead of making a new one
+		//	Game->start_game(false);
+		//	Game->initialize();
+		//}
+		if (Game->sphere->GetMesh() == Game->m_mesh_sphere)
+		{
+			Game->sphere->SetMesh(Game->m_mesh_cube);
+		}
+		else if (Game->sphere->GetMesh() == Game->m_mesh_cube)
+		{
+			Game->sphere->SetMesh(Game->m_mesh_pyramid);
+		}
+		else
+		{
+			Game->sphere->SetMesh(Game->m_mesh_sphere);
+		}
+		
+		key_state_['f'] = INPUT_DOWN;
+	}
 
 	if (key_state_[32] == INPUT_DOWN_FIRST)
 	{
@@ -193,7 +220,7 @@ void Input::mouse_click(int button, int state, int x, int y)
 	}
 
 	mouse_state_[button] = (state == GLUT_DOWN) ? INPUT_DOWN : INPUT_UP;
-	//std::cout << "Clicked Once x: " << x << " | y: " << y << std::endl;
+	////std::cout << "Clicked Once x: " << x << " | y: " << y << std::endl;
 }
 
 void Input::mouse_passive_move(int x, int y, GameManager * Game)
@@ -236,7 +263,7 @@ void Input::mouse_move(int x, int y, GameManager * Game)
 	{
 		Game->camera.update_look_dir(x, y);
 	}
-	//std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
+	////std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
 }
 
 void Input::keyboard_down(unsigned char key, int x, int y)

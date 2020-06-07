@@ -168,7 +168,7 @@ bool GameObject::sphere_sphere_col(GameObject* a, GameObject* b)
 
 		if (length <= radius_sum)
 		{
-			std::cout << "Colliding!" << std::endl;
+			//std::cout << "Colliding!" << std::endl;
 			return true;
 		}
 	}
@@ -261,7 +261,7 @@ float GameObject::GetPosition(int COORDINATE_ID)
 	{
 		return 0.0f;
 	}
-	// std::cout << fi;
+	// //std::cout << fi;
 }
 
 glm::vec3 GameObject::GetLocation()

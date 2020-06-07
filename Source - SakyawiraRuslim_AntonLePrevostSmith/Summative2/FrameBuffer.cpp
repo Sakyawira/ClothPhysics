@@ -64,7 +64,7 @@ FrameBuffer::FrameBuffer(Shader* _shader, Mesh* _mesh)
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
 	{ 
-		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl; 
+		//std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl; 
 	}
 }
 
