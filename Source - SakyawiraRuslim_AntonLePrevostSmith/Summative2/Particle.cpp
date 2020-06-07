@@ -40,7 +40,6 @@ void Particle::Process(float _groundY, float _deltaTime)
 	}
 	else
 	{
-		m_bIsAlive = false;
 
 		if(m_iConnectionCount < 0)
 		{
@@ -79,9 +78,10 @@ void Particle::AddHealth(float _addedHealth)
 	{
 		m_fHealth = 100.0f;
 	}
-	else if(m_fHealth < 0.0f)
+	else if(m_fHealth <= 0.0f)
 	{
 		m_fHealth = 0.0f;
+		m_bIsAlive = false;
 	}
 }
 

@@ -11,6 +11,8 @@ class Constraint
 		// Calculate Constraints
 		bool Process(float _deltaTime, bool _debugMode);
 
+		void DetermineIsAlive();
+
 		// Getters-Setters
 		void SetIsAlive(bool _IsAlive);
 		bool GetIsAlive() { return m_bIsAlive; };

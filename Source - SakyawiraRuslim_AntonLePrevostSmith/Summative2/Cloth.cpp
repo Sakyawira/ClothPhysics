@@ -165,7 +165,7 @@ void Cloth::GenerateBuffers()
 	m_indices.clear();
 	for (auto& constraint : m_vConstraints)
 	{
-		if (!constraint.GetIsAlive() || constraint.GetParticle2() - constraint.GetParticle1() < 5.0f)
+		if (constraint.GetIsAlive())
 		{
 			m_indices.push_back(constraint.GetParticle1()->GetVertexId());
 			m_indices.push_back(constraint.GetParticle2()->GetVertexId());
@@ -274,18 +274,7 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 
 void Cloth::Process(float _deltaTime)
 {
-	m_indices.clear();
-	for (auto& m_vConstraint : m_vConstraints)
-	{
-		if (m_vConstraint.GetIsAlive())
-		{
-			m_indices.push_back(m_vConstraint.GetParticle1()->GetVertexId());
-			m_indices.push_back(m_vConstraint.GetParticle2()->GetVertexId());
-		}
-	}
-
 	// iterate over all constraints several times
-//#pragma omp parallel for
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
 	{
 		for (auto& constraint: m_vConstraints)
@@ -296,6 +285,18 @@ void Cloth::Process(float _deltaTime)
 				constraint.SetIsAlive(false);
 			}
 		}
+	}
+
+	//Check if each constraints particle is alive and set them based on that
+	for (int i = 0; i < m_vConstraints.size(); ++i)
+	{
+		m_vConstraints[i].DetermineIsAlive();
+	}
+
+	//Check if each constraints particle is alive and set them based on that
+	for (auto& constraint : m_vConstraints)
+	{
+		constraint.DetermineIsAlive();
 	}
 
 	int i = 0;
@@ -328,12 +329,16 @@ void Cloth::Process(float _deltaTime)
 		//	m_isHoldingParticle = false;
 		//}
 	}
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, m_fVerticesPoints.size() * sizeof(GLfloat), m_fVerticesPoints.data());
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);
-	//m_indicesSize = m_iIndicesPoints.size();
+	m_indices.clear();
+	for (auto& m_vConstraint : m_vConstraints)
+	{
+		if (m_vConstraint.GetIsAlive())
+		{
+			m_indices.push_back(m_vConstraint.GetParticle1()->GetVertexId());
+			m_indices.push_back(m_vConstraint.GetParticle2()->GetVertexId());
+		}
+	}
 }
 
 void Cloth::ApplyForce(const glm::vec3 _force)
