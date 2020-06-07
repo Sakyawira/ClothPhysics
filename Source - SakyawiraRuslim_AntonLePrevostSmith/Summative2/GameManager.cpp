@@ -12,6 +12,8 @@
   Mail        :   Sakyawira.Rus8080@mediadesign.school.nz
 ********************/
 #include "GameManager.h"
+
+#include <ctime>
 #include <random>
 
 GameManager::GameManager()
@@ -127,6 +129,8 @@ GameManager::GameManager()
 	glutSetCursor(GLUT_CURSOR_NONE);
 	
 	this->initialize();
+
+	srand(time(0));
 }
 
 

@@ -1,7 +1,6 @@
 #include "Cloth.h"
 
 #include <algorithm>
-#include <ctime>    // For time()
 #include <cstdlib>  // For srand() and rand()
 #include <random>
 
@@ -446,7 +445,7 @@ void Cloth::Squish(int dir)
 
 void Cloth::SetOnFire()
 {
-	srand(time(0));
+
 	GetParticle(rand() % m_fParticlesInX, rand() % m_fParticlesInY)->SetOnFire(true);
 }
 

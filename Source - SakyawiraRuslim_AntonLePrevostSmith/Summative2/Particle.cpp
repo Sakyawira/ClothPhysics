@@ -19,7 +19,7 @@ void Particle::Process(float _groundY, float _deltaTime)
 			{
 				//Increase burn timer, apply upward force and reduce health
 				m_fBurnTimer += _deltaTime;
-				ApplyForce(glm::vec3(0, 0.025f, 0));
+				ApplyForce(glm::vec3(0, 0.5f, 0));
 				AddHealth(-50.0f * _deltaTime);
 			}
 			
@@ -103,4 +103,13 @@ void Particle::DecrementConnectionCount()
 		m_bIsAlive = false;
 		SetPin(false);
 	}
+}
+
+void Particle::AdjustPosition(const glm::vec3 _v3)
+{
+	if (!m_bIsPinned)
+	{
+		m_v3Position += _v3;
+	}
+		
 }

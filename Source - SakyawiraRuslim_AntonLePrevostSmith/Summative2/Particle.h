@@ -42,7 +42,7 @@ class Particle
 
         void DecrementConnectionCount();;
 
-        void AdjustPosition(const glm::vec3 _v3) { if (!m_bIsPinned) m_v3Position += _v3; }
+        void AdjustPosition(const glm::vec3 _v3);
         void AdjustPinnedPosition(const glm::vec3 _v3) { m_v3Position += _v3; }
 
         // Getters-Setters

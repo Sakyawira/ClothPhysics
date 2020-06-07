@@ -1,13 +1,11 @@
 #include "Constraint.h"
 #include <iostream>
 
-#include <ctime>    // For time()
 #include <cstdlib>  // For srand() and rand()
 
 //Generates a random float from 0 - 1
 static float randomFloat()
 {
-	srand(time(0));
 	const float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 	return r;
 }
@@ -66,11 +64,11 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
 		//Spread the flame if it has been burning long enough
-		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.1f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.2f + randomFloat() * 2.0f)
 		{
 			m_Particle2->SetOnFire(true);
 		}
-		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.1f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.2f + randomFloat() * 2.0f)
 		{
 			m_Particle1->SetOnFire(true);
 		}
@@ -90,8 +88,8 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		if (tearDistance > m_constraintTearResistance)
 		{
 			//Reduces health by around 50+ health per second
-			m_Particle1->AddHealth(-100.0f * tearDistance * _deltaTime);
-			m_Particle2->AddHealth(-100.0f * tearDistance * _deltaTime);
+			m_Particle1->AddHealth(-100.0f * (tearDistance + 1) * _deltaTime);
+			m_Particle2->AddHealth(-100.0f * (tearDistance + 1) * _deltaTime);
 			//m_Particle1->SetHealth(0.0f);
 			//m_Particle2->SetHealth(0.0f);
 		}	
@@ -124,11 +122,25 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		{
 			//Make the folding constraints have 1/10th of the applied offset
 			correctionOffset = particleDif * (m_stiffness - ((m_fRestitutionDistance / particleDistance) * m_stiffness));
+
+			//Limit vector so the cloth doesn't freak
+			if (glm::length(correctionOffset) > 5.0f)
+			{
+				correctionOffset = glm::normalize(correctionOffset) * 5.0f;
+			}
+			
 			halfCorrectionOffset = correctionOffset * 0.5f;
 		}
 		else
 		{
 			correctionOffset = particleDif * (m_stiffness - ((m_fRestitutionDistance / particleDistance) * m_stiffness));
+
+			//Limit vector so the cloth doesn't freak
+			if (glm::length(correctionOffset) > 5.0f)
+			{
+				correctionOffset = glm::normalize(correctionOffset) * 5.0f;
+			}
+			
 			halfCorrectionOffset = correctionOffset * 0.5f;
 		}
 
@@ -146,6 +158,7 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		{
 			std::cout << "Particle ID: " << m_Particle1->GetID() << " & " << m_Particle2->GetID() << " are being moved on the y axis wtf\n";
 		}
+		
 		
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);

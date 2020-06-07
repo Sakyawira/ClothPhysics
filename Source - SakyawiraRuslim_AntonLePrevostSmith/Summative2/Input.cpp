@@ -111,6 +111,7 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
 		Game->m_mesh_cloth->SetOnFire();
+		key_state_['h'] = INPUT_DOWN;
 	}
 
 	if (key_state_['r'] == INPUT_DOWN_FIRST)
@@ -171,34 +172,34 @@ void Input::process_input(GameManager* Game, Audio& audio)
 
 	if (special_key_state_[GLUT_KEY_UP] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.z += 0.5f;
+		Game->wind_force.z += 0.05f;
 		special_key_state_[GLUT_KEY_UP] = INPUT_DOWN;
 	}
 	if (special_key_state_[GLUT_KEY_DOWN] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.z -= 0.5f;
+		Game->wind_force.z -= 0.05f;
 		special_key_state_[GLUT_KEY_DOWN] = INPUT_DOWN;
 	}
 	if (special_key_state_[GLUT_KEY_LEFT] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.x -= 0.5f;
+		Game->wind_force.x -= 0.05f;
 		special_key_state_[GLUT_KEY_LEFT] = INPUT_DOWN;
 	}
 	if (special_key_state_[GLUT_KEY_RIGHT] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.x += 0.5f;
+		Game->wind_force.x += 0.05f;
 		special_key_state_[GLUT_KEY_RIGHT] = INPUT_DOWN;
 	}
 
 	if (key_state_['o'] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.y -= 0.5f;
+		Game->wind_force.y -= 0.05f;
 		key_state_['o'] = INPUT_DOWN;
 	}
 
 	if (key_state_['p'] == INPUT_DOWN_FIRST)
 	{
-		Game->wind_force.y += 0.5f;
+		Game->wind_force.y += 0.05f;
 		key_state_['p'] = INPUT_DOWN;
 	}
 
