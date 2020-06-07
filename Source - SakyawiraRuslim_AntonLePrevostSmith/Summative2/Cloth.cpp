@@ -349,17 +349,18 @@ void Cloth::ApplyGravityForce(const glm::vec3 _force)
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _middlePyramid, glm::vec3 _particle)
 {
 	glm::vec3 normal = FindTriangleNormal(_point1, _point2, _point3);
+	glm::vec3 centroid = (_point1 + _point2 + _point3) / 3.0f;
 
 	// Check whether or not the triangle and a line between
 	// the middle of the pyramid and the particle
 	// are facing each other
 	// if return is -1, they are facing each other (opposite direction)
-	float dotV4 = glm::dot(normal, _middlePyramid - _particle);
+	float dotV4 = glm::dot(normal, centroid - _particle);
 
 	//// Check whether or not the triangle and a line between a point in the triangle and the particle are facing each other
 	//float dotP = glm::dot(normal, _point3 - p);
 
-	return glm::sign(dotV4) == -1;
+	return dotV4 > 0;
 }
 
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle)
@@ -487,11 +488,11 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	{
 		glm::vec3 _particleLoc = particle.GetPos();
 		// True means pyramid collide
-		if (!SameFaceDir(v1, v2, top_pyramid, middle_pyramid, _particleLoc) && 
-			!SameFaceDir(v2, v3, top_pyramid, middle_pyramid, _particleLoc) &&
-			!SameFaceDir(v3, v4, top_pyramid, middle_pyramid, _particleLoc) && 
-			!SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
-			!SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc))
+		if (SameFaceDir(v1, v2, top_pyramid, middle_pyramid, _particleLoc) && 
+			SameFaceDir(v2, v3, top_pyramid, middle_pyramid, _particleLoc) &&
+			SameFaceDir(v3, v4, top_pyramid, middle_pyramid, _particleLoc) && 
+			SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) /*&&
+			!SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc)*/)
 		{
 			//// If it is not colliding before
 			//if (particle.isCollided == false)
