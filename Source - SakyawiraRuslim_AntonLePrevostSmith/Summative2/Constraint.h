@@ -9,7 +9,7 @@ class Constraint
 		Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint = false);
 
 		// Calculate Constraints
-		bool Process(float _deltaTime);
+		bool Process(float _deltaTime, bool _debugMode);
 
 		// Getters-Setters
 		void SetIsAlive(bool _IsAlive);
@@ -26,7 +26,8 @@ class Constraint
 		Particle* m_Particle2;
 
 		//Should be in the range of 0.5f - 1.5f
-		float m_stiffness = 1.0f;
+		float m_constraintTearResistance = 1.0f;
+		float m_stiffness = 1.2f;
 		float m_fRestitutionDistance = 0.1f;
 		bool m_bToBeDestroyed = false;
 		bool m_bFoldingConstraint = false;

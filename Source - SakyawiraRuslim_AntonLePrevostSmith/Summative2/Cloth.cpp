@@ -1,6 +1,8 @@
 #include "Cloth.h"
 
 #include <algorithm>
+#include <ctime>    // For time()
+#include <cstdlib>  // For srand() and rand()
 #include <random>
 
 Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
@@ -12,6 +14,9 @@ Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
 
 void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 {
+	//Reset the number of particles we have created
+	m_particleCount = -1;
+	
 	m_objPosition = _pos;
 
 	// Reset particles and constraints
@@ -35,7 +40,7 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 									 _pos.z);
 
 			// Create and insert a new particle in column x, row y
-			m_vParticles[iIndexOffset + x] = Particle(pos); 
+			m_vParticles[iIndexOffset + x] = Particle(pos, ++m_particleCount); 
 
 			// Set vertices id and vertices for each particle
 			m_vParticles[iIndexOffset + x].SetVertexId(verticesID);
@@ -219,61 +224,64 @@ void Cloth::CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstrai
 
 void Cloth::Render(Camera& _camera, Texture* _texture)
 {
-	glUseProgram(m_program);
-	glDisable(GL_CULL_FACE);
+	if (m_indices.size() > 1)
+	{
+		glUseProgram(m_program);
+		glDisable(GL_CULL_FACE);
 
-	// Pass Texture to Shader
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _texture->GetID());
-	const GLchar* name = "tex";
-	glUniform1i(glGetUniformLocation(m_program, name), 0);
+		// Pass Texture to Shader
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _texture->GetID());
+		const GLchar* name = "tex";
+		glUniform1i(glGetUniformLocation(m_program, name), 0);
 
-	GLuint camLoc = glGetUniformLocation(m_program, "camPos");
-	glUniform3fv(camLoc, 1, glm::value_ptr(_camera.get_position() + _camera.get_look_dir() * 15.0f));
+		GLuint camLoc = glGetUniformLocation(m_program, "camPos");
+		glUniform3fv(camLoc, 1, glm::value_ptr(_camera.get_position() + _camera.get_look_dir() * 15.0f));
 
-	// Setup and Pass Model Matrix to Shader
-	glm::mat4 translation = glm::translate(glm::mat4(), m_objPosition);
-	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 scale = glm::scale(glm::mat4(), m_objScale);
+		// Setup and Pass Model Matrix to Shader
+		glm::mat4 translation = glm::translate(glm::mat4(), m_objPosition);
+		glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 scale = glm::scale(glm::mat4(), m_objScale);
 
-	glm::mat4 Model = translation * rotation * scale;
+		glm::mat4 Model = translation * rotation * scale;
 
-	glm::mat4 VP = _camera.get_projection() * _camera.get_view();
+		glm::mat4 VP = _camera.get_projection() * _camera.get_view();
 
-	GLuint modelLoc = glGetUniformLocation(m_program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Model));
+		GLuint modelLoc = glGetUniformLocation(m_program, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Model));
 
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
+		glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 
-	// Update Buffer Datas, because we might lose some particles
-	glBindVertexArray(m_VAO);
+		// Update Buffer Datas, because we might lose some particles
+		glBindVertexArray(m_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(GLfloat), m_vertices.data());
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), &m_indices.front(), GL_DYNAMIC_DRAW);
-	m_indicesSize = m_indices.size();
+		glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(GLfloat), m_vertices.data());
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), &m_indices.front(), GL_DYNAMIC_DRAW);
+		m_indicesSize = m_indices.size();
 
-	// Draw
-	glDrawElements(GL_LINES, m_indicesSize, GL_UNSIGNED_INT, 0);
+		// Draw
+		glDrawElements(GL_LINES, m_indicesSize, GL_UNSIGNED_INT, 0);
 
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 }
 
 void Cloth::Process(float _deltaTime)
 {
 	m_indices.clear();
-	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
+	for (auto& m_vConstraint : m_vConstraints)
 	{
-		if (m_vConstraints[i].GetIsAlive())
+		if (m_vConstraint.GetIsAlive())
 		{
-			m_indices.push_back(m_vConstraints[i].GetParticle1()->GetVertexId());
-			m_indices.push_back(m_vConstraints[i].GetParticle2()->GetVertexId());
+			m_indices.push_back(m_vConstraint.GetParticle1()->GetVertexId());
+			m_indices.push_back(m_vConstraint.GetParticle2()->GetVertexId());
 		}
 	}
 
@@ -284,7 +292,7 @@ void Cloth::Process(float _deltaTime)
 		for (auto& constraint: m_vConstraints)
 		{
 			// Process constraint.
-			if(constraint.GetIsAlive() && !constraint.Process(_deltaTime))
+			if(constraint.GetIsAlive() && !constraint.Process(_deltaTime, m_debugMode))
 			{
 				constraint.SetIsAlive(false);
 			}
@@ -400,6 +408,17 @@ void Cloth::Squish(int dir)
 			GetParticle(i - 1, 0)->AdjustPinnedPosition(glm::vec3(right_offset, 0.0f, 0.0f));
 		}
 	}
+}
+
+void Cloth::SetOnFire()
+{
+	srand(time(0));
+	GetParticle(rand() % m_fParticlesInX, rand() % m_fParticlesInY)->SetOnFire(true);
+}
+
+void Cloth::SetDebug(bool _debug)
+{
+	m_debugMode = _debug;
 }
 
 void Cloth::BoxCollision(GameObject* _box)

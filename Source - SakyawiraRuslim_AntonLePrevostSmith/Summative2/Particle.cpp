@@ -2,15 +2,16 @@
 
 #include <iostream>
 
-Particle::Particle(glm::vec3 _position)
+Particle::Particle(glm::vec3 _position, unsigned int _id)
 {
 	m_v3Position = _position;
 	m_v3OldPosition = _position;
+	m_ID = _id;
 }
 
 void Particle::Process(float _groundY, float _deltaTime)
 {
-	if (m_iConnectionCount > 0)
+	if (m_bIsAlive)
 	{
 		if (!m_bIsPinned)
 		{
@@ -18,8 +19,8 @@ void Particle::Process(float _groundY, float _deltaTime)
 			{
 				//Increase burn timer, apply upward force and reduce health
 				m_fBurnTimer += _deltaTime;
-				ApplyForce(glm::vec3(0, 0.015f, 0));
-				AddHealth(-0.0006f);
+				ApplyForce(glm::vec3(0, 0.025f, 0));
+				AddHealth(-50.0f * _deltaTime);
 			}
 			
 			// Verlet Integration
@@ -39,7 +40,13 @@ void Particle::Process(float _groundY, float _deltaTime)
 	}
 	else
 	{
-		std::cout << "Zero connections!" << std::endl;
+		m_bIsAlive = false;
+
+		if(m_iConnectionCount < 0)
+		{
+			// You have a bug!
+			system("pause");
+		}
 	}
 }
 
@@ -84,10 +91,16 @@ void Particle::DecrementConnectionCount()
 	{
 		m_iConnectionCount--;
 	}
+	else
+	{
+		//This shouldn't be able to happen!
+		system("pause");
+	}
 	
 	if (m_iConnectionCount <= 0)
 	{
 		m_fHealth = 0.0f;
+		m_bIsAlive = false;
 		SetPin(false);
 	}
 }

@@ -21,8 +21,12 @@ class Cloth : public Mesh
 		void ApplyWindForce(const glm::vec3 _force);
 		void Unpin();
 		void Squish(int dir);
+		void SetOnFire();
 		void SphereCollision(GameObject* _sphere);
 		void BoxCollision(GameObject* _box);
+
+		void SetDebug(bool _debug);
+		bool GetDebug() const { return m_debugMode; }
 
 	private:
 
@@ -34,15 +38,18 @@ class Cloth : public Mesh
 
 		GLuint m_program;
 
+		bool m_debugMode = false;
+
 		// number of particles in "x" direction
 		int m_fParticlesInX; 
 		// number of particles in "y" direction
 		int m_fParticlesInY; 
 
 		bool m_isHoldingParticle = false;
-		Particle* pickedParticle;
+		Particle* m_pickedParticle;
 
 		// Particles which construct this cloth
+		unsigned int m_particleCount = 0;
 		std::vector<Particle> m_vParticles;
 		// Constraints between Particles which construct this cloth
 		std::vector<Constraint> m_vConstraints; 

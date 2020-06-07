@@ -25,7 +25,7 @@ class Particle
 {   
     public:
         Particle() {};
-        Particle(glm::vec3 _position);
+        Particle(glm::vec3 _position, unsigned int _id);
         ~Particle(){};
 
         void Process(float _groundY, float _deltaTime);
@@ -43,7 +43,7 @@ class Particle
         void DecrementConnectionCount();;
 
         void AdjustPosition(const glm::vec3 _v3) { if (!m_bIsPinned) m_v3Position += _v3; }
-        void AdjustPinnedPosition(const glm::vec3 _v3) {m_v3Position += _v3; }
+        void AdjustPinnedPosition(const glm::vec3 _v3) { m_v3Position += _v3; }
 
         // Getters-Setters
         glm::vec3 GetPos() { return m_v3Position; }
@@ -53,6 +53,8 @@ class Particle
         bool IsPinned() const { return m_bIsPinned; }
         void SetPin(bool _IsPinned) { m_bIsPinned = _IsPinned; }
 
+        unsigned int GetID() const { return m_ID; }
+	
         int GetVertexId() const { return m_iVertexId; }
         void SetVertexId(int _id) { m_iVertexId = _id; }
 
@@ -64,6 +66,10 @@ class Particle
 
         // First point collision
         glm::vec3 first_point_col = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
+        bool GetIsAlive() const { return m_bIsAlive; }
+	
         float GetHealth() const { return m_fHealth; }
         void SetHealth(float _health) { m_fHealth = _health; }
 
@@ -76,7 +82,11 @@ class Particle
         
     private:
 
+		// The particle id used to know which particle we are dealing with
+        unsigned int m_ID = -1;
 
+		// Keeps track of whether or not the particle lost all of its connections
+        bool m_bIsAlive = true;
 
         // Keeps track of whether it can be moved
         bool m_bIsPinned = false;
@@ -94,7 +104,7 @@ class Particle
         int m_iConnectionCount{};
 
          // Mass of particle 
-        float m_fMass = 1.0f;
+        float m_fMass = 0.1f;
 
         // Dampening value
         float m_fDampening = 0.01f;

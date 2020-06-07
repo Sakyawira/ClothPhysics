@@ -1,6 +1,16 @@
 #include "Constraint.h"
 #include <iostream>
 
+#include <ctime>    // For time()
+#include <cstdlib>  // For srand() and rand()
+
+//Generates a random float from 0 - 1
+static float randomFloat()
+{
+	srand(time(0));
+	const float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	return r;
+}
 
 Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
@@ -12,6 +22,8 @@ Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 	{
 		m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
 	}
+
+	m_constraintTearResistance = 0.01f + randomFloat() * 0.5f;
 }
 
 void Constraint::SetIsAlive(bool _isAlive)
@@ -22,19 +34,25 @@ void Constraint::SetIsAlive(bool _isAlive)
 	// then have the particles decrement their number of connections.
 	if(!m_bIsAlive)
 	{
-		if(m_Particle1 && m_Particle2)
+		if(m_Particle1 && m_Particle1->GetIsAlive())
 		{
 			m_Particle1->DecrementConnectionCount();
+			m_Particle1 = nullptr;
+		}
+
+		if(m_Particle2 && m_Particle2->GetIsAlive())
+		{
 			m_Particle2->DecrementConnectionCount();
+			m_Particle2 = nullptr;
 		}
 	}
 }
 
-bool Constraint::Process(float _deltaTime)
+bool Constraint::Process(float _deltaTime, bool _debugMode)
 {
 	// Calculates and applies the constraints to the connect particles,
 	// if the particles are valid
-	if(m_bIsAlive && m_Particle1 && m_Particle2)
+	if(m_bIsAlive && m_Particle1->GetIsAlive() && m_Particle2->GetIsAlive())
 	{
 		// Get the distance between the particles
 		glm::vec3 particleDif = m_Particle1->GetPos() - m_Particle2->GetPos();
@@ -48,11 +66,11 @@ bool Constraint::Process(float _deltaTime)
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
 		//Spread the flame if it has been burning long enough
-		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.1f + static_cast<float>(rand() % 200) / 100.0f)
 		{
 			m_Particle2->SetOnFire(true);
 		}
-		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.3f + static_cast<float>(rand() % 200) / 100.0f)
+		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.1f + static_cast<float>(rand() % 200) / 100.0f)
 		{
 			m_Particle1->SetOnFire(true);
 		}
@@ -63,18 +81,20 @@ bool Constraint::Process(float _deltaTime)
 		//If it's not too far away add health
 		//If one or more of our particles dies, then we die too
 		float tearDistance = particleDistance - m_fRestitutionDistance;
-		float constraintTearResistance = 0.5f;
+		
 		if(m_Particle1->IsPinned() || m_Particle2->IsPinned())
 		{
-			constraintTearResistance = 10.0f;
+			m_constraintTearResistance = 2.5f;
 		}
 
-		if (tearDistance > constraintTearResistance)
+		if (tearDistance > m_constraintTearResistance)
 		{
 			//Reduces health by around 50+ health per second
-			m_Particle1->AddHealth(-25.0f * particleDistance * _deltaTime);
-			m_Particle2->AddHealth(-25.0f * particleDistance * _deltaTime);
-		}
+			m_Particle1->AddHealth(-100.0f * tearDistance * _deltaTime);
+			m_Particle2->AddHealth(-100.0f * tearDistance * _deltaTime);
+			//m_Particle1->SetHealth(0.0f);
+			//m_Particle2->SetHealth(0.0f);
+		}	
 		else
 		{
 			//It's healing, as long as it's not burning.
@@ -112,6 +132,21 @@ bool Constraint::Process(float _deltaTime)
 			halfCorrectionOffset = correctionOffset * 0.5f;
 		}
 
+		if (!m_bIsAlive)
+		{
+			system("pause");
+		}
+		
+		if (!m_Particle1->GetID() == 0)
+		{
+			int temp = 1;
+		}
+
+		if(_debugMode && halfCorrectionOffset.y > 0.01)
+		{
+			std::cout << "Particle ID: " << m_Particle1->GetID() << " & " << m_Particle2->GetID() << " are being moved on the y axis wtf\n";
+		}
+		
 		m_Particle1->AdjustPosition(-halfCorrectionOffset);
 		m_Particle2->AdjustPosition(halfCorrectionOffset);
 		

@@ -107,6 +107,12 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		Game->m_mesh_cloth->Squish(1);
 	}
 
+	if (key_state_['h'] == INPUT_DOWN_FIRST)
+	{
+		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
+		Game->m_mesh_cloth->SetOnFire();
+	}
+
 	if (key_state_['r'] == INPUT_DOWN_FIRST)
 	{
 		if (!Game->is_started() /*&& !Game->IsEnded()*/)
