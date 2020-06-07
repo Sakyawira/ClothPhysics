@@ -366,7 +366,7 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle)
 {
 	// Get the normal of a quad (facing direction)
-	glm::vec3 normal = cross(_point2 - _point1, _point3 - _point1);
+	//glm::vec3 normal = cross(_point2 - _point1, _point3 - _point1);
 
 	// Check if the quad and a line between two points in the quad are facing each other
 	//float dotV4 = glm::dot(normal, _point4 - _point1);
@@ -376,8 +376,8 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 
 	// if both are facing each other or both are not facing each other
 	// if return is -1, they are facing each other (opposite direction)
-	float dotV4 = glm::dot(normal, _middlePyramid - _particle);
-	return glm::sign(dotV4) == -1;
+	//float dotV4 = glm::dot(normal, _middlePyramid - _particle);
+	return _particle.y > _middlePyramid.y && _particle.y < _point4.y;
 }
 
 glm::vec3 Cloth::FindTriangleNormal(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3)
@@ -491,8 +491,8 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 		if (SameFaceDir(v1, v2, top_pyramid, middle_pyramid, _particleLoc) && 
 			SameFaceDir(v2, v3, top_pyramid, middle_pyramid, _particleLoc) &&
 			SameFaceDir(v3, v4, top_pyramid, middle_pyramid, _particleLoc) && 
-			SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) /*&&
-			!SameFaceDir(v1, v2, v3, v4, middle_pyramid, _particleLoc)*/)
+			SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
+			SameFaceDir(v1, v2, v3, top_pyramid, middle_pyramid, _particleLoc))
 		{
 			//// If it is not colliding before
 			//if (particle.isCollided == false)
