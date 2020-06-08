@@ -504,17 +504,17 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	glm::vec3 v3 = glm::vec3(0.5f, 0.0f, 0.5f) * _pyramid->GetScale() + _pyramid->GetLocation();
 	glm::vec3 v4 = glm::vec3(0.5f, 0.0f, -0.5f) * _pyramid->GetScale() + _pyramid->GetLocation();
 	glm::vec3 top_pyramid	 = glm::vec3(0.0f, 0.5f, 0.0f) * _pyramid->GetScale() + _pyramid->GetLocation();
-	glm::vec3 middle_pyramid = _pyramid->GetLocation();
+	glm::vec3 bottom_pyramid = _pyramid->GetLocation();
 
 	for (auto& particle : m_vParticles)
 	{
 		glm::vec3 _particleLoc = particle.GetPos();
 		// True means pyramid collide
-		if (SameFaceDir(v1, v2, top_pyramid, middle_pyramid, _particleLoc) && 
-			SameFaceDir(v2, v3, top_pyramid, middle_pyramid, _particleLoc) &&
-			SameFaceDir(v3, v4, top_pyramid, middle_pyramid, _particleLoc) && 
-			SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
-			SameFaceDir(v1, v2, v3, top_pyramid, middle_pyramid, _particleLoc))
+		if (SameFaceDir(v1, v2, top_pyramid, bottom_pyramid, _particleLoc) && 
+			SameFaceDir(v2, v3, top_pyramid, bottom_pyramid, _particleLoc) &&
+			SameFaceDir(v3, v4, top_pyramid, bottom_pyramid, _particleLoc) && 
+			SameFaceDir(v4, v1, top_pyramid, bottom_pyramid, _particleLoc) &&
+			SameFaceDir(v1, v2, v3, top_pyramid, bottom_pyramid, _particleLoc))
 		{
 			// If it is not colliding before
 			if (particle.isCollided == false)
