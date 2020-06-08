@@ -535,7 +535,7 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 				float difference = glm::distance(particle.GetPos(), particle.first_point_col);
 				particle.AdjustPosition(direction * difference);
 			}
-			std::cout << "Collided!" << std::endl;
+			//std::cout << "Collided!" << std::endl;
 		}
 		// if it is not colliding anymore
 		else
