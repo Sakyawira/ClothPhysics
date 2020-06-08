@@ -499,11 +499,11 @@ void Cloth::BoxCollision(GameObject* _box)
 
 void Cloth::PyramidCollision(GameObject* _pyramid)
 {
-	glm::vec3 v1 = glm::vec3(-0.5f, 0.0f, -0.5f)	+ _pyramid->GetLocation();
-	glm::vec3 v2 = glm::vec3(-0.5f, 0.0f, 0.5f)		+ _pyramid->GetLocation();
-	glm::vec3 v3 = glm::vec3(0.5f, 0.0f, 0.5f)		+ _pyramid->GetLocation();
-	glm::vec3 v4 = glm::vec3(0.5f, 0.0f, -0.5f)		+ _pyramid->GetLocation();
-	glm::vec3 top_pyramid	 = glm::vec3(0.0f, 0.5f, 0.0f)		+ _pyramid->GetLocation();
+	glm::vec3 v1 = glm::vec3(-0.5f, 0.0f, -0.5f) * _pyramid->GetScale()	+ _pyramid->GetLocation();
+	glm::vec3 v2 = glm::vec3(-0.5f, 0.0f, 0.5f) * _pyramid->GetScale() + _pyramid->GetLocation();
+	glm::vec3 v3 = glm::vec3(0.5f, 0.0f, 0.5f) * _pyramid->GetScale() + _pyramid->GetLocation();
+	glm::vec3 v4 = glm::vec3(0.5f, 0.0f, -0.5f) * _pyramid->GetScale() + _pyramid->GetLocation();
+	glm::vec3 top_pyramid	 = glm::vec3(0.0f, 0.5f, 0.0f) * _pyramid->GetScale() + _pyramid->GetLocation();
 	glm::vec3 middle_pyramid = _pyramid->GetLocation();
 
 	for (auto& particle : m_vParticles)
@@ -516,36 +516,31 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 			SameFaceDir(v4, v1, top_pyramid, middle_pyramid, _particleLoc) &&
 			SameFaceDir(v1, v2, v3, top_pyramid, middle_pyramid, _particleLoc))
 		{
-			//// If it is not colliding before
-			//if (particle.isCollided == false)
-			//{
-			//	particle.isCollided = true;
-			//	particle.first_point_col = particle.GetPos();
-			//}
-			//// if it has collided at the previous frame
-			//else
-			//{
-			//	glm::vec3 center = _pyramid->GetLocation();
+			// If it is not colliding before
+			if (particle.isCollided == false)
+			{
+				particle.isCollided = true;
+				particle.first_point_col = particle.GetPos();
+			}
+			// if it has collided at the previous frame
+			else
+			{
+				glm::vec3 center = _pyramid->GetLocation() + glm::vec3(0.0f, 0.25f, 0.0f) * _pyramid->GetScale();//(_pyramid->GetLocation() +  top_pyramid) * 0.5f;
 
-			//	// Direction Vector from Particle to the Sphere
-			//	glm::vec3 direction = glm::normalize(particle.GetPos() - center);
+				// Direction Vector from Particle to the Sphere
+				glm::vec3 direction = glm::normalize(particle.GetPos() - center);
 
-			//	// Distance between Particle and Sphere Center
-			//	float distance = glm::distance(particle.GetPos(), center);
-
-			//	// Calculate the difference between the radius of the sphere and its distance with the particle 
-			//	// Add it back to the particle position, so it is moved back out
-			//	float difference = glm::distance(particle.GetPos(), particle.first_point_col);
-			//	particle.AdjustPosition(direction * difference);
-
-			//	//particle.SetPos(particle.first_point_col);
-			//}
+				// Calculate the difference between the radius of the sphere and its distance with the particle 
+				// Add it back to the particle position, so it is moved back out
+				float difference = glm::distance(particle.GetPos(), particle.first_point_col);
+				particle.AdjustPosition(direction * difference);
+			}
 			std::cout << "Collided!" << std::endl;
 		}
 		// if it is not colliding anymore
 		else
 		{
-			//particle.isCollided = false;
+			particle.isCollided = false;
 		}
 	}
 }
