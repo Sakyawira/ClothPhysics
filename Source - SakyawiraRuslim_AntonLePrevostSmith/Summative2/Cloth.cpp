@@ -558,44 +558,45 @@ void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _
 	//eyespace to world space
 	glm::mat4 invViewMat = glm::inverse(_camera->get_view());
 	glm::vec4 rayWorld = invViewMat * eyeCoords;
-	//m_ray_direction_ = 
 
 	//Calculate mouse click from pointer to world space
-	glm::vec3 _position = particle->GetPos();
-	float _posRadius = 0.3f;
+	glm::vec3 particlePos = particle->GetPos();
 	glm::vec3 camPos = _camera->get_position();
-	glm::vec3 dirVector = _position - camPos;
-	glm::vec3 rayDirection = glm::normalize(glm::vec3(rayWorld));
+	glm::vec3 cam_parV = particlePos - camPos;
+	glm::vec3 rayDir = glm::normalize(glm::vec3(rayWorld));
 
-	//If player is not already picking a particle
+	// If player is not holding a particle
 	if (!m_isHoldingParticle)
 	{
-		//Check if the particle collides with the mouse pointer 
-		//based on the radius of the particle
-		float fA = glm::dot(rayDirection, rayDirection);
-		float fB = 2.0f * glm::dot(dirVector, rayDirection);
-		float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
-		float fD = fB * fB - 4.0f * fA * fC;
+		// Ray - Sphere Collision
+		// The Particle is a sphere with 0.3 radius
+		float parRadius = 0.3f;
+		float a = glm::dot(rayDir, rayDir);
+		float b = 2.0f * glm::dot(cam_parV, rayDir);
+		float c = glm::dot(cam_parV, cam_parV) - parRadius * parRadius;
+		float d = b * b - 4.0f * a * c;
 
-		//if particle collides with mouse
-		if (fD > 0.0f)
+		// Collides if true
+		if (d > 0.0f)
 		{
-			//Set it's initial new position
-			float distance = glm::distance(camPos, _position);
-			_position = rayDirection * distance + camPos;
-			particle->SetPos(_position);
+			// Set particle's position to ray direction multiplied by the distance between the camera and the particle
+			float distance = glm::distance(camPos, particlePos);
+			particlePos = camPos + rayDir * distance;
+			particle->SetPos(particlePos);
 
-			//Set particle as picked
+			// Set particle as picked
 			m_pickedParticle = particle;
 			m_isHoldingParticle = true;
 		}
 	}
+	// Player is already holding a particle in the previous frame
 	else
 	{
-		//If particle is already being held, calculate new position depending on mouse position
-		float distance = glm::distance(camPos, _position);
-		_position = rayDirection * distance + camPos;
-		particle->SetPos(_position);
+		// Set particle's position to ray direction multiplied by the distance between the camera and the particle
+		float distance = glm::distance(camPos, particlePos);
+		particlePos = camPos + rayDir * distance;
+		particle->SetPos(particlePos);
+
 		m_pickedParticle = particle;
 	}
 }
