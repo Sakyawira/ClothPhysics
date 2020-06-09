@@ -101,8 +101,8 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 			//Reduces health by around 50+ health per second
 			//m_Particle1->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
 			//m_Particle2->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
-			m_Particle1->AddHealth(-100.0f * _deltaTime);
-			m_Particle1->AddHealth(-100.0f * _deltaTime);
+			m_Particle1->AddHealth(-100.0f /** _deltaTime*/);
+			m_Particle2->AddHealth(-100.0f /** _deltaTime*/);
 		}	
 		else
 		{

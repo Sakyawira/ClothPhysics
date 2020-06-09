@@ -30,14 +30,7 @@ public:
 
 private:
 
-	// Define Input
-	enum InputState
-	{
-		INPUT_UP,
-		INPUT_DOWN,
-		INPUT_UP_FIRST,
-		INPUT_DOWN_FIRST,
-	};
+
 
 	// Input Container
 	InputState key_state_[255];

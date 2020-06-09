@@ -42,6 +42,15 @@
 const int WINDOW_WIDHT = 800;
 const int WINDOW_HEIGHT = 800;
 
+// Define Input
+enum InputState
+{
+	INPUT_UP,
+	INPUT_DOWN,
+	INPUT_UP_FIRST,
+	INPUT_DOWN_FIRST,
+};
+
 class GameManager
 {
 public:
@@ -86,6 +95,8 @@ public:
 	Mesh* m_mesh_pyramid;
 	Mesh* m_mesh_cube;
 	Sphere* m_mesh_sphere;
+
+	InputState m_mouse0_;
 	
 private:
 

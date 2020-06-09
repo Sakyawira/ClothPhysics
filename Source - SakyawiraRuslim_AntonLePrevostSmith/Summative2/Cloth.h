@@ -15,7 +15,7 @@ class Cloth : public Mesh
 		void Initialize(float _width, float _height, glm::vec3 _pos);
 		void GenerateBuffers();
 		void Render(Camera& _camera, Texture* _texture);
-		void Process(float _deltaTick);
+		void Process(float _deltaTick, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold);
 		void ApplyForce(const glm::vec3 _force);
 		void ApplyGravityForce(const glm::vec3 _force);
 		void ApplyWindForce(const glm::vec3 _force);
@@ -25,7 +25,7 @@ class Cloth : public Mesh
 		void SphereCollision(GameObject* _sphere);
 		void BoxCollision(GameObject* _box);
 		void PyramidCollision(GameObject* _pyramid);
-		void ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos);
+		void ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold);
 
 		void SetDebug(bool _debug);
 		bool GetDebug() const { return m_debugMode; }

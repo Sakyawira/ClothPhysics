@@ -272,7 +272,7 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 	}
 }
 
-void Cloth::Process(float _deltaTime)
+void Cloth::Process(float _deltaTime, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
 {
 	// iterate over all constraints several times
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
@@ -312,22 +312,22 @@ void Cloth::Process(float _deltaTime)
 		i += 6;
 
 		//Handle particle picking if left mouse clicked and dragged
-		//if (Input::GetInstance()->MouseState[0] == INPUT_HOLD)
-		//{
-		//	if (!m_isHoldingParticle)
-		//	{
-		//		ProcessParticlePick(&(*particle));
-		//	}
-		//	else
-		//	{
-		//		ProcessParticlePick(pickedParticle);
-		//	}
-		//}
-		//else
-		//{
-		//	//set as not holding a particle
-		//	m_isHoldingParticle = false;
-		//}
+		if (isMouseHold)
+		{
+			if (!m_isHoldingParticle)
+			{
+				ProcessParticlePick(&particle, _camera, _mousePos, isMouseHold);
+			}
+			else
+			{
+				ProcessParticlePick(m_pickedParticle, _camera, _mousePos, isMouseHold);
+			}
+		}
+		else
+		{
+			//set as not holding a particle
+			m_isHoldingParticle = false;
+		}
 	}
 
 	m_indices.clear();
@@ -544,7 +544,7 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	}
 }
 
-void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos)
+void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
 {
 	//screen pos
 	glm::vec2 normalizedScreenPos = _mousePos;

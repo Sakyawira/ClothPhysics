@@ -202,7 +202,7 @@ void GameManager::process_game(Audio& audio)
 		m_mesh_cloth->ApplyWindForce(glm::vec3(wind_force)/delta_t);
 	
 		// Update cloth physics
-		m_mesh_cloth->Process(delta_t);
+		m_mesh_cloth->Process(delta_t, &camera, m_mouse_pos_, m_mouse0_ == INPUT_DOWN);
 
 		if (sphere->GetMesh() == m_mesh_sphere)
 		{

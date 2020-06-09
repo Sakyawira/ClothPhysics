@@ -211,6 +211,7 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		Game->set_click(false);
 	}
+	Game->m_mouse0_ = mouse_state_[0];
 }
 
 void Input::mouse_click(int button, int state, int x, int y)
