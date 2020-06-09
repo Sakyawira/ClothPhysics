@@ -171,17 +171,29 @@ void Input::process_input(GameManager* Game, Audio& audio)
 
 	if (key_state_['r'] == INPUT_DOWN_FIRST)
 	{
+		//if (!Game->is_started() /*&& !Game->IsEnded()*/)
+		//{
+		//	Game->start_game(true);
+		//}
+		//else
+		//{
+			// Start working on initializing the game on restart instead of making a new one
+			//Game->start_game(false);
+			Game->initialize();
+		//}
+		key_state_['r'] = INPUT_DOWN;
+	}
+	if (key_state_['v'] == INPUT_DOWN_FIRST)
+	{
 		if (!Game->is_started() /*&& !Game->IsEnded()*/)
 		{
 			Game->start_game(true);
 		}
 		else
 		{
-			// Start working on initializing the game on restart instead of making a new one
 			Game->start_game(false);
-			Game->initialize();
 		}
-		key_state_['r'] = INPUT_DOWN;
+		key_state_['v'] = INPUT_DOWN;
 	}
 	if (key_state_['f'] == INPUT_DOWN_FIRST)
 	{

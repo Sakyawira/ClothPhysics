@@ -66,7 +66,7 @@ GameManager::GameManager()
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
 	
-	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-108, -200.0f), m_v_text);
+	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -200.0f), m_v_text);
 	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-108, -230.0f), m_v_text);
 
 	m_text_pins_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -330.0f), m_v_text);
@@ -158,7 +158,7 @@ void GameManager::initialize()
 
 	m_text_instruction_burn_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_burn_->SetScale(0.5f);
-	m_text_instruction_burn_->SetText("Hit 'H' to burn cloth.");
+	m_text_instruction_burn_->SetText("Hit 'H' to burn cloth, Hit 'R' to reset cloth.");
 
 	m_text_particles_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_particles_->SetScale(0.35f);
@@ -242,11 +242,11 @@ void GameManager::process_game(Audio& audio)
 		if (m_b_start_)
 		{
 			// Update Texts
-			m_text_instruction_top_left_->SetText("Press 'R' to reset and to possess the collision module.");
+			m_text_instruction_top_left_->SetText("Press 'V' to possess the collision module.");
 		}
 		else
 		{
-			m_text_instruction_top_left_->SetText("Press 'R' to use free moving camera!");
+			m_text_instruction_top_left_->SetText("Press 'V' to use free moving camera!");
 		}
 
 		m_text_instruction_bottom_->SetText("Hit 'Space' to Unpin Cloth.");
