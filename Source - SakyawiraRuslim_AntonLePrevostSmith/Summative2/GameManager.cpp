@@ -66,8 +66,11 @@ GameManager::GameManager()
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
 	
-	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(150.f, -330.0f), m_v_text);
-	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(150.f, -350.0f), m_v_text);
+	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -300.0f), m_v_text);
+	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -230.0f), m_v_text);
+
+	m_text_pins_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -330.0f), m_v_text);
+	m_text_particles_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -350.0f), m_v_text);
 
 	m_text_windX_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -330.0f), m_v_text);
 	m_text_windY_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -350.0f), m_v_text);
@@ -150,10 +153,16 @@ void GameManager::initialize()
 	m_text_instruction_top_left_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_top_left_->SetScale(0.5f);
 
-	m_text_instruction_burn_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_text_instruction_burn_->SetScale(0.35f);
-	m_text_instruction_burn_->SetText("Hit 'H' to brun cloth.");
+	m_text_pins_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_pins_->SetScale(0.35f);
 
+	m_text_instruction_burn_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_burn_->SetScale(0.5f);
+	m_text_instruction_burn_->SetText("Hit 'H' to burn cloth.");
+
+	m_text_particles_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_particles_->SetScale(0.35f);
+	
 	m_text_instruction_change_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_change_->SetScale(0.35f);
 	m_text_instruction_change_->SetText("Hit 'F' to change collision module.");
@@ -244,6 +253,9 @@ void GameManager::process_game(Audio& audio)
 		m_text_windX_->SetText("Wind X = " + to_string(wind_force.x) + " (Left-Right Arrows)");
 		m_text_windY_->SetText("Wind Y = " + to_string(wind_force.y) + " ('O' - 'P' Keys)");
 		m_text_windZ_->SetText("Wind Z = " + to_string(wind_force.z) + " (Up-Down Arrows)");
+
+		m_text_pins_->SetText("Number of Pins = " + to_string(m_mesh_cloth->GetNumberPinned()) + " ('J' - 'K' Keys)");
+		m_text_particles_->SetText("Number of Particles = " + to_string(m_mesh_cloth->GetNumberParticles()) + " ('N' - 'M' Keys)");
 	}
 	
 	else
@@ -337,6 +349,8 @@ void GameManager::render()
 		m_text_instruction_top_left_->Render();
 		m_text_instruction_bottom_->Render();
 		m_text_instruction_bottom2_->Render();
+		m_text_pins_->Render();
+		m_text_particles_->Render();
 		m_text_instruction_burn_->Render();
 		m_text_instruction_change_->Render();
 

@@ -34,6 +34,9 @@ class Cloth : public Mesh
 		void SetDebug(bool _debug);
 		bool GetDebug() const { return m_debugMode; }
 
+		int GetNumberPinned() { return m_iNumOfPinned; }
+		int GetNumberParticles() { return m_iParticlesInX * m_iParticlesInY; }
+
 	private:
 
 		bool SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _middlePyramid, glm::vec3 _particle);

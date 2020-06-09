@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	// Setup and create at glut controlled window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
-	glutInitWindowPosition(50, 50);
+	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDHT, WINDOW_HEIGHT);
 	glutCreateWindow("Sakyawira and Anton: Cloth Simulation");
 
