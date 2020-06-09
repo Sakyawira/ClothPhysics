@@ -216,10 +216,12 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		if (!Game->is_started() /*&& !Game->IsEnded()*/)
 		{
 			Game->start_game(true);
+			glutSetCursor(GLUT_CURSOR_NONE);
 		}
 		else
 		{
 			Game->start_game(false);
+			glutSetCursor(GLUT_CURSOR_BOTTOM_SIDE);
 		}
 		key_state_['v'] = INPUT_DOWN;
 	}

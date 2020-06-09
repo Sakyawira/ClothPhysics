@@ -135,7 +135,7 @@ GameManager::GameManager()
 	//m_frameBuffer = new FrameBuffer(m_sh_chromatical, m_mesh_static);
 
 	//Turn off cursor
-	glutSetCursor(GLUT_CURSOR_NONE);
+	
 	
 	this->initialize();
 
@@ -384,8 +384,8 @@ bool GameManager::is_started() const
 
 void GameManager::start_game(bool _isStart)
 {
-	camera.set_pos_x(2.5f);
-	camera.set_pos_y(-2.5f);
+	camera.set_pos_x(0.0f);
+	camera.set_pos_y(0.0f);
 	camera.set_pos_z(10.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 	stencilCube->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
