@@ -529,7 +529,19 @@ void Cloth::Squish(int dir)
 
 void Cloth::SetOnFire()
 {
-	GetParticle(rand() % m_iParticlesInX, rand() % m_iParticlesInY)->SetOnFire(true);
+	std::vector<Particle*> aliveParticles;
+
+	for(auto& particle : m_vParticles)
+	{
+		if(particle.GetIsAlive())
+		{
+			aliveParticles.push_back(&particle);
+		}
+	}
+	
+	int index = rand() % aliveParticles.size();
+	
+	aliveParticles[index]->SetOnFire(true);
 }
 
 void Cloth::SetDebug(bool _debug)
