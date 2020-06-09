@@ -192,7 +192,6 @@
     <ClInclude Include="TessModel.h" />
     <ClInclude Include="TextLabel.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Shaders\FogCubeMapFS.txt" />
