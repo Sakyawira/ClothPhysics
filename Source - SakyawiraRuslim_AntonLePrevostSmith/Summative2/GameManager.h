@@ -131,6 +131,7 @@ private:
 
 	TextLabel* m_text_pins_;
 	TextLabel* m_text_particles_;
+	TextLabel* m_text_size_;
 	TextLabel* m_text_windX_;
 	TextLabel* m_text_windY_;
 	TextLabel* m_text_windZ_;

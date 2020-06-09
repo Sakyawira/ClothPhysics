@@ -66,11 +66,12 @@ GameManager::GameManager()
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
 	
-	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -300.0f), m_v_text);
-	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -230.0f), m_v_text);
+	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -200.0f), m_v_text);
+	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-108, -230.0f), m_v_text);
 
 	m_text_pins_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -330.0f), m_v_text);
 	m_text_particles_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -350.0f), m_v_text);
+	m_text_size_ =  new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(65.f, -370.0f), m_v_text);
 
 	m_text_windX_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -330.0f), m_v_text);
 	m_text_windY_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -350.0f), m_v_text);
@@ -158,10 +159,13 @@ void GameManager::initialize()
 
 	m_text_instruction_burn_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_burn_->SetScale(0.5f);
-	m_text_instruction_burn_->SetText("Hit 'H' to burn cloth.");
+	m_text_instruction_burn_->SetText("Hit 'H' to burn cloth, Hit 'R' to reset cloth.");
 
 	m_text_particles_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_particles_->SetScale(0.35f);
+
+	m_text_size_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_size_->SetScale(0.35f);
 	
 	m_text_instruction_change_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_change_->SetScale(0.35f);
@@ -242,11 +246,11 @@ void GameManager::process_game(Audio& audio)
 		if (m_b_start_)
 		{
 			// Update Texts
-			m_text_instruction_top_left_->SetText("Press 'R' to reset and to possess the collision module.");
+			m_text_instruction_top_left_->SetText("Press 'V' to possess the collision module.");
 		}
 		else
 		{
-			m_text_instruction_top_left_->SetText("Press 'R' to use free moving camera!");
+			m_text_instruction_top_left_->SetText("Press 'V' to use free moving camera!");
 		}
 
 		m_text_instruction_bottom_->SetText("Hit 'Space' to Unpin Cloth.");
@@ -256,6 +260,7 @@ void GameManager::process_game(Audio& audio)
 
 		m_text_pins_->SetText("Number of Pins = " + to_string(m_mesh_cloth->GetNumberPinned()) + " ('J' - 'K' Keys)");
 		m_text_particles_->SetText("Number of Particles = " + to_string(m_mesh_cloth->GetNumberParticles()) + " ('N' - 'M' Keys)");
+		m_text_size_->SetText("Size of Cloth = " + to_string(m_mesh_cloth->GetNumberParticles()) + " ('<' - '>' Keys)");
 	}
 	
 	else
@@ -351,6 +356,7 @@ void GameManager::render()
 		m_text_instruction_bottom2_->Render();
 		m_text_pins_->Render();
 		m_text_particles_->Render();
+		m_text_size_->Render();
 		m_text_instruction_burn_->Render();
 		m_text_instruction_change_->Render();
 
