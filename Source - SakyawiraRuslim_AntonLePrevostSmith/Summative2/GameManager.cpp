@@ -223,7 +223,7 @@ void GameManager::process_game(Audio& audio)
 		if (m_b_start_)
 		{
 			// Update Texts
-			m_text_instruction_top_left_->SetText("Press 'R' to reset");
+			m_text_instruction_top_left_->SetText("Press 'R' to reset and to possess the collision module.");
 		}
 		else
 		{
