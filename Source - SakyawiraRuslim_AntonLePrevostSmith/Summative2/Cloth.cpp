@@ -544,14 +544,28 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	}
 }
 
-void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera)
+void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos)
 {
+	//screen pos
+	glm::vec2 normalizedScreenPos = _mousePos;
+	//screenpos to Proj Space
+	glm::vec4 clipCoords = glm::vec4(normalizedScreenPos.x, normalizedScreenPos.y, -1.0f, 1.0f);
+	//Proj Space to eye space
+	glm::mat4 invProjMat = glm::inverse(_camera->get_projection());
+	glm::vec4 eyeCoords = invProjMat * clipCoords;
+	eyeCoords = glm::vec4(eyeCoords.x, eyeCoords.y, -1.0f, 0.0f);
+
+	//eyespace to world space
+	glm::mat4 invViewMat = glm::inverse(_camera->get_view());
+	glm::vec4 rayWorld = invViewMat * eyeCoords;
+	//m_ray_direction_ = 
+
 	//Calculate mouse click from pointer to world space
 	glm::vec3 _position = particle->GetPos();
 	float _posRadius = 0.3f;
 	glm::vec3 camPos = _camera->get_position();
 	glm::vec3 dirVector = _position - camPos;
-	glm::vec3 rayDirection = Input::GetInstance()->ScreenToWorldRay();
+	glm::vec3 rayDirection = glm::normalize(glm::vec3(rayWorld));
 
 	//If player is not already picking a particle
 	if (!m_isHoldingParticle)
