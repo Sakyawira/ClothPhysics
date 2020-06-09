@@ -559,10 +559,11 @@ void Cloth::ParticleGrab(Particle* particle, Camera* _camera, glm::vec2 _mousePo
 	glm::mat4 invViewMat = glm::inverse(_camera->get_view());
 	glm::vec4 rayWorld = invViewMat * eyeCoords;
 
-	//Calculate mouse click from pointer to world space
 	glm::vec3 particlePos = particle->GetPos();
 	glm::vec3 camPos = _camera->get_position();
+	// A Vector from Camera position to the Particle position
 	glm::vec3 cam_parV = particlePos - camPos;
+	// Calculate the ray direction vector from our mouse pointer
 	glm::vec3 rayDir = glm::normalize(glm::vec3(rayWorld));
 
 	// If player is not holding a particle
@@ -576,7 +577,7 @@ void Cloth::ParticleGrab(Particle* particle, Camera* _camera, glm::vec2 _mousePo
 		float c = glm::dot(cam_parV, cam_parV) - parRadius * parRadius;
 		float d = b * b - 4.0f * a * c;
 
-		// Collides if true
+		// Colliding if true
 		if (d > 0.0f)
 		{
 			// Set particle's position to ray direction multiplied by the distance between the camera and the particle
