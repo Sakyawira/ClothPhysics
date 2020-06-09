@@ -351,7 +351,7 @@ void Cloth::Render(Camera& _camera, Texture* _texture)
 	}
 }
 
-void Cloth::Process(float _deltaTime)
+void Cloth::Process(float _deltaTime, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
 {
 	// iterate over all constraints several times
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) 
@@ -391,22 +391,22 @@ void Cloth::Process(float _deltaTime)
 		i += 6;
 
 		//Handle particle picking if left mouse clicked and dragged
-		//if (Input::GetInstance()->MouseState[0] == INPUT_HOLD)
-		//{
-		//	if (!m_isHoldingParticle)
-		//	{
-		//		ProcessParticlePick(&(*particle));
-		//	}
-		//	else
-		//	{
-		//		ProcessParticlePick(pickedParticle);
-		//	}
-		//}
-		//else
-		//{
-		//	//set as not holding a particle
-		//	m_isHoldingParticle = false;
-		//}
+		if (isMouseHold)
+		{
+			if (!m_isHoldingParticle)
+			{
+				ParticleGrab(&particle, _camera, _mousePos, isMouseHold);
+			}
+			else
+			{
+				ParticleGrab(m_grabbedParticle, _camera, _mousePos, isMouseHold);
+			}
+		}
+		else
+		{
+			//set as not holding a particle
+			m_isHoldingParticle = false;
+		}
 	}
 
 	m_indices.clear();
@@ -620,6 +620,64 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 		{
 			particle.isCollided = false;
 		}
+	}
+}
+
+void Cloth::ParticleGrab(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
+{
+	//screen pos
+	glm::vec2 normalizedScreenPos = _mousePos;
+	//screenpos to Proj Space
+	glm::vec4 clipCoords = glm::vec4(normalizedScreenPos.x, normalizedScreenPos.y, -1.0f, 1.0f);
+	//Proj Space to eye space
+	glm::mat4 invProjMat = glm::inverse(_camera->get_projection());
+	glm::vec4 eyeCoords = invProjMat * clipCoords;
+	eyeCoords = glm::vec4(eyeCoords.x, eyeCoords.y, -1.0f, 0.0f);
+
+	//eyespace to world space
+	glm::mat4 invViewMat = glm::inverse(_camera->get_view());
+	glm::vec4 rayWorld = invViewMat * eyeCoords;
+
+	glm::vec3 particlePos = particle->GetPos();
+	glm::vec3 camPos = _camera->get_position();
+	// A Vector from Camera position to the Particle position
+	glm::vec3 cam_parV = particlePos - camPos;
+	// Calculate the ray direction vector from our mouse pointer
+	glm::vec3 rayDir = glm::normalize(glm::vec3(rayWorld));
+
+	// If player is not holding a particle
+	if (!m_isHoldingParticle)
+	{
+		// Ray - Sphere Collision
+		// The Particle is a sphere with 0.3 radius
+		float parRadius = 0.3f;
+		float a = glm::dot(rayDir, rayDir);
+		float b = 2.0f * glm::dot(cam_parV, rayDir);
+		float c = glm::dot(cam_parV, cam_parV) - parRadius * parRadius;
+		float d = b * b - 4.0f * a * c;
+
+		// Colliding if true
+		if (d > 0.0f)
+		{
+			// Set particle's position to ray direction multiplied by the distance between the camera and the particle
+			float distance = glm::distance(camPos, particlePos);
+			particlePos = camPos + rayDir * distance;
+			particle->SetPos(particlePos);
+
+			// Set particle as picked
+			m_grabbedParticle = particle;
+			m_isHoldingParticle = true;
+		}
+	}
+	// Player is already holding a particle in the previous frame
+	else
+	{
+		// Set particle's position to ray direction multiplied by the distance between the camera and the particle
+		float distance = glm::distance(camPos, particlePos);
+		particlePos = camPos + rayDir * distance;
+		particle->SetPos(particlePos);
+
+		m_grabbedParticle = particle;
 	}
 }
 
