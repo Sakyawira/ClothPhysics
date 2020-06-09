@@ -124,6 +124,7 @@ private:
 	
 	// Declaring Strings
 	TextLabel* m_text_instruction_top_left_;
+	TextLabel* m_text_instruction_top_left2_;
 	TextLabel* m_text_instruction_bottom2_;
 	TextLabel* m_text_instruction_bottom_;
 	TextLabel* m_text_instruction_burn_;

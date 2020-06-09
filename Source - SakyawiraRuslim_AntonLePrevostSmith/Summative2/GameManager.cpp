@@ -63,6 +63,7 @@ GameManager::GameManager()
 	std::string m_string_instruction = "Press 'R' to start the game...";
 	
 	m_text_instruction_top_left_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 350.0f), m_v_text);
+	m_text_instruction_top_left2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 320.0f), m_v_text);
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
 	
@@ -144,6 +145,9 @@ GameManager::GameManager()
 
 void GameManager::initialize()
 {
+	m_text_instruction_top_left2_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_top_left2_->SetScale(0.5f);
+
 	m_text_instruction_bottom2_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_bottom2_->SetScale(0.5f);
 	m_text_instruction_bottom2_->SetText("Hit 'Q' to strecth cloth, 'E' to fold cloth. ");
@@ -247,10 +251,12 @@ void GameManager::process_game(Audio& audio)
 		{
 			// Update Texts
 			m_text_instruction_top_left_->SetText("Press 'V' to possess the collision module.");
+			m_text_instruction_top_left2_->SetText("'W','A','S','D' to move the Camera, Use mouse to move look direction.");
 		}
 		else
 		{
 			m_text_instruction_top_left_->SetText("Press 'V' to use free moving camera!");
+			m_text_instruction_top_left2_->SetText("'W','A','S','D','Z', 'C' to move the collision module.");
 		}
 
 		m_text_instruction_bottom_->SetText("Hit 'Space' to Unpin Cloth.");
@@ -352,6 +358,7 @@ void GameManager::render()
 		//m_frameBuffer->Render("currentTime", current_time_);
 		
 		m_text_instruction_top_left_->Render();
+		m_text_instruction_top_left2_->Render();
 		m_text_instruction_bottom_->Render();
 		m_text_instruction_bottom2_->Render();
 		m_text_pins_->Render();
