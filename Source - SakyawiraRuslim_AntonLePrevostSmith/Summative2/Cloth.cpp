@@ -7,8 +7,9 @@
 Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
 {
 	m_program = program;
-	m_fParticlesInX = _numParticlesX;
-	m_fParticlesInY = _numParticlesY;
+	m_iParticlesInX = _numParticlesX;
+	m_iParticlesInY = _numParticlesY;
+	m_iNumOfPinned = 2;
 }
 
 void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
@@ -22,20 +23,20 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 	m_vParticles.clear();
 	m_vConstraints.clear();
 
-	m_vParticles.resize(m_fParticlesInX * m_fParticlesInY);
+	m_vParticles.resize(m_iParticlesInX * m_iParticlesInY);
 
 	int verticesID = 0;
 	
 	// Creates Cloth with a size of _width times _height
-	// Populate that Cloth with m_fParticlesInX times m_fParticlesInY number of Particles
-	for (int y = 0; y < m_fParticlesInY; y++)
+	// Populate that Cloth with m_iParticlesInX times m_iParticlesInY number of Particles
+	for (int y = 0; y < m_iParticlesInY; y++)
 	{
-		const int iIndexOffset = y * m_fParticlesInX;
-		for (int x = 0; x < m_fParticlesInX; x++)
+		const int iIndexOffset = y * m_iParticlesInX;
+		for (int x = 0; x < m_iParticlesInX; x++)
 		{
 			// Create a new position for a new particle
-			glm::vec3 pos = glm::vec3(_width * (x / (float)m_fParticlesInX) + _pos.x,
-									 -_height * (y / (float)m_fParticlesInY) + _pos.y,
+			glm::vec3 pos = glm::vec3(_width * (x / (float)m_iParticlesInX) + _pos.x,
+									 -_height * (y / (float)m_iParticlesInY) + _pos.y,
 									 _pos.z);
 
 			// Create and insert a new particle in column x, row y
@@ -58,30 +59,30 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 	}
 
 	// Create constraints for each square
-	for (int x = 0; x < m_fParticlesInX; x++)
+	for (int x = 0; x < m_iParticlesInX; x++)
 	{
-		for (int y = 0; y < m_fParticlesInY; y++)
+		for (int y = 0; y < m_iParticlesInY; y++)
 		{
 			// Cloth base constraints
-			if (x < m_fParticlesInX - 1)
+			if (x < m_iParticlesInX - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x + 1, y)->IncrementConnectionCount();
 			}
-			if (y < m_fParticlesInY - 1)
+			if (y < m_iParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 1));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x, y + 1)->IncrementConnectionCount();
 			}
-			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
+			if (x < m_iParticlesInX - 1 && y < m_iParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x + 1, y + 1)->IncrementConnectionCount();
 			}
-			if (x < m_fParticlesInX - 1 && y < m_fParticlesInY - 1)
+			if (x < m_iParticlesInX - 1 && y < m_iParticlesInY - 1)
 			{
 				CreateConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
 				GetParticle(x + 1, y)->IncrementConnectionCount();
@@ -89,25 +90,25 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 			}
 
 			//// Cloth folding/interweaved constraints (2 apart)
-			if (x < m_fParticlesInX - 2)
+			if (x < m_iParticlesInX - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x + 2, y)->IncrementConnectionCount();
 			}
-			if (y < m_fParticlesInY - 2)
+			if (y < m_iParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x, y + 2));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x, y + 2)->IncrementConnectionCount();
 			}
-			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
+			if (x < m_iParticlesInX - 2 && y < m_iParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2));
 				GetParticle(x, y)->IncrementConnectionCount();
 				GetParticle(x + 2, y + 2)->IncrementConnectionCount();
 			}
-			if (x < m_fParticlesInX - 2 && y < m_fParticlesInY - 2)
+			if (x < m_iParticlesInX - 2 && y < m_iParticlesInY - 2)
 			{
 				CreateConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2));
 				GetParticle(x + 2, y)->IncrementConnectionCount();
@@ -115,25 +116,25 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 			}
 
 			////// Cloth folding/interweaved constraints (3 apart)
-			//if (x < m_fParticlesInX - 3)
+			//if (x < m_iParticlesInX - 3)
 			//{
 			//	CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y));
 			//	GetParticle(x, y)->IncrementConnectionCount();
 			//	GetParticle(x + 3, y)->IncrementConnectionCount();
 			//}
-			//if (y < m_fParticlesInY - 3)
+			//if (y < m_iParticlesInY - 3)
 			//{
 			//	CreateConstraint(GetParticle(x, y), GetParticle(x, y + 3));
 			//	GetParticle(x, y)->IncrementConnectionCount();
 			//	GetParticle(x, y + 3)->IncrementConnectionCount();
 			//}
-			//if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
+			//if (x < m_iParticlesInX - 3 && y < m_iParticlesInY - 3)
 			//{
 			//	CreateConstraint(GetParticle(x, y), GetParticle(x + 3, y + 3));
 			//	GetParticle(x, y)->IncrementConnectionCount();
 			//	GetParticle(x + 3, y + 3)->IncrementConnectionCount();
 			//}
-			//if (x < m_fParticlesInX - 3 && y < m_fParticlesInY - 3)
+			//if (x < m_iParticlesInX - 3 && y < m_iParticlesInY - 3)
 			//{
 			//	CreateConstraint(GetParticle(x + 3, y), GetParticle(x, y + 3));
 			//	GetParticle(x + 3, y)->IncrementConnectionCount();
@@ -145,16 +146,94 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 	auto rng = std::default_random_engine{};
 	std::shuffle(m_vConstraints.begin(), m_vConstraints.end(), rng);
 
-	// Pin the Top Left and Top Right Particle
+	// Pin the Top Left and Top Right Particle (this can always be done because there will always be atleast two pinned particles)
 	GetParticle(0, 0)->SetPin(true);
-	GetParticle(m_fParticlesInX - 1, 0)->SetPin(true);
+	GetParticle(m_iParticlesInX - 1, 0)->SetPin(true);
+
+	// Add the extra pins
+	if(m_iNumOfPinned > 2)
+	{
+		int possiblePlacement = m_iParticlesInX - 2.0f;
+		float remainingPinned = static_cast<float>(m_iNumOfPinned) - 2.0f;
+
+		int pinPlacementOffset = static_cast<int>(ceil((possiblePlacement) / (remainingPinned + 1)));
+		
+		pinPlacementOffset = max(2, pinPlacementOffset);
+
+		int maxPinsOffset = (possiblePlacement) / pinPlacementOffset;
+		int extraPins = remainingPinned - maxPinsOffset;
+		
+		for (int i = 0; i < m_iParticlesInX - (1 + pinPlacementOffset); i++)
+		{
+			i += pinPlacementOffset;
+			GetParticle(i, 0)->SetPin(true);
+		}
+
+		for (int i = 1; i < m_iParticlesInX - 1; ++i)
+		{
+			if(extraPins > 0 && !GetParticle(i, 0)->IsPinned())
+			{
+				GetParticle(i, 0)->SetPin(true);
+				--extraPins;
+			}
+
+			if (extraPins > 0 && !GetParticle(m_iParticlesInX - 1 - i, 0)->IsPinned())
+			{
+				GetParticle(m_iParticlesInX - 1 - i, 0)->SetPin(true);
+				--extraPins;
+			}
+		}
+	}
+	
 	GenerateBuffers();
+}
+
+bool Cloth::IncreasePins()
+{
+	if (m_iNumOfPinned < m_iParticlesInX)
+	{
+		++m_iNumOfPinned;
+		return true;
+	}
+	return false;
+}
+
+bool Cloth::DecreasePins()
+{
+	if (m_iNumOfPinned > 2)
+	{
+		--m_iNumOfPinned;
+		return true;
+	}
+	return false;
+}
+
+bool Cloth::IncreaseSize()
+{
+	if (m_iParticlesInX < 64)
+	{
+		m_iParticlesInX++;
+		m_iParticlesInY++;
+		return true;
+	}
+	return false;
+}
+
+bool Cloth::DecreaseSize()
+{
+	if (m_iParticlesInX > 2)
+	{
+		m_iParticlesInX--;
+		m_iParticlesInY--;
+		return true;
+	}
+	return false;
 }
 
 void Cloth::Unpin()
 {
 	// Unpin pins at top of the cloth
-	for (int i = 0; i < m_fParticlesInX; i++)
+	for (int i = 0; i < m_iParticlesInX; i++)
 	{
 		GetParticle(0 + i, 0)->SetPin(false);
 	}
@@ -213,7 +292,7 @@ void Cloth::GenerateBuffers()
 
 Particle* Cloth::GetParticle(int _x, int _y)
 {
-	return &m_vParticles[_y * m_fParticlesInX + _x];
+	return &m_vParticles[_y * m_iParticlesInX + _x];
 }
 
 void Cloth::CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
@@ -411,9 +490,9 @@ void Cloth::ApplyWindForceAtTriangle(Particle* _p1, Particle* _p2, Particle* _p3
 
 void Cloth::ApplyWindForce(const glm::vec3 _force)
 {
-	for (int x = 0; x < m_fParticlesInX - 1; ++x)
+	for (int x = 0; x < m_iParticlesInX - 1; ++x)
 	{
-		for (int y = 0; y < m_fParticlesInY - 1; ++y)
+		for (int y = 0; y < m_iParticlesInY - 1; ++y)
 		{
 			ApplyWindForceAtTriangle(GetParticle(x + 1, y), GetParticle(x, y), GetParticle(x, y + 1), _force);
 			ApplyWindForceAtTriangle(GetParticle(x + 1, y + 1), GetParticle(x + 1, y), GetParticle(x, y + 1), _force);
@@ -424,16 +503,16 @@ void Cloth::ApplyWindForce(const glm::vec3 _force)
 void Cloth::Squish(int dir)
 {
 	// Get All Top Horizontal Particles
-	for (int i = 1; i <= m_fParticlesInX; i++)
+	for (int i = 1; i <= m_iParticlesInX; i++)
 	{
 		// Get the middle particle's number
-		int middle = m_fParticlesInX / 2;
+		int middle = m_iParticlesInX / 2;
 
 		// The amount of horizontal distance the left particles need to move
 		float left_offset = 0.2f * dir * (middle / i * 0.01f);
 
 		// The amount of horizontal distance the right particles need to move
-		float right_offset = 0.2f * dir * -(middle / (m_fParticlesInX + 1 - i) * 0.01f);
+		float right_offset = 0.2f * dir * -(middle / (m_iParticlesInX + 1 - i) * 0.01f);
 
 		// For Particles to the left of the middle particle
 		if (i < middle)
@@ -450,7 +529,7 @@ void Cloth::Squish(int dir)
 
 void Cloth::SetOnFire()
 {
-	GetParticle(rand() % m_fParticlesInX, rand() % m_fParticlesInY)->SetOnFire(true);
+	GetParticle(rand() % m_iParticlesInX, rand() % m_iParticlesInY)->SetOnFire(true);
 }
 
 void Cloth::SetDebug(bool _debug)

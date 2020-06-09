@@ -179,7 +179,7 @@ void GameManager::initialize()
 
 void GameManager::process_game(Audio& audio)
 {
-	if (m_b_initialized_ == 1)
+	if (m_b_initialized_)
 	{
 		m_clock_->Process();
 		const float delta_t = m_clock_->GetDeltaTick();

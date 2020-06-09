@@ -93,7 +93,7 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		
 		if(m_Particle1->IsPinned() || m_Particle2->IsPinned())
 		{
-			m_constraintTearResistance = 10.0f;
+			m_constraintTearResistance = 5.0f;
 		}
 
 		if (tearDistance > m_constraintTearResistance)
@@ -101,8 +101,8 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 			//Reduces health by around 50+ health per second
 			//m_Particle1->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
 			//m_Particle2->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
-			m_Particle1->AddHealth(-100.0f * _deltaTime);
-			m_Particle1->AddHealth(-100.0f * _deltaTime);
+			m_Particle1->AddHealth(-1000.0f * _deltaTime);
+			m_Particle2->AddHealth(-1000.0f * _deltaTime);
 		}	
 		else
 		{

@@ -43,7 +43,6 @@ void Particle::Process(float _groundY, float _deltaTime)
 	}
 	else
 	{
-
 		if(m_iConnectionCount < 0)
 		{
 			// You have a bug!

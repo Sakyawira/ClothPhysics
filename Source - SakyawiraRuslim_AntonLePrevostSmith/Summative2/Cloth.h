@@ -19,6 +19,10 @@ class Cloth : public Mesh
 		void ApplyForce(const glm::vec3 _force);
 		void ApplyGravityForce(const glm::vec3 _force);
 		void ApplyWindForce(const glm::vec3 _force);
+		bool IncreasePins();
+		bool DecreasePins();
+		bool IncreaseSize();
+		bool DecreaseSize();
 		void Unpin();
 		void Squish(int dir);
 		void SetOnFire();
@@ -44,9 +48,12 @@ class Cloth : public Mesh
 		bool m_debugMode = false;
 
 		// number of particles in "x" direction
-		int m_fParticlesInX; 
+		int m_iParticlesInX; 
 		// number of particles in "y" direction
-		int m_fParticlesInY; 
+		int m_iParticlesInY;
+
+		// number of pinned particles
+		int m_iNumOfPinned;
 
 		bool m_isHoldingParticle = false;
 		Particle* m_pickedParticle;
