@@ -102,6 +102,9 @@ private:
 
 	// Is click
 	bool m_is_clicked_ = false;
+
+	//Initialise the clock only once
+	bool m_bClockInitialised = false;
 	
 	// Ray direction
 	glm::vec3 m_ray_direction_;

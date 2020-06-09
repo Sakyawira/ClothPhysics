@@ -19,6 +19,7 @@
 GameManager::GameManager()
 {
 	m_b_initialized_ = false;
+	m_bClockInitialised = false;
 
 	// Create Clock
 	m_clock_ = new CClock();
@@ -174,6 +175,7 @@ void GameManager::initialize()
 	m_mesh_cloth->Initialize(5, 5,glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	m_b_initialized_ = true;
+
 	m_clock_->Initialise();
 }
 
@@ -182,7 +184,15 @@ void GameManager::process_game(Audio& audio)
 	if (m_b_initialized_)
 	{
 		m_clock_->Process();
-		const float delta_t = m_clock_->GetDeltaTick();
+		float delta_t = m_clock_->GetDeltaTick();
+		
+		if(!m_bClockInitialised)
+		{
+			m_bClockInitialised = true;
+			delta_t = 0.0167f;
+		}
+		
+		
 
 		camera.update(m_b_start_, m_clock_->GetDeltaTick() * 1.0f, /*tank->GetLocation()*/ glm::vec3(0.0f, 0.0f, 0.0f));
 
