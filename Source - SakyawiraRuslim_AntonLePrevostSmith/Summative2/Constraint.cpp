@@ -1,14 +1,7 @@
 #include "Constraint.h"
 #include <iostream>
 
-#include <cstdlib>  // For srand() and rand()
-
-//Generates a random float from 0 - 1
-static float randomFloat()
-{
-	const float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	return r;
-}
+#include "Random.h"
 
 Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
@@ -21,7 +14,8 @@ Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 		m_fRestitutionDistance = glm::distance(m_Particle1->GetPos(), m_Particle2->GetPos());
 	}
 
-	m_constraintTearResistance = 0.25f + randomFloat();
+	m_constraintTearResistance = 0.25f + GenerateFloat();
+	m_burnTimer = 0.2f + GenerateFloat();
 }
 
 void Constraint::SetIsAlive(bool _isAlive)
@@ -78,11 +72,11 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		/*---------Spread flames here---------*/
 		//If burn timer is greater than certain value, set the other particle on fire
 		//Spread the flame if it has been burning long enough
-		if (m_Particle1->IsOnFire() && !m_Particle2->IsPinned() && m_Particle1->GetBurnTimer() >= 0.2f + randomFloat() * 2.0f)
+		if (m_Particle1->IsOnFire() && m_Particle1->GetBurnTimer() >= m_burnTimer)
 		{
 			m_Particle2->SetOnFire(true);
 		}
-		if (m_Particle2->IsOnFire() && !m_Particle1->IsPinned() && m_Particle2->GetBurnTimer() >= 0.2f + randomFloat() * 2.0f)
+		if (m_Particle2->IsOnFire() && m_Particle2->GetBurnTimer() >= m_burnTimer)
 		{
 			m_Particle1->SetOnFire(true);
 		}
@@ -104,8 +98,8 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 			//Reduces health by around 50+ health per second
 			//m_Particle1->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
 			//m_Particle2->AddHealth(-50.0f * (tearDistance + 1) * _deltaTime);
-			m_Particle1->AddHealth(-100.0f);
-			m_Particle1->AddHealth(-100.0f);
+			m_Particle1->AddHealth(-100.0f * _deltaTime);
+			m_Particle1->AddHealth(-100.0f * _deltaTime);
 		}	
 		else
 		{
@@ -122,7 +116,7 @@ bool Constraint::Process(float _deltaTime, bool _debugMode)
 		}
 
 		//One or more of our particles is dead. We should die too.
-		if (m_Particle1->GetHealth() <= 0.0f || m_Particle2->GetHealth() <= 0.0f)
+		if (!m_Particle1->GetIsAlive() || !m_Particle2->GetIsAlive())
 		{
 			return false;
 		}

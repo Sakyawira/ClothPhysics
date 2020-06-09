@@ -1,5 +1,7 @@
 #include "Particle.h"
 
+#include "Random.h"
+
 #include <iostream>
 
 Particle::Particle(glm::vec3 _position, unsigned int _id)
@@ -19,8 +21,8 @@ void Particle::Process(float _groundY, float _deltaTime)
 			{
 				//Increase burn timer, apply upward force and reduce health
 				m_fBurnTimer += _deltaTime;
-				ApplyForce(glm::vec3(0, 0.5f, 0));
-				AddHealth(-50.0f * _deltaTime);
+				ApplyForce(glm::vec3(GenerateFloat() * 0.5, 0.5f, GenerateFloat() * 0.5));
+				AddHealth(-500.0f * GenerateFloat() * _deltaTime);
 			}
 			
 			// Verlet Integration

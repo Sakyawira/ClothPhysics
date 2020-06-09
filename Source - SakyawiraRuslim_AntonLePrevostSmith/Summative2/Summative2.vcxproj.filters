@@ -121,6 +121,10 @@
     <ClInclude Include="Cloth.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Random.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Shaders\TextFS.txt">

@@ -179,6 +179,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryModel.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Initialization.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Mesh.h" />

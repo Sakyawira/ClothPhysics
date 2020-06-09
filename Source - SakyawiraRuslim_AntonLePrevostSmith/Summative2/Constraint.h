@@ -31,6 +31,7 @@ class Constraint
 		float m_constraintTearResistance = 1.0f;
 		float m_stiffness = 1.2f;
 		float m_fRestitutionDistance = 0.1f;
+		float m_burnTimer = 1.0f;
 		bool m_bToBeDestroyed = false;
 		bool m_bFoldingConstraint = false;
 		bool m_bIsAlive = true;
