@@ -109,25 +109,29 @@ private:
 	bool m_b_start_ = false;
 	
 	// Declaring Strings
-	std::string m_string_score_;
 	TextLabel* m_text_instruction_top_left_;
-	std::string m_string_lives_;
+	TextLabel* m_text_instruction_bottom2_;
+	TextLabel* m_text_instruction_bottom_;
+	TextLabel* m_text_instruction_burn_;
+	TextLabel* m_text_instruction_change_;
 	TextLabel* m_text_windX_;
-	std::string m_string_level_;
 	TextLabel* m_text_windY_;
+	TextLabel* m_text_windZ_;
+
+	std::string m_string_score_;
+	std::string m_string_lives_;
+	std::string m_string_level_;
 
 	// Menu text
 	char m_c_bg_ = 65;
 	std::string m_string_bg_;
-	TextLabel* m_text_windZ_;
 
 	// Menu Text
 	std::string m_string_menu_ = "Collect All Crystal Balls to Win: The Game";
-	TextLabel* m_text_instruction_bottom2_;
 
 	// Instruction Text
 	std::string m_string_instruction_ = "Press 'R' to start the game...";
-	TextLabel* m_text_instruction_bottom_;
+
 
 	// Uniforms
 	GLfloat current_time_;
