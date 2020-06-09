@@ -25,7 +25,7 @@ class Cloth : public Mesh
 		void SphereCollision(GameObject* _sphere);
 		void BoxCollision(GameObject* _box);
 		void PyramidCollision(GameObject* _pyramid);
-		void ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold);
+		void ParticleGrab(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold);
 
 		void SetDebug(bool _debug);
 		bool GetDebug() const { return m_debugMode; }
@@ -50,7 +50,7 @@ class Cloth : public Mesh
 		int m_fParticlesInY; 
 
 		bool m_isHoldingParticle = false;
-		Particle* m_pickedParticle;
+		Particle* m_grabbedParticle;
 
 		// Particles which construct this cloth
 		unsigned int m_particleCount = 0;

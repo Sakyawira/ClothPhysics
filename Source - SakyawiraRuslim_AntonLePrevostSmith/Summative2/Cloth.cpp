@@ -316,11 +316,11 @@ void Cloth::Process(float _deltaTime, Camera* _camera, glm::vec2 _mousePos, bool
 		{
 			if (!m_isHoldingParticle)
 			{
-				ProcessParticlePick(&particle, _camera, _mousePos, isMouseHold);
+				ParticleGrab(&particle, _camera, _mousePos, isMouseHold);
 			}
 			else
 			{
-				ProcessParticlePick(m_pickedParticle, _camera, _mousePos, isMouseHold);
+				ParticleGrab(m_grabbedParticle, _camera, _mousePos, isMouseHold);
 			}
 		}
 		else
@@ -544,7 +544,7 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	}
 }
 
-void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
+void Cloth::ParticleGrab(Particle* particle, Camera* _camera, glm::vec2 _mousePos, bool isMouseHold)
 {
 	//screen pos
 	glm::vec2 normalizedScreenPos = _mousePos;
@@ -585,7 +585,7 @@ void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _
 			particle->SetPos(particlePos);
 
 			// Set particle as picked
-			m_pickedParticle = particle;
+			m_grabbedParticle = particle;
 			m_isHoldingParticle = true;
 		}
 	}
@@ -597,7 +597,7 @@ void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera, glm::vec2 _
 		particlePos = camPos + rayDir * distance;
 		particle->SetPos(particlePos);
 
-		m_pickedParticle = particle;
+		m_grabbedParticle = particle;
 	}
 }
 
