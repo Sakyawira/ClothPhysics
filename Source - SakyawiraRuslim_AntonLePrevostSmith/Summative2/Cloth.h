@@ -38,7 +38,7 @@ class Cloth : public Mesh
 
 		int GetNumberPinned() { return m_iNumOfPinned; }
 		int GetNumberParticles() { return m_iParticlesInX * m_iParticlesInY; }
-		int GetSize() { return m_width * m_height; }
+		int GetSize() { return int(m_width * m_height); }
 
 	private:
 

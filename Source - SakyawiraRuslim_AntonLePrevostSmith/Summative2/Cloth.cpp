@@ -158,7 +158,7 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 	// Add the extra pins
 	if(m_iNumOfPinned > 2)
 	{
-		int possiblePlacement = m_iParticlesInX - 2.0f;
+		int possiblePlacement = m_iParticlesInX - 2;
 		float remainingPinned = static_cast<float>(m_iNumOfPinned) - 2.0f;
 
 		int pinPlacementOffset = static_cast<int>(ceil((possiblePlacement) / (remainingPinned + 1)));
@@ -166,7 +166,7 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 		pinPlacementOffset = max(2, pinPlacementOffset);
 
 		int maxPinsOffset = (possiblePlacement) / pinPlacementOffset;
-		int extraPins = remainingPinned - maxPinsOffset;
+		int extraPins = (int)((float)remainingPinned - maxPinsOffset);
 		
 		for (int i = 0; i < m_iParticlesInX - (1 + pinPlacementOffset); i++)
 		{
@@ -394,7 +394,7 @@ void Cloth::Process(float _deltaTime, Camera* _camera, glm::vec2 _mousePos, bool
 	}
 
 	//Check if each constraints particle is alive and set them based on that
-	for (int i = 0; i < m_vConstraints.size(); ++i)
+	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
 	{
 		m_vConstraints[i].DetermineIsAlive();
 	}
