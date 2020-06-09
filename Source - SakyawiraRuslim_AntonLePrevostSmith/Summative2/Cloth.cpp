@@ -565,10 +565,13 @@ void Cloth::SetOnFire()
 			aliveParticles.push_back(&particle);
 		}
 	}
-	
-	int index = rand() % aliveParticles.size();
-	
-	aliveParticles[index]->SetOnFire(true);
+
+	if(aliveParticles.size() > 0)
+	{
+		int index = rand() % aliveParticles.size();
+
+		aliveParticles[index]->SetOnFire(true);
+	}
 }
 
 void Cloth::SetDebug(bool _debug)
