@@ -545,6 +545,48 @@ void Cloth::PyramidCollision(GameObject* _pyramid)
 	}
 }
 
+void Cloth::ProcessParticlePick(Particle* particle, Camera* _camera)
+{
+	//Calculate mouse click from pointer to world space
+	glm::vec3 _position = particle->GetPos();
+	float _posRadius = 0.3f;
+	glm::vec3 camPos = _camera->get_position();
+	glm::vec3 dirVector = _position - camPos;
+	glm::vec3 rayDirection = Input::GetInstance()->ScreenToWorldRay();
+
+	//If player is not already picking a particle
+	if (!m_isHoldingParticle)
+	{
+		//Check if the particle collides with the mouse pointer 
+		//based on the radius of the particle
+		float fA = glm::dot(rayDirection, rayDirection);
+		float fB = 2.0f * glm::dot(dirVector, rayDirection);
+		float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
+		float fD = fB * fB - 4.0f * fA * fC;
+
+		//if particle collides with mouse
+		if (fD > 0.0f)
+		{
+			//Set it's initial new position
+			float distance = glm::distance(camPos, _position);
+			_position = rayDirection * distance + camPos;
+			particle->SetPos(_position);
+
+			//Set particle as picked
+			m_pickedParticle = particle;
+			m_isHoldingParticle = true;
+		}
+	}
+	else
+	{
+		//If particle is already being held, calculate new position depending on mouse position
+		float distance = glm::distance(camPos, _position);
+		_position = rayDirection * distance + camPos;
+		particle->SetPos(_position);
+		m_pickedParticle = particle;
+	}
+}
+
 void Cloth::SphereCollision(GameObject* _sphere)
 {
 	float offset = 0.0f;

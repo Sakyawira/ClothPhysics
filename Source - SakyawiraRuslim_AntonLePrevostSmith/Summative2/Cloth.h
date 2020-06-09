@@ -25,6 +25,7 @@ class Cloth : public Mesh
 		void SphereCollision(GameObject* _sphere);
 		void BoxCollision(GameObject* _box);
 		void PyramidCollision(GameObject* _pyramid);
+		void ProcessParticlePick(Particle* particle, Camera* _camera);
 
 		void SetDebug(bool _debug);
 		bool GetDebug() const { return m_debugMode; }
