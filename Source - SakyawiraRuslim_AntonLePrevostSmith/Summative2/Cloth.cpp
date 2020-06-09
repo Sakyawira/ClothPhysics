@@ -472,12 +472,12 @@ bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3,
 	// the middle of the pyramid and the particle
 	// are facing each other
 	// if return is -1, they are facing each other (opposite direction)
-	float dotV4 = glm::dot(normal, centroid - _particle);
+	float dot = glm::dot(normal, centroid - _particle);
 
 	//// Check whether or not the triangle and a line between a point in the triangle and the particle are facing each other
 	//float dotP = glm::dot(normal, _point3 - p);
 
-	return dotV4 > 0;
+	return dot > 0;
 }
 
 bool Cloth::SameFaceDir(glm::vec3 _point1, glm::vec3 _point2, glm::vec3 _point3, glm::vec3 _point4, glm::vec3 _middlePyramid, glm::vec3 _particle)
