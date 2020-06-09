@@ -9,6 +9,8 @@ Cloth::Cloth(GLuint program, int _numParticlesX, int _numParticlesY)
 	m_program = program;
 	m_iParticlesInX = _numParticlesX;
 	m_iParticlesInY = _numParticlesY;
+	m_width = 5.0f;
+	m_height = 5.0f;
 	m_iNumOfPinned = 2;
 }
 
@@ -29,14 +31,17 @@ void Cloth::Initialize(float _width, float _height, glm::vec3 _pos)
 	
 	// Creates Cloth with a size of _width times _height
 	// Populate that Cloth with m_iParticlesInX times m_iParticlesInY number of Particles
+	float xOffset = (m_width - 1) / -2.0f;
+	float yOffset = (m_height - 1) / 2.0f;
+	
 	for (int y = 0; y < m_iParticlesInY; y++)
 	{
 		const int iIndexOffset = y * m_iParticlesInX;
 		for (int x = 0; x < m_iParticlesInX; x++)
 		{
 			// Create a new position for a new particle
-			glm::vec3 pos = glm::vec3(_width * (x / (float)m_iParticlesInX) + _pos.x,
-									 -_height * (y / (float)m_iParticlesInY) + _pos.y,
+			glm::vec3 pos = glm::vec3(m_width * (x / (float)m_iParticlesInX) + _pos.x + xOffset,
+									 -m_height * (y / (float)m_iParticlesInY) + _pos.y + yOffset,
 									 _pos.z);
 
 			// Create and insert a new particle in column x, row y
@@ -208,7 +213,7 @@ bool Cloth::DecreasePins()
 	return false;
 }
 
-bool Cloth::IncreaseSize()
+bool Cloth::IncreaseParticles()
 {
 	if (m_iParticlesInX < 64)
 	{
@@ -219,12 +224,34 @@ bool Cloth::IncreaseSize()
 	return false;
 }
 
-bool Cloth::DecreaseSize()
+bool Cloth::DecreaseParticles()
 {
 	if (m_iParticlesInX > 2)
 	{
 		m_iParticlesInX--;
 		m_iParticlesInY--;
+		return true;
+	}
+	return false;
+}
+
+bool Cloth::IncreaseSize()
+{
+	if (m_width < 10.0f)
+	{
+		m_width += 0.25f;
+		m_height += 0.25f;
+		return true;
+	}
+	return false;
+}
+
+bool Cloth::DecreaseSize()
+{
+	if (m_width > 1.0f)
+	{
+		m_width -= 0.25f;
+		m_height -= 0.25f;
 		return true;
 	}
 	return false;

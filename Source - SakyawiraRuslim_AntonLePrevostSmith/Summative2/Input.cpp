@@ -145,7 +145,7 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
 
-		if (Game->m_mesh_cloth->DecreaseSize())
+		if (Game->m_mesh_cloth->DecreaseParticles())
 		{
 			// Start working on initializing the game on restart instead of making a new one
 			Game->start_game(false);
@@ -159,7 +159,7 @@ void Input::process_input(GameManager* Game, Audio& audio)
 	{
 		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
 
-		if (Game->m_mesh_cloth->IncreaseSize())
+		if (Game->m_mesh_cloth->IncreaseParticles())
 		{
 			// Start working on initializing the game on restart instead of making a new one
 			Game->start_game(false);
@@ -169,6 +169,34 @@ void Input::process_input(GameManager* Game, Audio& audio)
 		key_state_['m'] = INPUT_DOWN;
 	}
 
+	if (key_state_[','] == INPUT_DOWN_FIRST)
+	{
+		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
+
+		if (Game->m_mesh_cloth->DecreaseSize())
+		{
+			// Start working on initializing the game on restart instead of making a new one
+			Game->start_game(false);
+			Game->initialize();
+		}
+
+		key_state_[','] = INPUT_DOWN;
+	}
+
+	if (key_state_['.'] == INPUT_DOWN_FIRST)
+	{
+		//Game->m_mesh_cloth->SetDebug(!Game->m_mesh_cloth->GetDebug());
+
+		if (Game->m_mesh_cloth->IncreaseSize())
+		{
+			// Start working on initializing the game on restart instead of making a new one
+			Game->start_game(false);
+			Game->initialize();
+		}
+
+		key_state_['.'] = INPUT_DOWN;
+	}
+	
 	if (key_state_['r'] == INPUT_DOWN_FIRST)
 	{
 		if (!Game->is_started() /*&& !Game->IsEnded()*/)

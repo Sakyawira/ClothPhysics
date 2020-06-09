@@ -21,6 +21,8 @@ class Cloth : public Mesh
 		void ApplyWindForce(const glm::vec3 _force);
 		bool IncreasePins();
 		bool DecreasePins();
+		bool IncreaseParticles();
+		bool DecreaseParticles();
 		bool IncreaseSize();
 		bool DecreaseSize();
 		void Unpin();
@@ -55,6 +57,9 @@ class Cloth : public Mesh
 		int m_iParticlesInX; 
 		// number of particles in "y" direction
 		int m_iParticlesInY;
+
+		float m_width;
+		float m_height;
 
 		// number of pinned particles
 		int m_iNumOfPinned;

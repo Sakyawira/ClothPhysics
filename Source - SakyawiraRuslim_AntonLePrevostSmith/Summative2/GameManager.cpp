@@ -181,7 +181,7 @@ void GameManager::initialize()
 	camera.set_pos_z(10.0f);
 	camera.set_look_dir(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_mesh_cloth->Initialize(5, 5,glm::vec3(0.0f, 0.0f, 0.0f));
+	m_mesh_cloth->Initialize(5, 5,glm::vec3(1.1f, -1.1f, 0.0f));
 	
 	m_b_initialized_ = true;
 
