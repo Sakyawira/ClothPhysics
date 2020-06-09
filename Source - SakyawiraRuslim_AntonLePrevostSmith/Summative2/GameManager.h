@@ -123,8 +123,8 @@ private:
 	TextLabel* m_text_instruction_top_left_;
 	TextLabel* m_text_instruction_bottom2_;
 	TextLabel* m_text_instruction_bottom_;
-	TextLabel* m_text_instruction_burn_;
-	TextLabel* m_text_instruction_change_;
+	TextLabel* m_text_pins_;
+	TextLabel* m_text_particles_;
 	TextLabel* m_text_windX_;
 	TextLabel* m_text_windY_;
 	TextLabel* m_text_windZ_;
