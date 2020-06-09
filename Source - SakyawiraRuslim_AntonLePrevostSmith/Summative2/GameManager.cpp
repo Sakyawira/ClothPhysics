@@ -64,8 +64,10 @@ GameManager::GameManager()
 	m_text_instruction_top_left_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_score_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, 350.0f), m_v_text);
 	m_text_instruction_bottom_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_instruction, "Resources/Fonts/arial.ttf", glm::vec2(-108, -250.0f), m_v_text);
 	m_text_instruction_bottom2_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(-178, -280.0f), m_v_text);
-	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(178, -330.0f), m_v_text);
 	
+	m_text_instruction_burn_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(150.f, -330.0f), m_v_text);
+	m_text_instruction_change_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_menu, "Resources/Fonts/arial.ttf", glm::vec2(150.f, -350.0f), m_v_text);
+
 	m_text_windX_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_lives_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -330.0f), m_v_text);
 	m_text_windY_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_level_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -350.0f), m_v_text);
 	m_text_windZ_ = new TextLabel(WINDOW_WIDHT, WINDOW_HEIGHT, m_string_bg_, "Resources/Fonts/arial.ttf", glm::vec2(-390.0f, -370.0f), m_v_text);
@@ -150,6 +152,10 @@ void GameManager::initialize()
 	m_text_instruction_burn_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_text_instruction_burn_->SetScale(0.35f);
 	m_text_instruction_burn_->SetText("Hit 'H' to brun cloth.");
+
+	m_text_instruction_change_->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_text_instruction_change_->SetScale(0.35f);
+	m_text_instruction_change_->SetText("Hit 'F' to change collision module.");
 
 	m_text_windX_->SetScale(0.35f);
 	m_text_windY_->SetScale(0.35f);
@@ -322,6 +328,7 @@ void GameManager::render()
 		m_text_instruction_bottom_->Render();
 		m_text_instruction_bottom2_->Render();
 		m_text_instruction_burn_->Render();
+		m_text_instruction_change_->Render();
 
 		m_text_windX_->Render();
 		m_text_windY_->Render();
