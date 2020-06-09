@@ -260,7 +260,7 @@ void GameManager::process_game(Audio& audio)
 
 		m_text_pins_->SetText("Number of Pins = " + to_string(m_mesh_cloth->GetNumberPinned()) + " ('J' - 'K' Keys)");
 		m_text_particles_->SetText("Number of Particles = " + to_string(m_mesh_cloth->GetNumberParticles()) + " ('N' - 'M' Keys)");
-		m_text_size_->SetText("Size of Cloth = " + to_string(m_mesh_cloth->GetNumberParticles()) + " ('<' - '>' Keys)");
+		m_text_size_->SetText("Size of Cloth = " + to_string(m_mesh_cloth->GetSize()) + " ('<' - '>' Keys)");
 	}
 	
 	else
