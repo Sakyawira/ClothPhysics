@@ -15,27 +15,30 @@ Constraint::Constraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 	}
 
 	m_constraintTearResistance = 0.25f + GenerateFloat();
-	m_burnTimer = 0.2f + GenerateFloat();
+	m_burnTimer = 0.01f + GenerateFloat();
 }
 
 void Constraint::SetIsAlive(bool _isAlive)
 {
-	m_bIsAlive = _isAlive;
-
-	// If this constraint is not alive anymore and the connected particles exist,
-	// then have the particles decrement their number of connections.
-	if(!m_bIsAlive)
+	if (m_bIsAlive && !_isAlive)
 	{
-		if(m_Particle1 && m_Particle1->GetIsAlive())
-		{
-			m_Particle1->DecrementConnectionCount();
-			m_Particle1 = nullptr;
-		}
+		m_bIsAlive = _isAlive;
 
-		if(m_Particle2 && m_Particle2->GetIsAlive())
+		// If this constraint is not alive anymore and the connected particles exist,
+		// then have the particles decrement their number of connections.
+		if (!m_bIsAlive)
 		{
-			m_Particle2->DecrementConnectionCount();
-			m_Particle2 = nullptr;
+			if (m_Particle1 && m_Particle1->GetIsAlive())
+			{
+				m_Particle1->DecrementConnectionCount();
+				m_Particle1 = nullptr;
+			}
+
+			if (m_Particle2 && m_Particle2->GetIsAlive())
+			{
+				m_Particle2->DecrementConnectionCount();
+				m_Particle2 = nullptr;
+			}
 		}
 	}
 }

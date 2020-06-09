@@ -115,6 +115,7 @@ class Particle
 		// Fire stuff
         bool m_bOnFire = false;
         float m_fBurnTimer = 0.0f;
+        float m_burnRate = 1.0f;
 	
         // Vertex and Index
         int m_iVertexId{};

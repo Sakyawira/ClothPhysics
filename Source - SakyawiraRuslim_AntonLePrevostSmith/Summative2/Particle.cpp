@@ -9,6 +9,7 @@ Particle::Particle(glm::vec3 _position, unsigned int _id)
 	m_v3Position = _position;
 	m_v3OldPosition = _position;
 	m_ID = _id;
+	m_burnRate = -50.0f + -200.0f * GenerateFloat();
 }
 
 void Particle::Process(float _groundY, float _deltaTime)
@@ -22,7 +23,7 @@ void Particle::Process(float _groundY, float _deltaTime)
 				//Increase burn timer, apply upward force and reduce health
 				m_fBurnTimer += _deltaTime;
 				ApplyForce(glm::vec3(GenerateFloat() * 0.5, 0.5f, GenerateFloat() * 0.5));
-				AddHealth(-500.0f * GenerateFloat() * _deltaTime);
+				AddHealth(m_burnRate * _deltaTime);
 			}
 			
 			// Verlet Integration
@@ -92,11 +93,6 @@ void Particle::DecrementConnectionCount()
 	if (m_iConnectionCount > 0)
 	{
 		m_iConnectionCount--;
-	}
-	else
-	{
-		//This shouldn't be able to happen!
-		system("pause");
 	}
 	
 	if (m_iConnectionCount <= 0)

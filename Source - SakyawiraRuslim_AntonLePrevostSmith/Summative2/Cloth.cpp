@@ -218,7 +218,7 @@ Particle* Cloth::GetParticle(int _x, int _y)
 
 void Cloth::CreateConstraint(Particle* _p1, Particle* _p2, bool _foldingConstraint)
 {
-	m_vConstraints.push_back(Constraint(_p1, _p2, _foldingConstraint));
+	m_vConstraints.emplace_back(_p1, _p2, _foldingConstraint);
 }
 
 void Cloth::Render(Camera& _camera, Texture* _texture)
@@ -450,7 +450,6 @@ void Cloth::Squish(int dir)
 
 void Cloth::SetOnFire()
 {
-
 	GetParticle(rand() % m_fParticlesInX, rand() % m_fParticlesInY)->SetOnFire(true);
 }
 
